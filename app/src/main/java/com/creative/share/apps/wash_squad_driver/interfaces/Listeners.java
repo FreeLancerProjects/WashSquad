@@ -28,6 +28,11 @@ public interface Listeners {
 
     }
 
+    interface EditProfileListener
+    {
+        void checkDataEditProfile(String name, String phone_code, String phone);
+
+    }
     interface BackListener
     {
         void back();

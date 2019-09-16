@@ -88,6 +88,13 @@ public interface Service {
     @FormUrlEncoded
     @POST("api/date/get/times")
     Call<TimeDataModel> getTime(@Field("date") String date);
+
+    @FormUrlEncoded
+    @POST("api/profile/edit")
+    Call<UserModel> edit_profile(@Field("full_name") String full_name,
+                                 @Field("phone_code") String phone_code,
+                                 @Field("phone") String phone
+                                 );
 }
 
 
