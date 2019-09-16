@@ -37,6 +37,7 @@ public class EditProfileModel extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.phone);
         //setPassword(password);
         notifyPropertyChanged(BR.password);
+
     }
 
     @Bindable

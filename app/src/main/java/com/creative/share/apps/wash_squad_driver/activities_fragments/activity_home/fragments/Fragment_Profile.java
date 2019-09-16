@@ -50,7 +50,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Fragment_Profile extends Fragment implements Listeners.ShowCountryDialogListener, OnCountryPickerListener,Listeners.EditProfileListener {
+public class Fragment_Profile extends Fragment implements Listeners.ShowCountryDialogListener, OnCountryPickerListener, Listeners.EditProfileListener {
 
     private HomeActivity activity;
     private FragmentProfileBinding binding;
@@ -59,12 +59,13 @@ public class Fragment_Profile extends Fragment implements Listeners.ShowCountryD
     private CountryPicker countryPicker;
     private String lang;
     private String code;
-private EditProfileModel edit_profile_model;
+    private EditProfileModel edit_profile_model;
     private final String READ_PERM = Manifest.permission.READ_EXTERNAL_STORAGE;
     private final String write_permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     private final String camera_permission = Manifest.permission.CAMERA;
     private final int IMG_REQ1 = 1, IMG_REQ2 = 2;
     private Uri imgUri1 = null;
+
     public static Fragment_Profile newInstance() {
 
         return new Fragment_Profile();
@@ -79,19 +80,22 @@ private EditProfileModel edit_profile_model;
     }
 
     private void initView() {
+        activity = (HomeActivity) getActivity();
+        preferences = Preferences.newInstance();
         Paper.init(activity);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
         binding.setShowCountryListener(this);
 
-        activity = (HomeActivity) getActivity();
-        preferences = Preferences.newInstance();
+
 
         userModel = preferences.getUserData(activity);
+        Log.e("data",userModel.getLogo());
 
-            edit_profile_model=new EditProfileModel();
+        edit_profile_model = new EditProfileModel();
 
-        binding.setEditProfileModel(edit_profile_model);
+        binding.setEditprofilemodel(edit_profile_model);
+        binding.setUsermodel(userModel);
         binding.edtName.setText(userModel.getFull_name());
         binding.tvCode.setText(userModel.getPhone_code().replaceFirst("00", "+"));
         binding.edtPhone.setText(userModel.getPhone());
@@ -99,22 +103,21 @@ private EditProfileModel edit_profile_model;
         code = userModel.getPhone_code();
 
         createCountryDialog();
-binding.image.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        CreateImageAlertDialog();
+        binding.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CreateImageAlertDialog();
+            }
+        });
     }
-});
-    }
-    private void CreateImageAlertDialog()
-    {
+
+    private void CreateImageAlertDialog() {
 
         final AlertDialog dialog = new AlertDialog.Builder(activity)
                 .setCancelable(true)
                 .create();
 
-        DialogSelectImageBinding binding = DataBindingUtil.inflate(LayoutInflater.from(activity),R.layout.dialog_select_image,null,false);
-
+        DialogSelectImageBinding binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.dialog_select_image, null, false);
 
 
         binding.btnCamera.setOnClickListener(v -> {
@@ -128,18 +131,17 @@ binding.image.setOnClickListener(new View.OnClickListener() {
             CheckReadPermission();
 
 
-
         });
 
         binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
 
-        dialog.getWindow().getAttributes().windowAnimations= R.style.dialog_congratulation_animation;
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_congratulation_animation;
         dialog.setCanceledOnTouchOutside(false);
         dialog.setView(binding.getRoot());
         dialog.show();
     }
-    private void CheckReadPermission()
-    {
+
+    private void CheckReadPermission() {
         if (ActivityCompat.checkSelfPermission(activity, READ_PERM) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{READ_PERM}, IMG_REQ1);
         } else {
@@ -147,50 +149,41 @@ binding.image.setOnClickListener(new View.OnClickListener() {
         }
     }
 
-    private void Check_CameraPermission()
-    {
-        if (ContextCompat.checkSelfPermission(activity,camera_permission)!= PackageManager.PERMISSION_GRANTED&&ContextCompat.checkSelfPermission(activity,write_permission)!= PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(activity,new String[]{camera_permission,write_permission},IMG_REQ2);
-        }else
-        {
+    private void Check_CameraPermission() {
+        if (ContextCompat.checkSelfPermission(activity, camera_permission) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(activity, write_permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{camera_permission, write_permission}, IMG_REQ2);
+        } else {
             SelectImage(IMG_REQ2);
 
         }
 
     }
+
     private void SelectImage(int img_req) {
 
         Intent intent = new Intent();
 
-        if (img_req == IMG_REQ1)
-        {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-            {
+        if (img_req == IMG_REQ1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            }else
-            {
+            } else {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
 
             }
 
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setType("image/*");
-            startActivityForResult(intent,img_req);
+            startActivityForResult(intent, img_req);
 
-        }else if (img_req ==IMG_REQ2)
-        {
+        } else if (img_req == IMG_REQ2) {
             try {
                 intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,img_req);
-            }catch (SecurityException e)
-            {
-                Toast.makeText(activity,R.string.perm_image_denied, Toast.LENGTH_SHORT).show();
-            }
-            catch (Exception e)
-            {
-                Toast.makeText(activity,R.string.perm_image_denied, Toast.LENGTH_SHORT).show();
+                startActivityForResult(intent, img_req);
+            } catch (SecurityException e) {
+                Toast.makeText(activity, R.string.perm_image_denied, Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(activity, R.string.perm_image_denied, Toast.LENGTH_SHORT).show();
 
             }
 
@@ -222,8 +215,7 @@ binding.image.setOnClickListener(new View.OnClickListener() {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMG_REQ2 && resultCode == Activity.RESULT_OK && data != null) {
 
@@ -231,58 +223,53 @@ binding.image.setOnClickListener(new View.OnClickListener() {
 
             imgUri1 = getUriFromBitmap(bitmap);
 
-           // edit_profile_model.editImageProfile(userModel.getUser().getId(),imgUri1.toString());
-
-
-
-
+            // edit_profile_model.editImageProfile(userModel.getUser().getId(),imgUri1.toString());
+editImageProfile(userModel.getId(),userModel.getFull_name(),imgUri1.toString());
 
         } else if (requestCode == IMG_REQ1 && resultCode == Activity.RESULT_OK && data != null) {
 
             imgUri1 = data.getData();
-          //  edit_profile_view_model.editImageProfile(userModel.getUser().getId(),imgUri1.toString());
+            editImageProfile(userModel.getId(),userModel.getFull_name(),imgUri1.toString());
 
+            //  edit_profile_view_model.editImageProfile(userModel.getUser().getId(),imgUri1.toString());
 
 
         }
 
     }
-    public void editImageProfile(int user_id,String full_name,String image)
-    {
-        ProgressDialog dialog = Common.createProgressDialog(activity,activity.getString(R.string.wait));
+
+    public void editImageProfile(int user_id, String full_name, String image) {
+        ProgressDialog dialog = Common.createProgressDialog(activity, activity.getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
 
         RequestBody id_part = Common.getRequestBodyText(String.valueOf(user_id));
         RequestBody name_part = Common.getRequestBodyText(String.valueOf(full_name));
 
-        MultipartBody.Part image_part = Common. getMultiPart(activity, Uri.parse(image),"logo");
+        MultipartBody.Part image_part = Common.getMultiPart(activity, Uri.parse(image), "logo");
 
         Api.getService(Tags.base_url)
-                .editUserImage(id_part,name_part,image_part)
+                .editUserImage(id_part, name_part, image_part)
                 .enqueue(new Callback<UserModel>() {
                     @Override
                     public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                         dialog.dismiss();
-                        if (response.isSuccessful()&&response.body()!=null)
-                        {
+                        if (response.isSuccessful() && response.body() != null) {
                             //listener.onSuccess(response.body());
-                            edit_profile_model=new EditProfileModel(response.body().getFull_name(),response.body().getPhone_code(),response.body().getPhone());
-                            binding.setEditProfileModel(edit_profile_model);
+
                             Toast.makeText(activity, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+update(response.body());
 
-
-                        }else
-                        {
-                            Log.e("codeimage",response.code()+"_");
+                        } else {
+                            Log.e("codeimage", response.code() + "_");
                             try {
                                 Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
-                                Log.e("respons",response.errorBody().string());
+                                Log.e("respons", response.errorBody().string());
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                           // listener.onFailed(response.code());
+                            // listener.onFailed(response.code());
                         }
                     }
 
@@ -292,9 +279,20 @@ binding.image.setOnClickListener(new View.OnClickListener() {
                             dialog.dismiss();
                             Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
 
-                        }catch (Exception e){}
+                        } catch (Exception e) {
+                        }
                     }
                 });
+    }
+
+    private void update(UserModel body) {
+        Log.e("data",body.getLogo());
+        userModel = body;
+        preferences.create_update_userData(activity, userModel);
+        edit_profile_model = new EditProfileModel(userModel.getFull_name(), userModel.getPhone_code(), userModel.getPhone());
+        binding.setUsermodel(userModel);
+
+        binding.setEditprofilemodel(edit_profile_model);
     }
 
     private Uri getUriFromBitmap(Bitmap bitmap) {
@@ -314,6 +312,7 @@ binding.image.setOnClickListener(new View.OnClickListener() {
         }
         return null;
     }
+
     private void createCountryDialog() {
         countryPicker = new CountryPicker.Builder()
                 .canSearch(true)
@@ -348,64 +347,60 @@ binding.image.setOnClickListener(new View.OnClickListener() {
 
     @Override
     public void checkDataEditProfile(String name, String phone_code, String phone) {
-        if (phone.startsWith("0"))
-        {
-            phone = phone.replaceFirst("0","");
+        if (phone.startsWith("0")) {
+            phone = phone.replaceFirst("0", "");
         }
-        edit_profile_model = new EditProfileModel(name,phone_code,phone);
+        edit_profile_model = new EditProfileModel(name, phone_code, phone);
         binding.setEditprofilelistener(this);
 
-        if (edit_profile_model.isDataValid(activity))
-        {
-            Editprofile(name,phone_code,phone);
+        if (edit_profile_model.isDataValid(activity)) {
+            Editprofile(name, phone_code, phone);
         }
     }
-    private void Editprofile(String name, String phone_code, String phone)
-    {
-        ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+
+    private void Editprofile(String name, String phone_code, String phone) {
+        ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         try {
 
             Api.getService(Tags.base_url)
-                    .edit_profile(userModel.getId()+"",name,phone_code,phone)
+                    .edit_profile(userModel.getId() + "", name, phone_code, phone)
                     .enqueue(new Callback<UserModel>() {
                         @Override
                         public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                             dialog.dismiss();
-                            if (response.isSuccessful()&&response.body()!=null)
-                            {
-                                preferences.create_update_userData(activity,response.body());
+                            if (response.isSuccessful() && response.body() != null) {
+                                userModel = response.body();
+                                preferences.create_update_userData(activity, userModel);
+                                edit_profile_model = new EditProfileModel(userModel.getFull_name(), userModel.getPhone_code(), userModel.getPhone());
+
+                                binding.setEditprofilemodel(edit_profile_model);
                                 Toast.makeText(activity, getString(R.string.suc), Toast.LENGTH_SHORT).show();
 
 
-                            }else
-                            {
+                            } else {
                                 try {
 
-                                    Log.e("error",response.code()+"_"+response.errorBody().string());
+                                    Log.e("error", response.code() + "_" + response.errorBody().string());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                                 if (response.code() == 422) {
                                     Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                                } else if (response.code()==403)
-                                {
+                                } else if (response.code() == 403) {
                                     Toast.makeText(activity, R.string.user_not_active, Toast.LENGTH_SHORT).show();
 
-                                }else if (response.code()==404)
-                                {
+                                } else if (response.code() == 404) {
                                     Toast.makeText(activity, R.string.inc_phone_pas, Toast.LENGTH_SHORT).show();
 
-                                }else if (response.code()==405)
-                                {
+                                } else if (response.code() == 405) {
                                     Toast.makeText(activity, R.string.not_active_phone, Toast.LENGTH_SHORT).show();
 
-                                }else if (response.code() == 500) {
+                                } else if (response.code() == 500) {
                                     Toast.makeText(activity, "Server Error", Toast.LENGTH_SHORT).show();
 
-                                }else
-                                {
+                                } else {
                                     Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
 
@@ -417,22 +412,20 @@ binding.image.setOnClickListener(new View.OnClickListener() {
                         public void onFailure(Call<UserModel> call, Throwable t) {
                             try {
                                 dialog.dismiss();
-                                if (t.getMessage()!=null)
-                                {
-                                    Log.e("error",t.getMessage());
-                                    if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
-                                    {
-                                        Toast.makeText(activity,R.string.something, Toast.LENGTH_SHORT).show();
-                                    }else
-                                    {
-                                        Toast.makeText(activity,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(activity, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(activity, t.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
-                            }catch (Exception e){}
+                            } catch (Exception e) {
+                            }
                         }
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             dialog.dismiss();
 
         }
