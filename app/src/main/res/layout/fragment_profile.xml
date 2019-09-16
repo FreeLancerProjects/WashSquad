@@ -218,7 +218,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ll"
-                android:onClick="@{(v)->editprofilelistener.checkDataEditProfile(EditProfileModel.editprofilemodel.name,EditProfileModel.phone_code,EditProfileModel.phone)}"
+                android:onClick="@{(v)->editprofilelistener.checkDataEditProfile(EditProfileModel.EditProfileModel.name,EditProfileModel.phone_code,EditProfileModel.phone)}"
 
 
                 />

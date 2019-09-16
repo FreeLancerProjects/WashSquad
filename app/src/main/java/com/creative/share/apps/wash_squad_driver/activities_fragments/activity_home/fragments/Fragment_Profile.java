@@ -88,11 +88,9 @@ private EditProfileModel edit_profile_model;
         preferences = Preferences.newInstance();
 
         userModel = preferences.getUserData(activity);
-        if(userModel!=null){
-        edit_profile_model=new EditProfileModel(userModel.getFull_name(),userModel.getPhone_code(),userModel.getPhone());}
-        else {
+
             edit_profile_model=new EditProfileModel();
-        }
+
         binding.setEditProfileModel(edit_profile_model);
         binding.edtName.setText(userModel.getFull_name());
         binding.tvCode.setText(userModel.getPhone_code().replaceFirst("00", "+"));
