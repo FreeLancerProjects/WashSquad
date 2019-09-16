@@ -11,12 +11,16 @@ import com.creative.share.apps.wash_squad_driver.models.ServiceDataModel;
 import com.creative.share.apps.wash_squad_driver.models.TimeDataModel;
 import com.creative.share.apps.wash_squad_driver.models.UserModel;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface Service {
@@ -91,10 +95,20 @@ public interface Service {
 
     @FormUrlEncoded
     @POST("api/profile/edit")
-    Call<UserModel> edit_profile(@Field("full_name") String full_name,
-                                 @Field("phone_code") String phone_code,
-                                 @Field("phone") String phone
-                                 );
+    Call<UserModel> edit_profile(
+            @Part("user_id") String user_id,
+            @Field("full_name") String full_name,
+            @Field("phone_code") String phone_code,
+            @Field("phone") String phone
+    );
+
+    @Multipart
+    @POST("api/profile/edit")
+    Call<UserModel> editUserImage(
+
+            @Part("user_id") RequestBody user_id,
+            @Part("full_name") RequestBody full_name,
+            @Part MultipartBody.Part image);
 }
 
 

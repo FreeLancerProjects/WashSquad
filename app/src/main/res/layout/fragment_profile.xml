@@ -18,8 +18,8 @@
             type="String" />
 
         <variable
-            name="editprofilemodel"
-            type="com.creative.share.apps.wash_squad_driver.models.Edit_Profile_Model" />
+            name="EditProfileModel"
+            type="com.creative.share.apps.wash_squad_driver.models.EditProfileModel" />
 
     </data>
 
@@ -81,7 +81,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:singleLine="true"
-                    android:text="@{editprofilemodel.name}"
+                    android:text="@{EditProfileModel.name}"
                     android:textColor="@color/gray5"
                     android:textSize="15sp"
 
@@ -133,7 +133,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:text="@{editprofilemodel.phone_code}"
+                        android:text="@{EditProfileModel.phone_code}"
 
                         />
 
@@ -146,7 +146,7 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:singleLine="true"
-                        android:text="@{editprofilemodel.phone}"
+                        android:text="@{EditProfileModel.phone}"
                         android:textColor="@color/black"
                         android:textColorHint="@color/gray4"
                         android:textSize="14sp"
@@ -192,7 +192,8 @@
             </LinearLayout>
 
             <ImageView
-                serviceImage="@{userModel.logo}"
+                android:id="@+id/image"
+                serviceImage="@{EditProfileModel.logo}"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:background="@drawable/image_user_bg"
@@ -217,7 +218,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ll"
-                android:onClick="@{(v)->editprofilelistener.checkDataEditProfile(editprofilemodel.editprofilemodel.name,editprofilemodel.phone_code,editprofilemodel.phone)}"
+                android:onClick="@{(v)->editprofilelistener.checkDataEditProfile(EditProfileModel.editprofilemodel.name,EditProfileModel.phone_code,EditProfileModel.phone)}"
 
 
                 />

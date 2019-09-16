@@ -12,7 +12,7 @@ import com.creative.share.apps.wash_squad_driver.R;
 
 import java.io.Serializable;
 
-public class Edit_Profile_Model extends BaseObservable implements Serializable {
+public class EditProfileModel extends BaseObservable implements Serializable {
 
     private String name;
     private String phone_code;
@@ -22,13 +22,13 @@ public class Edit_Profile_Model extends BaseObservable implements Serializable {
     public ObservableField<String> error_phone = new ObservableField<>();
 
 
-    public Edit_Profile_Model() {
+    public EditProfileModel() {
         this.name = "";
         this.phone_code = "";
         this.phone="";
     }
 
-    public Edit_Profile_Model(String name, String phone_code, String phone) {
+    public EditProfileModel(String name, String phone_code, String phone) {
         setName(name);
         notifyPropertyChanged(BR.name);
         setPhone_code(phone_code);
