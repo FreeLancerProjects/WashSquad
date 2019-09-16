@@ -98,12 +98,12 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
         {
             updatePhoneCode(countryPicker.getCountryByLocale(Locale.getDefault()));
         }else
-            {
-                String code = "+966";
-                binding.tvCode.setText(code);
-                loginModel.setPhone_code(code.replace("+","00"));
+        {
+            String code = "+966";
+            binding.tvCode.setText(code);
+            loginModel.setPhone_code(code.replace("+","00"));
 
-            }
+        }
 
     }
 
@@ -148,7 +148,7 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
 
     @Override
     public void onSelectCountry(Country country) {
-      updatePhoneCode(country);
+        updatePhoneCode(country);
     }
 
     private void updatePhoneCode(Country country)

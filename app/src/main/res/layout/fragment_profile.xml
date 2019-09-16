@@ -200,7 +200,6 @@
                 serviceImage="@{usermodel.logo}"
                 android:background="@drawable/image_user_bg"
                 android:padding="28dp"
-                android:tint="@color/gray5"
                 android:src="@drawable/ic_user"
                 app:layout_constraintBottom_toTopOf="@id/ll"
                 app:layout_constraintEnd_toEndOf="parent"
