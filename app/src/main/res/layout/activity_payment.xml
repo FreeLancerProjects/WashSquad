@@ -17,6 +17,8 @@
         <variable
             name="itemModel"
             type="com.creative.share.apps.wash_squad_driver.models.ItemToUpload" />
+
+
     </data>
 
     <LinearLayout
@@ -104,6 +106,7 @@
                             android:tint="@color/colorPrimary" />
 
                         <TextView
+                            android:id="@+id/tvDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -326,30 +329,6 @@
                             />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/payment"
-                            android:textColor="@color/gray5"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical|end"
-                            android:paddingLeft="8dp"
-                            android:paddingRight="8dp"
-                            android:text="@{itemModel.payment_method==1?@string/cache:@string/mada}"
-                            android:textColor="@color/gray5"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -371,9 +350,12 @@
                         >
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"></androidx.recyclerview.widget.RecyclerView>
+                            android:layout_marginTop="5dp">
+
+                        </androidx.recyclerview.widget.RecyclerView>
 
                         <TextView
                             android:id="@+id/tvNoAdditionalServices"
@@ -383,7 +365,8 @@
                             android:text="@string/no_additional_services"
                             android:textColor="@color/gray5"
                             android:textSize="13sp"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            />
                     </FrameLayout>
 
                     <View

@@ -9,10 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.creative.share.apps.wash_squad_driver.R;
 import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.activity.HomeActivity;
+import com.creative.share.apps.wash_squad_driver.adapters.CartAdapterAdapter;
 import com.creative.share.apps.wash_squad_driver.databinding.FragmentCartBinding;
+import com.creative.share.apps.wash_squad_driver.models.ItemToUpload;
 import com.creative.share.apps.wash_squad_driver.models.UserModel;
 import com.creative.share.apps.wash_squad_driver.preferences.Preferences;
 import com.creative.share.apps.wash_squad_driver.singleton.SingleTon;
@@ -22,7 +25,9 @@ public class Fragment_Cart extends Fragment {
     private HomeActivity activity;
     private FragmentCartBinding binding;
     private Preferences preferences;
+    private LinearLayoutManager manager;
     private UserModel userModel;
+    private CartAdapterAdapter adapter;
     private SingleTon singleTon;
 
     public static Fragment_Cart newInstance() {
@@ -43,15 +48,29 @@ public class Fragment_Cart extends Fragment {
         userModel = preferences.getUserData(activity);
         singleTon = SingleTon.newInstance();
 
+        manager = new LinearLayoutManager(activity);
+        binding.recView.setLayoutManager(manager);
+        adapter = new CartAdapterAdapter(singleTon.getData(),activity,this);
+        binding.recView.setAdapter(adapter);
         if (singleTon.getItemsCount()>0)
         {
-            binding.btnOrderNow.setVisibility(View.GONE);
+            binding.ll.setVisibility(View.GONE);
+            binding.btnOtherOrder.setVisibility(View.VISIBLE);
+
 
         }else
             {
-                binding.btnOrderNow.setVisibility(View.VISIBLE);
+                binding.btnOtherOrder.setVisibility(View.GONE);
+
+                binding.ll.setVisibility(View.VISIBLE);
             }
         binding.btnOrderNow.setOnClickListener(view -> activity.DisplayFragmentMain());
+        binding.btnOtherOrder.setOnClickListener(view -> activity.DisplayFragmentMain());
+
     }
 
+    public void setItemDataToUpload(ItemToUpload itemToUpload) {
+
+
+    }
 }

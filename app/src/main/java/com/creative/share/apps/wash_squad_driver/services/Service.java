@@ -96,25 +96,18 @@ public interface Service {
 
     @FormUrlEncoded
     @POST("api/profile/edit")
-    Call<UserModel> edit_profile(
-            @Part("user_id") String user_id,
-            @Field("full_name") String full_name
+    Call<UserModel> edit_profile(@Field("user_id") String user_id,
+                                 @Field("full_name") String full_name
     );
 
     @Multipart
     @POST("api/profile/edit")
-    Call<UserModel> editUserImage(
-
-            @Part("user_id") RequestBody user_id,
-            @Part("full_name") RequestBody full_name,
-            @Part MultipartBody.Part image);
+    Call<UserModel> editUserImage(@Part("user_id") RequestBody user_id,
+                                  @Part("full_name") RequestBody full_name,
+                                  @Part MultipartBody.Part image);
 
 
     @FormUrlEncoded
     @POST("api/orders")
-    Call<Order_Data_Model> MyOrder(
-
-            @Field("user_id") int user_id
-
-            );
+    Call<Order_Data_Model> MyOrder(@Field("user_id") int user_id);
 }

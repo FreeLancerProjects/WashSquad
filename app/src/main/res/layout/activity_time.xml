@@ -103,6 +103,7 @@
                         android:textSize="15sp"
                         android:textColor="@color/black"
                         android:text="@string/am"
+                        android:layout_gravity="center_vertical"
                         />
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recViewAm"
@@ -130,6 +131,7 @@
                         android:textSize="15sp"
                         android:textColor="@color/black"
                         android:text="@string/pm"
+                        android:layout_gravity="center_vertical"
                         />
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recViewPm"

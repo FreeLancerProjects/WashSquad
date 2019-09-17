@@ -15,7 +15,7 @@ public class Order_Data_Model implements Serializable {
         return data;
     }
 
-    public class OrderModel implements Serializable {
+    public static  class OrderModel implements Serializable {
         private int id;
         private int order_type;
         private int user_id;

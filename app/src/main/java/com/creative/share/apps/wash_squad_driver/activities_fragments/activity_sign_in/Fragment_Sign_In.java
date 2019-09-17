@@ -1,5 +1,6 @@
 package com.creative.share.apps.wash_squad_driver.activities_fragments.activity_sign_in;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.creative.share.apps.wash_squad_driver.R;
 import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.activity.HomeActivity;
+import com.creative.share.apps.wash_squad_driver.databinding.DialogAlertBinding;
 import com.creative.share.apps.wash_squad_driver.databinding.FragmentSignInBinding;
 import com.creative.share.apps.wash_squad_driver.interfaces.Listeners;
 import com.creative.share.apps.wash_squad_driver.models.LoginModel;
@@ -34,6 +36,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import io.paperdb.Paper;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -166,7 +169,7 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
         try {
 
             Api.getService(Tags.base_url)
-                    .login(phone_code,phone,password)
+                    .login(phone,phone_code,password)
                     .enqueue(new Callback<UserModel>() {
                         @Override
                         public void onResponse(Call<UserModel> call, Response<UserModel> response) {
@@ -200,6 +203,10 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
                                     Toast.makeText(activity, R.string.inc_phone_pas, Toast.LENGTH_SHORT).show();
 
                                 }else if (response.code()==405)
+                                {
+                                    reSendSMSCode(response.body());
+
+                                }else if (response.code()==406)
                                 {
                                     Toast.makeText(activity, R.string.not_active_phone, Toast.LENGTH_SHORT).show();
 
@@ -239,4 +246,75 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
 
         }
     }
+    private void reSendSMSCode(UserModel userModel)
+    {
+        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        Api.getService(Tags.base_url)
+                .resendCode(userModel.getId())
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                        dialog.dismiss();
+
+                        if (response.isSuccessful())
+                        {
+                            CreateAlertDialog(userModel);
+                        }else
+                        {
+                            try {
+                                Log.e("error_code",response.code()+"_"+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (response.code()==422)
+                            {
+                                Common.CreateDialogAlert(activity,getString(R.string.inc_code_verification));
+                            }else if (response.code()==500)
+                            {
+                                Toast.makeText(activity, "Server Error", Toast.LENGTH_SHORT).show();
+                            }else
+                            {
+                                Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                            Log.e("Error",t.getMessage());
+
+
+                        }catch (Exception e){}
+                    }
+                });
+    }
+    private void CreateAlertDialog(UserModel userModel)
+    {
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .create();
+
+        DialogAlertBinding binding = DataBindingUtil.inflate(LayoutInflater.from(activity), R.layout.dialog_alert, null, false);
+
+        binding.tvMsg.setText(getString(R.string.you_will_receive_4_digit));
+
+        binding.btnCancel.setOnClickListener(view -> {
+            dialog.dismiss();
+            activity.displayFragmentCodeVerification(userModel);
+
+
+        });
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_congratulation_animation;
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setView(binding.getRoot());
+        dialog.show();
+    }
+
+
 }

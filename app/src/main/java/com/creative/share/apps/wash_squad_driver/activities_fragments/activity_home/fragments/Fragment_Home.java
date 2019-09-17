@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.creative.share.apps.wash_squad_driver.R;
 import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.activity.HomeActivity;
 import com.creative.share.apps.wash_squad_driver.databinding.FragmentHomeBinding;
@@ -108,6 +109,29 @@ public class Fragment_Home extends Fragment {
     public void updateBottomNavigationPosition(int pos) {
 
         binding.ahBottomNav.setCurrentItem(pos, false);
+    }
+
+    public void setNotificationCartCount(int count)
+    {
+        if (count>0)
+        {
+            AHNotification ahNotification = new AHNotification.Builder()
+                    .setBackgroundColor(ContextCompat.getColor(activity,R.color.colorPrimary))
+                    .setText(String.valueOf(count))
+                    .setBackgroundColor(ContextCompat.getColor(activity,R.color.red))
+                    .build();
+            binding.ahBottomNav.setNotification(ahNotification,3);
+        }else
+            {
+                AHNotification ahNotification = new AHNotification.Builder()
+                        .setBackgroundColor(ContextCompat.getColor(activity,R.color.colorPrimary))
+                        .setText("")
+                        .setBackgroundColor(ContextCompat.getColor(activity,R.color.red))
+                        .build();
+                binding.ahBottomNav.setNotification(ahNotification,3);
+            }
+
+
     }
 
     public static Fragment_Home newInstance() {

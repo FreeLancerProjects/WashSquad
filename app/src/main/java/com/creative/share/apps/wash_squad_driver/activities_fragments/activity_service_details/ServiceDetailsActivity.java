@@ -73,6 +73,8 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
     private String service_name_ar,service_name_en;
     private UserModel userModel;
     private Preferences preferences;
+    private List<ItemToUpload.SubServiceModel> subServiceModelList ;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -103,9 +105,11 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
 
 
     private void initView() {
+        subServiceModelList = new ArrayList<>();
         preferences = Preferences.newInstance();
         userModel = preferences.getUserData(this);
         itemToUpload = new ItemToUpload();
+        itemToUpload.setSub_services(subServiceModelList);
         itemToUpload.setService_id(service_id);
         itemToUpload.setAr_service_type(service_name_ar);
         itemToUpload.setEn_service_type(service_name_en);
@@ -462,7 +466,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
         {
             additional_service.add(serviceModel);
 
-            List<ItemToUpload.SubServiceModel> subServiceModelList = new ArrayList<>();
+            subServiceModelList.clear();
             for (ServiceDataModel.Level3 level3:additional_service)
             {
                 ItemToUpload.SubServiceModel subServiceModel = new ItemToUpload.SubServiceModel(level3.getId(),Double.parseDouble(level3.getPrice()),level3.getAr_title(),level3.getEn_title());
@@ -470,7 +474,6 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
 
 
             }
-            Log.e("size",subServiceModelList.size()+"_");
 
             itemToUpload.setSub_services(subServiceModelList);
         }

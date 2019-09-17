@@ -24,6 +24,7 @@ import com.creative.share.apps.wash_squad_driver.databinding.ActivityHomeBinding
 import com.creative.share.apps.wash_squad_driver.language.LanguageHelper;
 import com.creative.share.apps.wash_squad_driver.models.UserModel;
 import com.creative.share.apps.wash_squad_driver.preferences.Preferences;
+import com.creative.share.apps.wash_squad_driver.singleton.SingleTon;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +46,17 @@ public class HomeActivity extends AppCompatActivity {
 
     private Preferences preferences;
     private UserModel userModel;
+    private SingleTon singleTon;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int cart_count = singleTon.getItemsCount();
+        if (fragment_home!=null&&fragment_home.isAdded())
+        {
+            fragment_home.setNotificationCartCount(cart_count);
+        }
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -73,6 +85,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void initView() {
+        singleTon = SingleTon.newInstance();
         Paper.init(this);
         fragmentManager = this.getSupportFragmentManager();
         preferences = Preferences.newInstance();
