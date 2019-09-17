@@ -1,9 +1,12 @@
 package com.creative.share.apps.wash_squad_driver.activities_fragments.activity_payment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -15,14 +18,22 @@ import com.creative.share.apps.wash_squad_driver.databinding.ActivityPaymentBind
 import com.creative.share.apps.wash_squad_driver.interfaces.Listeners;
 import com.creative.share.apps.wash_squad_driver.language.LanguageHelper;
 import com.creative.share.apps.wash_squad_driver.models.ItemToUpload;
+import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
+import com.creative.share.apps.wash_squad_driver.remote.Api;
+import com.creative.share.apps.wash_squad_driver.share.Common;
 import com.creative.share.apps.wash_squad_driver.singleton.SingleTon;
+import com.creative.share.apps.wash_squad_driver.tags.Tags;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PaymentActivity extends AppCompatActivity implements Listeners.BackListener {
     private ActivityPaymentBinding binding;
@@ -69,7 +80,7 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
         binding.setBackListener(this);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd/MMM",Locale.ENGLISH);
-        String m_date = dateFormat.format(new Date(itemToUpload.getOrder_date()));
+        String m_date = dateFormat.format(new Date(itemToUpload.getOrder_date()/1000));
         binding.tvDate.setText(String.format("%s %s %s",m_date,itemToUpload.getTime(),itemToUpload.getTime_type()));
 
 
@@ -90,13 +101,23 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
                 binding.tvNoAdditionalServices.setVisibility(View.VISIBLE);
 
             }
-        binding.rb1.setOnClickListener(view -> itemToUpload.setPayment_method(1));
-        binding.rb2.setOnClickListener(view -> itemToUpload.setPayment_method(2));
+        binding.rb1.setOnClickListener(view ->
+        {
+            itemToUpload.setPayment_method(1);
+            binding.setItemModel(itemToUpload);
+        });
+        binding.rb2.setOnClickListener(view ->
+        {
+            itemToUpload.setPayment_method(2);
+            binding.setItemModel(itemToUpload);
+
+        });
 
         binding.btnSend.setOnClickListener(view -> {
             if (itemToUpload.isDataValidStep2(this))
             {
-
+                Log.e("ddd","ddd");
+                uploadOrder(itemToUpload);
             }
         });
 
@@ -125,6 +146,83 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
 
     }
 
+
+    private void uploadOrder(ItemToUpload itemToUpload)
+    {
+
+        ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        try {
+
+            Api.getService(Tags.base_url)
+                    .addOrder(itemToUpload)
+                    .enqueue(new Callback<Order_Data_Model.OrderModel>() {
+                        @Override
+                        public void onResponse(Call<Order_Data_Model.OrderModel> call, Response<Order_Data_Model.OrderModel> response) {
+                            dialog.dismiss();
+                            if (response.isSuccessful()&&response.body()!=null)
+                            {
+                                Toast.makeText(PaymentActivity.this, getString(R.string.suc), Toast.LENGTH_LONG).show();
+                                Intent intent = getIntent();
+                                if (intent!=null)
+                                {
+                                    setResult(RESULT_OK,intent);
+                                }
+                                finish();
+                            }else
+                            {
+                                try {
+
+                                    Log.e("error",response.code()+"_"+response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                if (response.code() == 422) {
+                                    Toast.makeText(PaymentActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                }else if (response.code() == 500) {
+                                    Toast.makeText(PaymentActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+                                }else
+                                {
+                                    Toast.makeText(PaymentActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Order_Data_Model.OrderModel> call, Throwable t) {
+                            try {
+                                dialog.dismiss();
+                                if (t.getMessage()!=null)
+                                {
+                                    Log.e("error",t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
+                                    {
+                                        Toast.makeText(PaymentActivity.this,R.string.something, Toast.LENGTH_SHORT).show();
+                                    }else
+                                    {
+                                        Toast.makeText(PaymentActivity.this,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            }catch (Exception e)
+                            {
+                                Log.e("ec",e.getMessage()+"_");
+                            }
+                        }
+                    });
+        }catch (Exception e){
+            Log.e("edddc",e.getMessage()+"_");
+
+            dialog.dismiss();
+
+        }
+
+    }
 
     @Override
     public void back() {

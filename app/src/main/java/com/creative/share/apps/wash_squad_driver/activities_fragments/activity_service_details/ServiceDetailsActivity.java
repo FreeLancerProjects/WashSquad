@@ -220,7 +220,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                 d = dateFormat.format(new Date(date));
                 binding.tvDate.setText(d);
 
-                itemToUpload.setOrder_date(date);
+                itemToUpload.setOrder_date(date*1000);
                 binding.setItemModel(itemToUpload);
 
                 Intent intent = new Intent(ServiceDetailsActivity.this, TimeActivity.class);
@@ -418,7 +418,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
                 d = dateFormat.format(new Date(date));
                 binding.tvDate.setText(d);
-                itemToUpload.setOrder_date(date);
+                itemToUpload.setOrder_date(date*1000);
                 binding.setItemModel(itemToUpload);
 
 

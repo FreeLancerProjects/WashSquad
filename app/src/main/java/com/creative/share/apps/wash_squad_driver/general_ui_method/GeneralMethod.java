@@ -51,7 +51,7 @@ public class GeneralMethod {
     @BindingAdapter("profileImage")
     public static void profileImage(CircleImageView imageView, String endPoint)
     {
-        Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_URL+endPoint)).placeholder(R.drawable.ic_user).fit().into(imageView);
+        Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_URL+endPoint)).placeholder(R.drawable.user_profile).fit().into(imageView);
     }
 
 

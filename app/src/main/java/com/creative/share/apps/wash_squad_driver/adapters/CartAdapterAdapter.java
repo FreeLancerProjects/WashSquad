@@ -35,7 +35,6 @@ public class CartAdapterAdapter extends RecyclerView.Adapter<CartAdapterAdapter.
         this.fragment_cart = fragment_cart;
         Paper.init(context);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
-        manager = new LinearLayoutManager(context);
     }
 
     @NonNull
@@ -54,7 +53,9 @@ public class CartAdapterAdapter extends RecyclerView.Adapter<CartAdapterAdapter.
         holder.cartRowBinding.setItemModel(itemToUpload);
 
         AdditionalAdapter adapter = new AdditionalAdapter(itemToUpload.getSub_services(),context);
+        manager = new LinearLayoutManager(context);
         holder.cartRowBinding.recView.setLayoutManager(manager);
+
         holder.cartRowBinding.recView.setAdapter(adapter);
 
 

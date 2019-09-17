@@ -113,7 +113,6 @@ public interface Service {
     @POST("api/orders")
     Call<Order_Data_Model> MyOrder(@Field("user_id") int user_id);
 
-    @FormUrlEncoded
     @POST("api/order/add")
     Call<Order_Data_Model.OrderModel> addOrder(@Body ItemToUpload itemToUpload);
 }

@@ -197,6 +197,7 @@
 
             </LinearLayout>
 
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image"
                 profileImage="@{usermodel.logo}"

@@ -68,10 +68,12 @@ public class Fragment_Cart extends Fragment {
         binding.recView.setLayoutManager(manager);
         adapter = new CartAdapterAdapter(itemToUploadList,activity,this);
         binding.recView.setAdapter(adapter);
+        binding.recView.setNestedScrollingEnabled(true);
         if (singleTon.getItemsCount()>0)
         {
             binding.ll.setVisibility(View.GONE);
             binding.btnOtherOrder.setVisibility(View.VISIBLE);
+
 
 
         }else
@@ -80,6 +82,7 @@ public class Fragment_Cart extends Fragment {
 
                 binding.ll.setVisibility(View.VISIBLE);
             }
+
         binding.btnOrderNow.setOnClickListener(view -> activity.DisplayFragmentMain());
         binding.btnOtherOrder.setOnClickListener(view -> activity.DisplayFragmentMain());
 
@@ -103,12 +106,12 @@ public class Fragment_Cart extends Fragment {
                             {
                                 itemToUploadList.remove(adapterPosition);
                                 adapter.notifyDataSetChanged();
-                                singleTon.removeItem(adapterPosition);
-
+                                activity.updateCount(itemToUploadList.size());
                                 if (itemToUploadList.size()==0)
                                 {
                                     binding.btnOtherOrder.setVisibility(View.GONE);
                                     binding.ll.setVisibility(View.VISIBLE);
+                                    singleTon.clear();
                                 }
                                 Common.CreateDialogAlert(activity,getString(R.string.order_sent_suc)+" "+response.body().getId());
 

@@ -28,28 +28,28 @@ public class SingleTon {
 
     public void addItem(ItemToUpload itemToUpload)
     {
-        this.itemToUploadList.add(itemToUpload);
+        itemToUploadList.add(itemToUpload);
         Log.e("item","added");
     }
 
     public void removeItem(int pos)
     {
-        this.itemToUploadList.remove(pos);
+        itemToUploadList.remove(pos);
     }
 
     public List<ItemToUpload> getData()
     {
-        return this.itemToUploadList;
+        return itemToUploadList;
     }
 
     public int getItemsCount()
     {
-        return this.itemToUploadList.size();
+        return itemToUploadList.size();
     }
 
     public void clear()
     {
-        this.itemToUploadList.clear();
+        itemToUploadList.clear();
         instance = null;
 
     }

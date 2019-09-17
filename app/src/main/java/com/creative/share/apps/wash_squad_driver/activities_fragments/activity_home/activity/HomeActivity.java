@@ -52,6 +52,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         int cart_count = singleTon.getItemsCount();
+        updateCount(cart_count);
+    }
+
+    public void updateCount(int cart_count)
+    {
         if (fragment_home!=null&&fragment_home.isAdded())
         {
             fragment_home.setNotificationCartCount(cart_count);
