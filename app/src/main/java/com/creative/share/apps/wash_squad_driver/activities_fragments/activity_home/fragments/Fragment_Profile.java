@@ -39,6 +39,9 @@ import com.creative.share.apps.wash_squad_driver.preferences.Preferences;
 import com.creative.share.apps.wash_squad_driver.remote.Api;
 import com.creative.share.apps.wash_squad_driver.share.Common;
 import com.creative.share.apps.wash_squad_driver.tags.Tags;
+import com.mukesh.countrypicker.Country;
+import com.mukesh.countrypicker.CountryPicker;
+import com.mukesh.countrypicker.listeners.OnCountryPickerListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -53,15 +56,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Fragment_Profile extends Fragment implements  Listeners.EditProfileListener {
+public class Fragment_Profile extends Fragment implements  Listeners.EditProfileListener ,Listeners.ShowCountryDialogListener, OnCountryPickerListener {
 
     private HomeActivity activity;
     private FragmentProfileBinding binding;
     private Preferences preferences;
     private UserModel userModel;
-   // private CountryPicker countryPicker;
+    private CountryPicker countryPicker;
     private String lang;
-    //private String code;
+    private String code;
     private EditProfileModel edit_profile_model;
     private final String READ_PERM = Manifest.permission.READ_EXTERNAL_STORAGE;
     private final String write_permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -93,7 +96,7 @@ public class Fragment_Profile extends Fragment implements  Listeners.EditProfile
         Paper.init(activity);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
-       // binding.setShowCountryListener(this);
+        binding.setShowCountryListener(this);
 
         myOrdrrAdapter = new MyOrdrrAdapter(oOrderModelList, activity,this);
         binding.recView.setItemViewCacheSize(25);
@@ -111,18 +114,13 @@ public class Fragment_Profile extends Fragment implements  Listeners.EditProfile
         edit_profile_model = new EditProfileModel(userModel.getFull_name());
 
         binding.setEditprofilemodel(edit_profile_model);
-      /*  binding.tvCode.setText(userModel.getPhone_code().replaceFirst("00", "+"));
+        binding.tvCode.setText(userModel.getPhone_code().replaceFirst("00", "+"));
         binding.edtPhone.setText(userModel.getPhone());
         binding.setEditprofilelistener(this);
-        code = userModel.getPhone_code();*/
+        code = userModel.getPhone_code();
 
-      //  createCountryDialog();
-        binding.image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CreateImageAlertDialog();
-            }
-        });
+        createCountryDialog();
+        binding.image.setOnClickListener(view -> CreateImageAlertDialog());
     }
 
     private void CreateImageAlertDialog() {
@@ -252,7 +250,7 @@ editImageProfile(userModel.getId(),userModel.getFull_name(),imgUri1.toString());
 
     }
 
-    public void editImageProfile(int user_id, String full_name, String image) {
+    private void editImageProfile(int user_id, String full_name, String image) {
         ProgressDialog dialog = Common.createProgressDialog(activity, activity.getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
@@ -327,7 +325,7 @@ update(response.body());
         return null;
     }
 
-  /*  private void createCountryDialog() {
+    private void createCountryDialog() {
         countryPicker = new CountryPicker.Builder()
                 .canSearch(true)
                 .listener(this)
@@ -358,7 +356,6 @@ update(response.body());
         binding.tvCode.setText(country.getDialCode());
 
     }
-*/
     @Override
     public void checkDataEditProfile(String name) {
 
@@ -366,11 +363,11 @@ update(response.body());
         binding.setEditprofilelistener(this);
 
         if (edit_profile_model.isDataValid(activity)) {
-            Editprofile(name);
+            editProfile(name);
         }
     }
 
-    private void Editprofile(String name) {
+    private void editProfile(String name) {
         ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
@@ -442,8 +439,7 @@ update(response.body());
 
         }
     }
-    public void getOrders() {
-        //   Common.CloseKeyBoard(homeActivity, edt_name);
+    private void getOrders() {
         ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();        // rec_sent.setVisibility(View.GONE);
@@ -502,5 +498,6 @@ dialog.dismiss();
 
         }
     }
+
 
 }

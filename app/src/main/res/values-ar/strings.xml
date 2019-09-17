@@ -82,7 +82,7 @@
     <string name="ch_bank">إختر البنك</string>
     <string name="inc_phone_pas">رقم الجوال او كلمة المرور غير صحيحة</string>
     <string name="ver_code_sent">لقد تم إرسال رمز التحقق من قبل.</string>
-    <string name="order_sent_suc">تم إرسال طلبك بنجاح رقم طلبك هو</string>
+    <string name="order_sent_suc">تم إرسال طلبك بنجاح رقم طلبك هو :</string>
     <string name="order_state">حالة الطلب</string>
     <string name="details">تفاصيل الطلب</string>
     <string name="my_order">طلباتي</string>

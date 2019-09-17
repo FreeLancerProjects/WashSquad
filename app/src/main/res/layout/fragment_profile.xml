@@ -23,6 +23,10 @@
             name="usermodel"
             type="com.creative.share.apps.wash_squad_driver.models.UserModel" />
 
+        <variable
+            name="showCountryListener"
+            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.ShowCountryDialogListener" />
+
     </data>
 
     <ScrollView
@@ -186,21 +190,22 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
+                        android:onClick="@{()->showCountryListener.showDialog()}"
 
                         />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image"
-                serviceImage="@{usermodel.logo}"
+                profileImage="@{usermodel.logo}"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:background="@drawable/image_user_bg"
-                android:padding="28dp"
-                android:src="@drawable/ic_user"
                 app:layout_constraintBottom_toTopOf="@id/ll"
+                app:civ_border_color="@color/colorPrimary"
+                app:civ_border_width="1dp"
+                app:civ_circle_background_color="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/ll" />

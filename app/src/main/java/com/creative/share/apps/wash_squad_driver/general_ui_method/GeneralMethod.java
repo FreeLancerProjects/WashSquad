@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.creative.share.apps.wash_squad_driver.R;
 import com.creative.share.apps.wash_squad_driver.tags.Tags;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.squareup.picasso.Picasso;
@@ -16,6 +17,8 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GeneralMethod {
 
@@ -45,15 +48,21 @@ public class GeneralMethod {
         Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_URL+endPoint)).fit().into(imageView);
     }
 
-
-
-
-    @BindingAdapter({"date","time","time_type"})
-    public static void displayDate (TextView textView,long date,String time,int time_type)
+    @BindingAdapter("profileImage")
+    public static void profileImage(CircleImageView imageView, String endPoint)
     {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd/mmm",Locale.ENGLISH);
+        Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_URL+endPoint)).placeholder(R.drawable.ic_user).fit().into(imageView);
+    }
+
+
+
+
+    @BindingAdapter("date")
+    public static void displayDate (TextView textView,long date)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd/MMM",Locale.ENGLISH);
         String m_date = dateFormat.format(new Date(date));
-        textView.setText(String.format("%s %s %s",m_date,time,time_type));
+        textView.setText(String.format("%s",m_date));
 
     }
 

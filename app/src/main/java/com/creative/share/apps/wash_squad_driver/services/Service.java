@@ -4,6 +4,7 @@ package com.creative.share.apps.wash_squad_driver.services;
 import com.creative.share.apps.wash_squad_driver.models.AboutDataModel;
 import com.creative.share.apps.wash_squad_driver.models.CarSizeDataModel;
 import com.creative.share.apps.wash_squad_driver.models.CarTypeDataModel;
+import com.creative.share.apps.wash_squad_driver.models.ItemToUpload;
 import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
 import com.creative.share.apps.wash_squad_driver.models.PlaceGeocodeData;
 import com.creative.share.apps.wash_squad_driver.models.PlaceMapDetailsData;
@@ -16,6 +17,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -110,4 +112,8 @@ public interface Service {
     @FormUrlEncoded
     @POST("api/orders")
     Call<Order_Data_Model> MyOrder(@Field("user_id") int user_id);
+
+    @FormUrlEncoded
+    @POST("api/order/add")
+    Call<Order_Data_Model.OrderModel> addOrder(@Body ItemToUpload itemToUpload);
 }

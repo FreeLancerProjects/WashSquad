@@ -83,7 +83,7 @@
     <string name="ch_bank">Choose bank</string>
     <string name="inc_phone_pas">Incorrect phone number or password</string>
     <string name="ver_code_sent">Verification code is sent</string>
-    <string name="order_sent_suc">Order sent successfully.the order number is</string>
+    <string name="order_sent_suc">Order sent successfully.the order number is :</string>
     <string name="order_state">Order state</string>
     <string name="details">Order details</string>
 

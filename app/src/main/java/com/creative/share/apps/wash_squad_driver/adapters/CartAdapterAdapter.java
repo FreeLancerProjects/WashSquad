@@ -2,7 +2,6 @@ package com.creative.share.apps.wash_squad_driver.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -61,7 +60,7 @@ public class CartAdapterAdapter extends RecyclerView.Adapter<CartAdapterAdapter.
 
         holder.cartRowBinding.btnSend.setOnClickListener(view -> {
             ItemToUpload itemToUpload1 = itemToUploadList.get(holder.getAdapterPosition());
-            fragment_cart.setItemDataToUpload(itemToUpload1);
+            fragment_cart.setItemDataToUpload(itemToUpload1,holder.getAdapterPosition());
         });
 
 
