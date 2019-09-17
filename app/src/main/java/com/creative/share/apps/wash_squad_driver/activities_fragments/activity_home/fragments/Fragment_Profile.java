@@ -23,24 +23,27 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.creative.share.apps.wash_squad_driver.R;
 import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.activity.HomeActivity;
+import com.creative.share.apps.wash_squad_driver.adapters.MyOrdrrAdapter;
 import com.creative.share.apps.wash_squad_driver.databinding.DialogSelectImageBinding;
 import com.creative.share.apps.wash_squad_driver.databinding.FragmentProfileBinding;
 import com.creative.share.apps.wash_squad_driver.interfaces.Listeners;
 import com.creative.share.apps.wash_squad_driver.models.EditProfileModel;
+import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
 import com.creative.share.apps.wash_squad_driver.models.UserModel;
 import com.creative.share.apps.wash_squad_driver.preferences.Preferences;
 import com.creative.share.apps.wash_squad_driver.remote.Api;
 import com.creative.share.apps.wash_squad_driver.share.Common;
 import com.creative.share.apps.wash_squad_driver.tags.Tags;
-import com.mukesh.countrypicker.Country;
-import com.mukesh.countrypicker.CountryPicker;
-import com.mukesh.countrypicker.listeners.OnCountryPickerListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import io.paperdb.Paper;
@@ -50,22 +53,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Fragment_Profile extends Fragment implements Listeners.ShowCountryDialogListener, OnCountryPickerListener, Listeners.EditProfileListener {
+public class Fragment_Profile extends Fragment implements  Listeners.EditProfileListener {
 
     private HomeActivity activity;
     private FragmentProfileBinding binding;
     private Preferences preferences;
     private UserModel userModel;
-    private CountryPicker countryPicker;
+   // private CountryPicker countryPicker;
     private String lang;
-    private String code;
+    //private String code;
     private EditProfileModel edit_profile_model;
     private final String READ_PERM = Manifest.permission.READ_EXTERNAL_STORAGE;
     private final String write_permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     private final String camera_permission = Manifest.permission.CAMERA;
     private final int IMG_REQ1 = 1, IMG_REQ2 = 2;
     private Uri imgUri1 = null;
-
+    private MyOrdrrAdapter myOrdrrAdapter;
+    private List<Order_Data_Model.OrderModel> oOrderModelList;
+    private LinearLayoutManager manager;
     public static Fragment_Profile newInstance() {
 
         return new Fragment_Profile();
@@ -76,33 +81,42 @@ public class Fragment_Profile extends Fragment implements Listeners.ShowCountryD
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
         initView();
+        getOrders();
+
         return binding.getRoot();
     }
 
     private void initView() {
+        oOrderModelList =new ArrayList<>();
         activity = (HomeActivity) getActivity();
         preferences = Preferences.newInstance();
         Paper.init(activity);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
-        binding.setShowCountryListener(this);
+       // binding.setShowCountryListener(this);
 
-
+        myOrdrrAdapter = new MyOrdrrAdapter(oOrderModelList, activity,this);
+        binding.recView.setItemViewCacheSize(25);
+        binding.recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        binding.recView.setDrawingCacheEnabled(true);
+        manager = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL,false);
+        binding.recView.setLayoutManager(manager);
+        binding.recView.setAdapter(myOrdrrAdapter);
 
         userModel = preferences.getUserData(activity);
-        Log.e("data",userModel.getLogo());
 
-        edit_profile_model = new EditProfileModel();
-
-        binding.setEditprofilemodel(edit_profile_model);
         binding.setUsermodel(userModel);
         binding.edtName.setText(userModel.getFull_name());
-        binding.tvCode.setText(userModel.getPhone_code().replaceFirst("00", "+"));
+
+        edit_profile_model = new EditProfileModel(userModel.getFull_name());
+
+        binding.setEditprofilemodel(edit_profile_model);
+      /*  binding.tvCode.setText(userModel.getPhone_code().replaceFirst("00", "+"));
         binding.edtPhone.setText(userModel.getPhone());
         binding.setEditprofilelistener(this);
-        code = userModel.getPhone_code();
+        code = userModel.getPhone_code();*/
 
-        createCountryDialog();
+      //  createCountryDialog();
         binding.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -286,10 +300,10 @@ update(response.body());
     }
 
     private void update(UserModel body) {
-        Log.e("data",body.getLogo());
+
         userModel = body;
         preferences.create_update_userData(activity, userModel);
-        edit_profile_model = new EditProfileModel(userModel.getFull_name(), userModel.getPhone_code(), userModel.getPhone());
+        edit_profile_model = new EditProfileModel(userModel.getFull_name());
         binding.setUsermodel(userModel);
 
         binding.setEditprofilemodel(edit_profile_model);
@@ -313,7 +327,7 @@ update(response.body());
         return null;
     }
 
-    private void createCountryDialog() {
+  /*  private void createCountryDialog() {
         countryPicker = new CountryPicker.Builder()
                 .canSearch(true)
                 .listener(this)
@@ -344,28 +358,26 @@ update(response.body());
         binding.tvCode.setText(country.getDialCode());
 
     }
-
+*/
     @Override
-    public void checkDataEditProfile(String name, String phone_code, String phone) {
-        if (phone.startsWith("0")) {
-            phone = phone.replaceFirst("0", "");
-        }
-        edit_profile_model = new EditProfileModel(name, phone_code, phone);
+    public void checkDataEditProfile(String name) {
+
+        edit_profile_model = new EditProfileModel(name);
         binding.setEditprofilelistener(this);
 
         if (edit_profile_model.isDataValid(activity)) {
-            Editprofile(name, phone_code, phone);
+            Editprofile(name);
         }
     }
 
-    private void Editprofile(String name, String phone_code, String phone) {
+    private void Editprofile(String name) {
         ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         try {
 
             Api.getService(Tags.base_url)
-                    .edit_profile(userModel.getId() + "", name, phone_code, phone)
+                    .edit_profile(userModel.getId() + "", name)
                     .enqueue(new Callback<UserModel>() {
                         @Override
                         public void onResponse(Call<UserModel> call, Response<UserModel> response) {
@@ -373,7 +385,7 @@ update(response.body());
                             if (response.isSuccessful() && response.body() != null) {
                                 userModel = response.body();
                                 preferences.create_update_userData(activity, userModel);
-                                edit_profile_model = new EditProfileModel(userModel.getFull_name(), userModel.getPhone_code(), userModel.getPhone());
+                                edit_profile_model = new EditProfileModel(userModel.getFull_name());
 
                                 binding.setEditprofilemodel(edit_profile_model);
                                 Toast.makeText(activity, getString(R.string.suc), Toast.LENGTH_SHORT).show();
@@ -430,4 +442,65 @@ update(response.body());
 
         }
     }
+    public void getOrders() {
+        //   Common.CloseKeyBoard(homeActivity, edt_name);
+        ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();        // rec_sent.setVisibility(View.GONE);
+        try {
+
+
+            Api.getService(Tags.base_url)
+                    .MyOrder(userModel.getId())
+                    .enqueue(new Callback<Order_Data_Model>() {
+                        @Override
+                        public void onResponse(Call<Order_Data_Model> call, Response<Order_Data_Model> response) {
+dialog.dismiss();
+if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
+                                oOrderModelList.clear();
+                                oOrderModelList.addAll(response.body().getData());
+                                if (response.body().getData().size() > 0) {
+                                    // rec_sent.setVisibility(View.VISIBLE);
+                                    //  Log.e("data",response.body().getData().get(0).getAr_title());
+
+                                 //   binding.llNoOrders.setVisibility(View.GONE);
+                                    myOrdrrAdapter.notifyDataSetChanged();
+                                    //   total_page = response.body().getMeta().getLast_page();
+
+                                } else {
+                                 //   binding.llNoOrders.setVisibility(View.VISIBLE);
+
+                                }
+                            } else {
+                               // binding.llNoOrders.setVisibility(View.VISIBLE);
+
+                                Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                try {
+                                    Log.e("Error_code", response.code() + "_" + response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Order_Data_Model> call, Throwable t) {
+                            try {
+                               // binding.progBar.setVisibility(View.GONE);
+                                //binding.llNoOrders.setVisibility(View.VISIBLE);
+
+
+                                Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                                Log.e("error", t.getMessage());
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        }catch (Exception e){
+dialog.dismiss();
+//binding.llNoOrders.setVisibility(View.VISIBLE);
+
+        }
+    }
+
 }

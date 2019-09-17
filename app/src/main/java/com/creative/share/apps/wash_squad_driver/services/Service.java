@@ -4,6 +4,7 @@ package com.creative.share.apps.wash_squad_driver.services;
 import com.creative.share.apps.wash_squad_driver.models.AboutDataModel;
 import com.creative.share.apps.wash_squad_driver.models.CarSizeDataModel;
 import com.creative.share.apps.wash_squad_driver.models.CarTypeDataModel;
+import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
 import com.creative.share.apps.wash_squad_driver.models.PlaceGeocodeData;
 import com.creative.share.apps.wash_squad_driver.models.PlaceMapDetailsData;
 import com.creative.share.apps.wash_squad_driver.models.QuestionDataModel;
@@ -97,9 +98,7 @@ public interface Service {
     @POST("api/profile/edit")
     Call<UserModel> edit_profile(
             @Part("user_id") String user_id,
-            @Field("full_name") String full_name,
-            @Field("phone_code") String phone_code,
-            @Field("phone") String phone
+            @Field("full_name") String full_name
     );
 
     @Multipart
@@ -109,6 +108,13 @@ public interface Service {
             @Part("user_id") RequestBody user_id,
             @Part("full_name") RequestBody full_name,
             @Part MultipartBody.Part image);
+
+
+    @FormUrlEncoded
+    @POST("api/orders")
+    Call<Order_Data_Model> MyOrder(
+
+            @Field("user_id") int user_id
+
+            );
 }
-
-

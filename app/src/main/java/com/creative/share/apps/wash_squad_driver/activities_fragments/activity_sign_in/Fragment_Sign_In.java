@@ -189,6 +189,8 @@ public class Fragment_Sign_In extends Fragment implements Listeners.LoginListene
                                 }
                                 if (response.code() == 422) {
                                     Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                  //  Log.e("error",response.code()+"_"+response.errorBody()+response.message()+password+phone+phone_code);
+
                                 } else if (response.code()==403)
                                 {
                                     Toast.makeText(activity, R.string.user_not_active, Toast.LENGTH_SHORT).show();
