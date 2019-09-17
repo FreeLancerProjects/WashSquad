@@ -12,6 +12,7 @@ import androidx.databinding.BindingAdapter;
 import com.creative.share.apps.wash_squad_driver.R;
 import com.creative.share.apps.wash_squad_driver.tags.Tags;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -52,6 +53,12 @@ public class GeneralMethod {
     public static void profileImage(CircleImageView imageView, String endPoint)
     {
         Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_URL+endPoint)).placeholder(R.drawable.user_profile).fit().into(imageView);
+    }
+
+    @BindingAdapter("offerImage")
+    public static void offerImage(RoundedImageView imageView, String endPoint)
+    {
+        Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_URL+endPoint)).fit().into(imageView);
     }
 
 

@@ -72,7 +72,7 @@ public class Fragment_Profile extends Fragment implements  Listeners.EditProfile
     private final int IMG_REQ1 = 1, IMG_REQ2 = 2;
     private Uri imgUri1 = null;
     private MyOrdrrAdapter myOrdrrAdapter;
-    private List<Order_Data_Model.OrderModel> oOrderModelList;
+    private List<Order_Data_Model.OrderModel> orderModelList;
     private LinearLayoutManager manager;
     public static Fragment_Profile newInstance() {
 
@@ -90,7 +90,7 @@ public class Fragment_Profile extends Fragment implements  Listeners.EditProfile
     }
 
     private void initView() {
-        oOrderModelList =new ArrayList<>();
+        orderModelList =new ArrayList<>();
         activity = (HomeActivity) getActivity();
         preferences = Preferences.newInstance();
         Paper.init(activity);
@@ -98,7 +98,7 @@ public class Fragment_Profile extends Fragment implements  Listeners.EditProfile
         binding.setLang(lang);
         binding.setShowCountryListener(this);
 
-        myOrdrrAdapter = new MyOrdrrAdapter(oOrderModelList, activity,this);
+        myOrdrrAdapter = new MyOrdrrAdapter(orderModelList, activity,this);
         binding.recView.setItemViewCacheSize(25);
         binding.recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         binding.recView.setDrawingCacheEnabled(true);
@@ -453,8 +453,8 @@ update(response.body());
                         public void onResponse(Call<Order_Data_Model> call, Response<Order_Data_Model> response) {
 dialog.dismiss();
 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
-                                oOrderModelList.clear();
-                                oOrderModelList.addAll(response.body().getData());
+                                orderModelList.clear();
+                                orderModelList.addAll(response.body().getData());
                                 if (response.body().getData().size() > 0) {
                                     // rec_sent.setVisibility(View.VISIBLE);
                                     //  Log.e("data",response.body().getData().get(0).getAr_title());

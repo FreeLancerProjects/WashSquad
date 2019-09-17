@@ -5,6 +5,7 @@ import com.creative.share.apps.wash_squad_driver.models.AboutDataModel;
 import com.creative.share.apps.wash_squad_driver.models.CarSizeDataModel;
 import com.creative.share.apps.wash_squad_driver.models.CarTypeDataModel;
 import com.creative.share.apps.wash_squad_driver.models.ItemToUpload;
+import com.creative.share.apps.wash_squad_driver.models.OfferDataModel;
 import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
 import com.creative.share.apps.wash_squad_driver.models.PlaceGeocodeData;
 import com.creative.share.apps.wash_squad_driver.models.PlaceMapDetailsData;
@@ -115,4 +116,9 @@ public interface Service {
 
     @POST("api/order/add")
     Call<Order_Data_Model.OrderModel> addOrder(@Body ItemToUpload itemToUpload);
+
+
+    @GET("api/offers")
+    Call<OfferDataModel> getOffers();
+
 }
