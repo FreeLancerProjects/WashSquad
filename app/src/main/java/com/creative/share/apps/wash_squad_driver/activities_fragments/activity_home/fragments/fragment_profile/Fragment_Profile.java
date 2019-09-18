@@ -1,4 +1,4 @@
-package com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.fragments;
+package com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.fragments.fragment_profile;
 
 import android.Manifest;
 import android.app.Activity;

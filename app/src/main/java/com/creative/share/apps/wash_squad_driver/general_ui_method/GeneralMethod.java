@@ -64,14 +64,15 @@ public class GeneralMethod {
 
 
 
-    @BindingAdapter("date")
-    public static void displayDate (TextView textView,long date)
+    @BindingAdapter({"date","workTimehoosen","workTime"})
+    public static void displayDate (TextView textView,long date,String work_time_choosen,String work_time)
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd/MMM",Locale.ENGLISH);
         String m_date = dateFormat.format(new Date(date));
-        textView.setText(String.format("%s",m_date));
+        textView.setText(String.format("%s",m_date)+" "+work_time+" "+work_time_choosen);
 
     }
+
 
     @BindingAdapter("rate")
     public static void rate (SimpleRatingBar simpleRatingBar, float rate)
