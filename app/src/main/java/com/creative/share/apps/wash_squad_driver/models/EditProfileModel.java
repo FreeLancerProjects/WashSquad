@@ -2,6 +2,7 @@ package com.creative.share.apps.wash_squad_driver.models;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -51,6 +52,7 @@ public class EditProfileModel extends BaseObservable implements Serializable {
 
     public boolean isDataValid(Context context)
     {
+        //Log.e("llll",name);
         if (!TextUtils.isEmpty(name)
         )
         {
@@ -65,7 +67,7 @@ public class EditProfileModel extends BaseObservable implements Serializable {
                 error_name.set(context.getString(R.string.field_req));
             }else
             {
-                error_name.set(null);
+                error_name.set(context.getString(R.string.field_req));
             }
 
 

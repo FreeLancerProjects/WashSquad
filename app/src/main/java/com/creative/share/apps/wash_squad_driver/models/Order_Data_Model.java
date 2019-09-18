@@ -40,7 +40,7 @@ public class Order_Data_Model implements Serializable {
         private int status;
         private String distributor_employee_id;
         private int cancel_reason;
-        private int opinion_des;
+        private String opinion_des;
         private double rating;
         private String total_price;
         private String coupon_serial;
@@ -160,7 +160,7 @@ public class Order_Data_Model implements Serializable {
             return cancel_reason;
         }
 
-        public int getOpinion_des() {
+        public String getOpinion_des() {
             return opinion_des;
         }
 

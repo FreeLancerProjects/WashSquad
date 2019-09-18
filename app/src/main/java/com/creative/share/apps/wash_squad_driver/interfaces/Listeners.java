@@ -33,6 +33,11 @@ public interface Listeners {
         void checkDataEditProfile(String name);
 
     }
+    interface RatingListener
+    {
+        void checkDataRating(String desc);
+
+    }
     interface BackListener
     {
         void back();
