@@ -3,12 +3,15 @@ package com.creative.share.apps.wash_squad_driver.activities_fragments.activity_
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -17,8 +20,11 @@ import com.creative.share.apps.wash_squad_driver.adapters.AdditionalAdapter;
 import com.creative.share.apps.wash_squad_driver.databinding.ActivityPaymentBinding;
 import com.creative.share.apps.wash_squad_driver.interfaces.Listeners;
 import com.creative.share.apps.wash_squad_driver.language.LanguageHelper;
+import com.creative.share.apps.wash_squad_driver.models.CouponModel;
 import com.creative.share.apps.wash_squad_driver.models.ItemToUpload;
 import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
+import com.creative.share.apps.wash_squad_driver.models.UserModel;
+import com.creative.share.apps.wash_squad_driver.preferences.Preferences;
 import com.creative.share.apps.wash_squad_driver.remote.Api;
 import com.creative.share.apps.wash_squad_driver.share.Common;
 import com.creative.share.apps.wash_squad_driver.singleton.SingleTon;
@@ -43,6 +49,10 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
     private LinearLayoutManager manager;
     private AdditionalAdapter adapter;
     private double total=0.0;
+    private double coupon_value = 0;
+    private CouponModel couponModel = null;
+    private Preferences preferences;
+    private UserModel userModel;
 
 
     @Override
@@ -70,18 +80,21 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
 
 
     private void initView() {
+        preferences = Preferences.newInstance();
+        userModel = preferences.getUserData(this);
         singleTon = SingleTon.newInstance();
         binding.setItemModel(itemToUpload);
-        total +=itemToUpload.getService_price();
-        itemToUpload.setTotal_price(total);
+
         Paper.init(this);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
         binding.setBackListener(this);
+        binding.progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd/MMM",Locale.ENGLISH);
-        String m_date = dateFormat.format(new Date(itemToUpload.getOrder_date()/1000));
+        String m_date = dateFormat.format(new Date(itemToUpload.getOrder_date()*1000));
         binding.tvDate.setText(String.format("%s %s %s",m_date,itemToUpload.getTime(),itemToUpload.getTime_type()));
+
 
 
 
@@ -93,8 +106,7 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
             binding.recView.setLayoutManager(manager);
             binding.recView.setAdapter(adapter);
 
-            total += getAdditionalServicePrice(itemToUpload.getSub_services());
-            itemToUpload.setTotal_price(total);
+
             binding.tvNoAdditionalServices.setVisibility(View.GONE);
         }else
             {
@@ -116,7 +128,13 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
         binding.btnSend.setOnClickListener(view -> {
             if (itemToUpload.isDataValidStep2(this))
             {
-                Log.e("ddd","ddd");
+                if (couponModel==null)
+                {
+                    itemToUpload.setCoupon_serial(null);
+                }else
+                    {
+                        itemToUpload.setCoupon_serial(couponModel.getCoupon_serial());
+                    }
                 uploadOrder(itemToUpload);
             }
         });
@@ -124,6 +142,16 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
         binding.btnOther.setOnClickListener(view -> {
             if (itemToUpload.isDataValidStep2(this))
             {
+
+                if (couponModel==null)
+                {
+                    itemToUpload.setCoupon_serial(null);
+                }else
+                {
+                    itemToUpload.setCoupon_serial(couponModel.getCoupon_serial());
+                }
+
+
                 singleTon.addItem(itemToUpload);
                 Intent intent = getIntent();
                 if (intent!=null)
@@ -134,6 +162,103 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
             }
         });
 
+        binding.btnDiscount.setOnClickListener(view -> {
+            String coupon = binding.edtCoupon.getText().toString().trim();
+
+            if (!TextUtils.isEmpty(coupon))
+            {
+                binding.edtCoupon.setError(null);
+                Common.CloseKeyBoard(this,binding.edtCoupon);
+                getCouponValue(coupon);
+
+            }else
+                {
+                    binding.edtCoupon.setError(getString(R.string.field_req));
+                }
+        });
+
+        updateTotalPrice(coupon_value);
+
+    }
+
+    private void updateTotalPrice(double coupon_value)
+    {
+        if (itemToUpload.getSub_services().size()>0)
+        {
+            total = 0;
+            total +=itemToUpload.getService_price();
+            total += getAdditionalServicePrice(itemToUpload.getSub_services());
+
+            total = total -(total*coupon_value);
+        }else
+            {
+                total +=(itemToUpload.getService_price())-(itemToUpload.getService_price()*coupon_value);
+
+            }
+
+
+
+        itemToUpload.setTotal_price(total);
+    }
+
+    private void getCouponValue(String coupon) {
+
+
+
+        binding.progBar.setVisibility(View.VISIBLE);
+        binding.iconChecked.setVisibility(View.GONE);
+        Api.getService(Tags.base_url)
+                .getCoupon(userModel.getId(),coupon)
+                .enqueue(new Callback<CouponModel>() {
+                    @Override
+                    public void onResponse(Call<CouponModel> call, Response<CouponModel> response) {
+                        binding.progBar.setVisibility(View.GONE);
+                        if (response.isSuccessful() && response.body() != null) {
+
+                            couponModel = response.body();
+                            updateTotalPrice(couponModel.getRatio()/100.0);
+                            binding.iconChecked.setVisibility(View.VISIBLE);
+                            Common.CreateDialogAlert(PaymentActivity.this,getString(R.string.cong)+" "+(couponModel.getRatio()/100)+" "+getString(R.string.disc));
+
+                        } else {
+
+                            try {
+
+                                Log.e("error", response.code() + "_" + response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (response.code() == 422) {
+                                Common.CreateDialogAlert(PaymentActivity.this,getString(R.string.inv_coupon));
+                            } else if (response.code() == 500) {
+                                Toast.makeText(PaymentActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(PaymentActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CouponModel> call, Throwable t) {
+                        try {
+                            binding.progBar.setVisibility(View.GONE);
+                            if (t.getMessage() != null) {
+
+                                Log.e("error", t.getMessage());
+                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                    Toast.makeText(PaymentActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(PaymentActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        } catch (Exception e) {
+                        }
+                    }
+                });
     }
 
     private double getAdditionalServicePrice(List<ItemToUpload.SubServiceModel> sub_services) {

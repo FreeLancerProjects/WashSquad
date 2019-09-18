@@ -33,6 +33,7 @@ public class ItemToUpload extends BaseObservable implements Serializable {
     private int payment_method;
     private double service_price;
     private double total_price;
+    private String coupon_serial;
     private String ar_service_type;
     private String en_service_type;
     private List<SubServiceModel> sub_services;
@@ -206,6 +207,14 @@ public class ItemToUpload extends BaseObservable implements Serializable {
         this.service_id = service_id;
         notifyPropertyChanged(BR.service_id);
 
+    }
+
+    public String getCoupon_serial() {
+        return coupon_serial;
+    }
+
+    public void setCoupon_serial(String coupon_serial) {
+        this.coupon_serial = coupon_serial;
     }
 
     @Bindable

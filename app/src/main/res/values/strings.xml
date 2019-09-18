@@ -133,6 +133,9 @@
     <string name="ch_car_size">Choose car size</string>
     <string name="ch_car_type">Choose car type</string>
     <string name="ch_payment">Choose payment</string>
+    <string name="inv_coupon">Invalid coupon</string>
+    <string name="cong">Congratulation ! you get</string>
+    <string name="disc">discount.</string>
 
 
 </resources>

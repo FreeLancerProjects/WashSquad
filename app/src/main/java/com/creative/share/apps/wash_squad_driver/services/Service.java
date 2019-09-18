@@ -4,6 +4,7 @@ package com.creative.share.apps.wash_squad_driver.services;
 import com.creative.share.apps.wash_squad_driver.models.AboutDataModel;
 import com.creative.share.apps.wash_squad_driver.models.CarSizeDataModel;
 import com.creative.share.apps.wash_squad_driver.models.CarTypeDataModel;
+import com.creative.share.apps.wash_squad_driver.models.CouponModel;
 import com.creative.share.apps.wash_squad_driver.models.ItemToUpload;
 import com.creative.share.apps.wash_squad_driver.models.OfferDataModel;
 import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
@@ -120,5 +121,11 @@ public interface Service {
 
     @GET("api/offers")
     Call<OfferDataModel> getOffers();
+
+    @FormUrlEncoded
+    @POST("api/coupon/check")
+    Call<CouponModel> getCoupon(@Field("user_id") int user_id,
+                                @Field("coupon_serial") String coupon_serial
+    );
 
 }
