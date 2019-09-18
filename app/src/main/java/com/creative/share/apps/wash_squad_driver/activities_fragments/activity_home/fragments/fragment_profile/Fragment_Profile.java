@@ -1,4 +1,4 @@
-package com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.fragments;
+package com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.fragments.fragment_profile;
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,13 +23,18 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.creative.share.apps.wash_squad_driver.R;
 import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.activity.HomeActivity;
+import com.creative.share.apps.wash_squad_driver.adapters.MyOrdrrAdapter;
 import com.creative.share.apps.wash_squad_driver.databinding.DialogSelectImageBinding;
 import com.creative.share.apps.wash_squad_driver.databinding.FragmentProfileBinding;
 import com.creative.share.apps.wash_squad_driver.interfaces.Listeners;
 import com.creative.share.apps.wash_squad_driver.models.EditProfileModel;
+import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
+import com.creative.share.apps.wash_squad_driver.models.Rating_Order_Model;
 import com.creative.share.apps.wash_squad_driver.models.UserModel;
 import com.creative.share.apps.wash_squad_driver.preferences.Preferences;
 import com.creative.share.apps.wash_squad_driver.remote.Api;
@@ -41,6 +46,8 @@ import com.mukesh.countrypicker.listeners.OnCountryPickerListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import io.paperdb.Paper;
@@ -50,7 +57,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Fragment_Profile extends Fragment implements Listeners.ShowCountryDialogListener, OnCountryPickerListener, Listeners.EditProfileListener {
+public class Fragment_Profile extends Fragment implements Listeners.EditProfileListener, Listeners.ShowCountryDialogListener, OnCountryPickerListener {
 
     private HomeActivity activity;
     private FragmentProfileBinding binding;
@@ -65,6 +72,11 @@ public class Fragment_Profile extends Fragment implements Listeners.ShowCountryD
     private final String camera_permission = Manifest.permission.CAMERA;
     private final int IMG_REQ1 = 1, IMG_REQ2 = 2;
     private Uri imgUri1 = null;
+    private MyOrdrrAdapter myOrdrrAdapter;
+    private List<Order_Data_Model.OrderModel> orderModelList;
+    private LinearLayoutManager manager;
+    private boolean isLoading = false;
+    private int current_page = 1;
 
     public static Fragment_Profile newInstance() {
 
@@ -76,39 +88,63 @@ public class Fragment_Profile extends Fragment implements Listeners.ShowCountryD
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
         initView();
+        getOrders();
+
         return binding.getRoot();
     }
 
     private void initView() {
+        orderModelList = new ArrayList<>();
         activity = (HomeActivity) getActivity();
         preferences = Preferences.newInstance();
         Paper.init(activity);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
         binding.setShowCountryListener(this);
+        myOrdrrAdapter = new MyOrdrrAdapter(orderModelList, activity, this);
+        binding.recView.setItemViewCacheSize(25);
+        binding.recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        binding.recView.setDrawingCacheEnabled(true);
+        manager = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
+        binding.recView.setLayoutManager(manager);
+        binding.recView.setAdapter(myOrdrrAdapter);
+        binding.recView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dx> 0) {
+                    int totalItems = myOrdrrAdapter.getItemCount();
+                    int lastVisiblePos = manager.findLastCompletelyVisibleItemPosition();
+
+                    if (totalItems > 5 && (totalItems - lastVisiblePos) == 5 && !isLoading) {
+                        isLoading = true;
+                        orderModelList.add(null);
+                        myOrdrrAdapter.notifyItemInserted(orderModelList.size() - 1);
+                        if (userModel != null) {
+                            int page = current_page + 1;
+                            loadMore(page);
+                        }
+                    }
 
 
-
+                }
+            }
+        });
         userModel = preferences.getUserData(activity);
-        Log.e("data",userModel.getLogo());
 
-        edit_profile_model = new EditProfileModel();
-
-        binding.setEditprofilemodel(edit_profile_model);
         binding.setUsermodel(userModel);
         binding.edtName.setText(userModel.getFull_name());
+
+        edit_profile_model = new EditProfileModel(userModel.getFull_name());
+
+        binding.setEditprofilemodel(edit_profile_model);
+        binding.setEditprofilelistener(this);
         binding.tvCode.setText(userModel.getPhone_code().replaceFirst("00", "+"));
         binding.edtPhone.setText(userModel.getPhone());
-        binding.setEditprofilelistener(this);
         code = userModel.getPhone_code();
 
         createCountryDialog();
-        binding.image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CreateImageAlertDialog();
-            }
-        });
+        binding.image.setOnClickListener(view -> CreateImageAlertDialog());
     }
 
     private void CreateImageAlertDialog() {
@@ -224,12 +260,12 @@ public class Fragment_Profile extends Fragment implements Listeners.ShowCountryD
             imgUri1 = getUriFromBitmap(bitmap);
 
             // edit_profile_model.editImageProfile(userModel.getUser().getId(),imgUri1.toString());
-editImageProfile(userModel.getId(),userModel.getFull_name(),imgUri1.toString());
+            editImageProfile(userModel.getId(), userModel.getFull_name(), imgUri1.toString());
 
         } else if (requestCode == IMG_REQ1 && resultCode == Activity.RESULT_OK && data != null) {
 
             imgUri1 = data.getData();
-            editImageProfile(userModel.getId(),userModel.getFull_name(),imgUri1.toString());
+            editImageProfile(userModel.getId(), userModel.getFull_name(), imgUri1.toString());
 
             //  edit_profile_view_model.editImageProfile(userModel.getUser().getId(),imgUri1.toString());
 
@@ -238,7 +274,7 @@ editImageProfile(userModel.getId(),userModel.getFull_name(),imgUri1.toString());
 
     }
 
-    public void editImageProfile(int user_id, String full_name, String image) {
+    private void editImageProfile(int user_id, String full_name, String image) {
         ProgressDialog dialog = Common.createProgressDialog(activity, activity.getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
@@ -258,7 +294,7 @@ editImageProfile(userModel.getId(),userModel.getFull_name(),imgUri1.toString());
                             //listener.onSuccess(response.body());
 
                             Toast.makeText(activity, getString(R.string.suc), Toast.LENGTH_SHORT).show();
-update(response.body());
+                            update(response.body());
 
                         } else {
                             Log.e("codeimage", response.code() + "_");
@@ -286,10 +322,10 @@ update(response.body());
     }
 
     private void update(UserModel body) {
-        Log.e("data",body.getLogo());
+
         userModel = body;
         preferences.create_update_userData(activity, userModel);
-        edit_profile_model = new EditProfileModel(userModel.getFull_name(), userModel.getPhone_code(), userModel.getPhone());
+        edit_profile_model = new EditProfileModel(userModel.getFull_name());
         binding.setUsermodel(userModel);
 
         binding.setEditprofilemodel(edit_profile_model);
@@ -346,26 +382,28 @@ update(response.body());
     }
 
     @Override
-    public void checkDataEditProfile(String name, String phone_code, String phone) {
-        if (phone.startsWith("0")) {
-            phone = phone.replaceFirst("0", "");
-        }
-        edit_profile_model = new EditProfileModel(name, phone_code, phone);
+    public void checkDataEditProfile(String name) {
+
+        edit_profile_model = new EditProfileModel(name);
         binding.setEditprofilelistener(this);
 
         if (edit_profile_model.isDataValid(activity)) {
-            Editprofile(name, phone_code, phone);
+            editProfile(name);
+        }
+        else {
+            binding.edtName.setError(getString(R.string.field_req));
+
         }
     }
 
-    private void Editprofile(String name, String phone_code, String phone) {
+    private void editProfile(String name) {
         ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         try {
 
             Api.getService(Tags.base_url)
-                    .edit_profile(userModel.getId() + "", name, phone_code, phone)
+                    .edit_profile(userModel.getId() + "", name)
                     .enqueue(new Callback<UserModel>() {
                         @Override
                         public void onResponse(Call<UserModel> call, Response<UserModel> response) {
@@ -373,7 +411,7 @@ update(response.body());
                             if (response.isSuccessful() && response.body() != null) {
                                 userModel = response.body();
                                 preferences.create_update_userData(activity, userModel);
-                                edit_profile_model = new EditProfileModel(userModel.getFull_name(), userModel.getPhone_code(), userModel.getPhone());
+                                edit_profile_model = new EditProfileModel(userModel.getFull_name());
 
                                 binding.setEditprofilemodel(edit_profile_model);
                                 Toast.makeText(activity, getString(R.string.suc), Toast.LENGTH_SHORT).show();
@@ -430,4 +468,112 @@ update(response.body());
 
         }
     }
+
+    public void getOrders() {
+        ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();        // rec_sent.setVisibility(View.GONE);
+        try {
+
+
+            Api.getService(Tags.base_url)
+                    .MyOrder(userModel.getId(),1)
+                    .enqueue(new Callback<Order_Data_Model>() {
+                        @Override
+                        public void onResponse(Call<Order_Data_Model> call, Response<Order_Data_Model> response) {
+                            dialog.dismiss();
+                            if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
+                                orderModelList.clear();
+                                orderModelList.addAll(response.body().getData());
+                                if (response.body().getData().size() > 0) {
+                                    // rec_sent.setVisibility(View.VISIBLE);
+                                    //  Log.e("data",response.body().getData().get(0).getAr_title());
+
+                                    binding.llNoorder.setVisibility(View.GONE);
+                                    myOrdrrAdapter.notifyDataSetChanged();
+                                    //   total_page = response.body().getMeta().getLast_page();
+
+                                } else {
+                                    binding.llNoorder.setVisibility(View.VISIBLE);
+
+                                }
+                            } else {
+                                binding.llNoorder.setVisibility(View.VISIBLE);
+
+                                //   Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                try {
+                                    Log.e("Error_code", response.code() + "_" + response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Order_Data_Model> call, Throwable t) {
+                            try {
+                                // binding.progBar.setVisibility(View.GONE);
+                                binding.llNoorder.setVisibility(View.VISIBLE);
+
+
+                                Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                                Log.e("error", t.getMessage());
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            dialog.dismiss();
+            binding.llNoorder.setVisibility(View.VISIBLE);
+
+        }
+    }
+    private void loadMore(int page) {
+        try {
+
+
+            Api.getService( Tags.base_url)
+                    .MyOrder(userModel.getId(),page)
+                    .enqueue(new Callback<Order_Data_Model>() {
+                        @Override
+                        public void onResponse(Call<Order_Data_Model> call, Response<Order_Data_Model> response) {
+                            orderModelList.remove(orderModelList.size() - 1);
+                            myOrdrrAdapter.notifyItemRemoved(orderModelList.size() - 1);
+                            isLoading = false;
+                            if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
+
+                                orderModelList.addAll(response.body().getData());
+                                // categories.addAll(response.body().getCategories());
+                                current_page = response.body().getCurrent_page();
+                                myOrdrrAdapter.notifyDataSetChanged();
+
+                            } else {
+                                //     Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                try {
+                                    Log.e("Error_code", response.code() + "_" + response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Order_Data_Model> call, Throwable t) {
+                            try {
+                                orderModelList.remove(orderModelList.size() - 1);
+                                myOrdrrAdapter.notifyItemRemoved(orderModelList.size() - 1);
+                                isLoading = false;
+                                //    Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                                Log.e("error", t.getMessage());
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            orderModelList.remove(orderModelList.size() - 1);
+            myOrdrrAdapter.notifyItemRemoved(orderModelList.size() - 1);
+            isLoading = false;
+        }
+    }
+
 }

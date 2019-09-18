@@ -4,6 +4,10 @@ package com.creative.share.apps.wash_squad_driver.services;
 import com.creative.share.apps.wash_squad_driver.models.AboutDataModel;
 import com.creative.share.apps.wash_squad_driver.models.CarSizeDataModel;
 import com.creative.share.apps.wash_squad_driver.models.CarTypeDataModel;
+import com.creative.share.apps.wash_squad_driver.models.CouponModel;
+import com.creative.share.apps.wash_squad_driver.models.ItemToUpload;
+import com.creative.share.apps.wash_squad_driver.models.OfferDataModel;
+import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
 import com.creative.share.apps.wash_squad_driver.models.PlaceGeocodeData;
 import com.creative.share.apps.wash_squad_driver.models.PlaceMapDetailsData;
 import com.creative.share.apps.wash_squad_driver.models.QuestionDataModel;
@@ -15,6 +19,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -53,6 +58,12 @@ public interface Service {
     Call<UserModel> login(@Field("phone") String phone,
                           @Field("phone_code") String phone_code,
                           @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("api/order/rate")
+    Call<Order_Data_Model.OrderModel> rateorder(@Field("order_id") String order_id,
+                                     @Field("opinion_des") String opinion_des,
+                                     @Field("rating") float rating);
 
     @FormUrlEncoded
     @POST("api/client/cofirm-code")
@@ -95,20 +106,34 @@ public interface Service {
 
     @FormUrlEncoded
     @POST("api/profile/edit")
-    Call<UserModel> edit_profile(
-            @Part("user_id") String user_id,
-            @Field("full_name") String full_name,
-            @Field("phone_code") String phone_code,
-            @Field("phone") String phone
+    Call<UserModel> edit_profile(@Field("user_id") String user_id,
+                                 @Field("full_name") String full_name
     );
 
     @Multipart
     @POST("api/profile/edit")
-    Call<UserModel> editUserImage(
+    Call<UserModel> editUserImage(@Part("user_id") RequestBody user_id,
+                                  @Part("full_name") RequestBody full_name,
+                                  @Part MultipartBody.Part image);
 
-            @Part("user_id") RequestBody user_id,
-            @Part("full_name") RequestBody full_name,
-            @Part MultipartBody.Part image);
+
+    @FormUrlEncoded
+    @POST("api/orders")
+    Call<Order_Data_Model> MyOrder(@Field("user_id") int user_id,
+    @Field("page")int page
+    );
+
+    @POST("api/order/add")
+    Call<Order_Data_Model.OrderModel> addOrder(@Body ItemToUpload itemToUpload);
+
+
+    @GET("api/offers")
+    Call<OfferDataModel> getOffers();
+
+    @FormUrlEncoded
+    @POST("api/coupon/check")
+    Call<CouponModel> getCoupon(@Field("user_id") int user_id,
+                                @Field("coupon_serial") String coupon_serial
+    );
+
 }
-
-

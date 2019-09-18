@@ -82,7 +82,7 @@
     <string name="ch_bank">إختر البنك</string>
     <string name="inc_phone_pas">رقم الجوال او كلمة المرور غير صحيحة</string>
     <string name="ver_code_sent">لقد تم إرسال رمز التحقق من قبل.</string>
-    <string name="order_sent_suc">تم إرسال طلبك بنجاح رقم طلبك هو</string>
+    <string name="order_sent_suc">تم إرسال طلبك بنجاح رقم طلبك هو :</string>
     <string name="order_state">حالة الطلب</string>
     <string name="details">تفاصيل الطلب</string>
     <string name="my_order">طلباتي</string>
@@ -131,6 +131,13 @@
     <string name="ch_car_size">إختر حجم المركبة</string>
     <string name="ch_car_type">إختر نوع المركبة</string>
     <string name="ch_payment">إختر طريقة الدفع</string>
+    <string name="service_provider">مزود الخدمه : </string>
+    <string name="your_rating_for_the_service">تقيمك للخدمه</string>
+    <string name="your_opinion_in_the_service">رايك فى الخدمه</string>
+    <string name="order_not_finished">الطلب لم يتم انهاءه</string>
+    <string name="inv_coupon">كوبون الخصم غير متاح</string>
+    <string name="cong">تهانينا ! تم حصولك على</string>
+    <string name="disc">خصم.</string>
 
 
 </resources>

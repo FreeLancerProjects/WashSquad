@@ -83,7 +83,7 @@
     <string name="ch_bank">Choose bank</string>
     <string name="inc_phone_pas">Incorrect phone number or password</string>
     <string name="ver_code_sent">Verification code is sent</string>
-    <string name="order_sent_suc">Order sent successfully.the order number is</string>
+    <string name="order_sent_suc">Order sent successfully.the order number is :</string>
     <string name="order_state">Order state</string>
     <string name="details">Order details</string>
 
@@ -133,6 +133,13 @@
     <string name="ch_car_size">Choose car size</string>
     <string name="ch_car_type">Choose car type</string>
     <string name="ch_payment">Choose payment</string>
+    <string name="service_provider">service provider : </string>
+    <string name="your_rating_for_the_service">Your rating for the service</string>
+    <string name="your_opinion_in_the_service">Your opinion in the service</string>
+    <string name="order_not_finished">Order Not Finished</string>
+    <string name="inv_coupon">Invalid coupon</string>
+    <string name="cong">Congratulation ! you get</string>
+    <string name="disc">discount.</string>
 
 
 </resources>

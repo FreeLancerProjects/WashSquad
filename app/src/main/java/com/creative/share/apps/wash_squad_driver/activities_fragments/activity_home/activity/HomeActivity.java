@@ -18,12 +18,16 @@ import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_h
 import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.fragments.Fragment_Home;
 import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.fragments.Fragment_Main;
 import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.fragments.Fragment_Offer;
-import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.fragments.Fragment_Profile;
+import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.fragments.fragment_profile.Fragment_Order_Detials;
+import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.fragments.fragment_profile.Fragment_Order_Detials_Evaluation;
+import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.fragments.fragment_profile.Fragment_Profile;
 import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_sign_in.SignInActivity;
 import com.creative.share.apps.wash_squad_driver.databinding.ActivityHomeBinding;
 import com.creative.share.apps.wash_squad_driver.language.LanguageHelper;
+import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
 import com.creative.share.apps.wash_squad_driver.models.UserModel;
 import com.creative.share.apps.wash_squad_driver.preferences.Preferences;
+import com.creative.share.apps.wash_squad_driver.singleton.SingleTon;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -41,10 +45,28 @@ public class HomeActivity extends AppCompatActivity {
     private Fragment_Main fragment_main;
     private Fragment_Cart fragment_cart;
     private Fragment_Profile fragment_profile;
+    private Fragment_Order_Detials_Evaluation fragment_order_detials_evaluation;
+    private Fragment_Order_Detials fragment_order_detials;
     private Fragment_Offer fragment_offer;
 
     private Preferences preferences;
     private UserModel userModel;
+    private SingleTon singleTon;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int cart_count = singleTon.getItemsCount();
+        updateCount(cart_count);
+    }
+
+    public void updateCount(int cart_count)
+    {
+        if (fragment_home!=null&&fragment_home.isAdded())
+        {
+            fragment_home.setNotificationCartCount(cart_count);
+        }
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -73,6 +95,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void initView() {
+        singleTon = SingleTon.newInstance();
         Paper.init(this);
         fragmentManager = this.getSupportFragmentManager();
         preferences = Preferences.newInstance();
@@ -269,6 +292,49 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+    public void DisplayFragmentOrderDetialsEvaluation(Order_Data_Model.OrderModel orderModel)
+    {
+        try {
+
+                fragment_order_detials_evaluation = Fragment_Order_Detials_Evaluation.newInstance(orderModel);
+            if(fragment_order_detials!=null&&fragment_order_detials.isAdded()){
+                fragmentManager.beginTransaction().hide(fragment_order_detials).commit();
+            }
+            if (fragment_order_detials_evaluation.isAdded()) {
+                fragmentManager.beginTransaction().show(fragment_order_detials_evaluation).commit();
+
+            } else {
+                fragmentManager.beginTransaction().add(R.id.fragment_order_details_container, fragment_order_detials_evaluation, "fragment_order_detials_evaluation").addToBackStack("fragment_order_detials_evaluation").commit();
+
+            }
+
+        }catch (Exception e){}
+
+
+
+    }
+    public void DisplayFragmentOrderDetials(Order_Data_Model.OrderModel orderModel)
+    {
+        try {
+
+            fragment_order_detials = Fragment_Order_Detials.newInstance(orderModel);
+            if(fragment_order_detials_evaluation!=null&&fragment_order_detials_evaluation.isAdded()){
+                fragmentManager.beginTransaction().hide(fragment_order_detials_evaluation).commit();
+            }
+            if (fragment_order_detials.isAdded()) {
+                fragmentManager.beginTransaction().show(fragment_order_detials).commit();
+
+            } else {
+                fragmentManager.beginTransaction().add(R.id.fragment_order_details_container, fragment_order_detials, "fragment_order_detials").addToBackStack("fragment_order_detials").commit();
+
+            }
+
+        }catch (Exception e){}
+
+
+
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -328,5 +394,11 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void updateprofile() {
+        if(fragment_profile!=null&&fragment_profile.isAdded()){
+            fragment_profile.getOrders();
+        }
     }
 }

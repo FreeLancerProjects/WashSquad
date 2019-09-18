@@ -30,7 +30,12 @@ public interface Listeners {
 
     interface EditProfileListener
     {
-        void checkDataEditProfile(String name, String phone_code, String phone);
+        void checkDataEditProfile(String name);
+
+    }
+    interface RatingListener
+    {
+        void checkDataRating(String desc);
 
     }
     interface BackListener
