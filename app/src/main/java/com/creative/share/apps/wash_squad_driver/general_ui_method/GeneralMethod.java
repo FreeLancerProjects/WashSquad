@@ -75,10 +75,10 @@ public class GeneralMethod {
 
 
     @BindingAdapter("rate")
-    public static void rate (SimpleRatingBar simpleRatingBar, float rate)
+    public static void rate (SimpleRatingBar simpleRatingBar, double rate)
     {
         SimpleRatingBar.AnimationBuilder builder = simpleRatingBar.getAnimationBuilder()
-                .setRatingTarget(rate)
+                .setRatingTarget((float) rate)
                 .setDuration(1000)
                 .setRepeatCount(0)
                 .setInterpolator(new LinearInterpolator());

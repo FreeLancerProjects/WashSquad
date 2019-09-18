@@ -134,6 +134,7 @@
     <string name="service_provider">مزود الخدمه : </string>
     <string name="your_rating_for_the_service">تقيمك للخدمه</string>
     <string name="your_opinion_in_the_service">رايك فى الخدمه</string>
+    <string name="order_not_finished">الطلب لم يتم انهاءه</string>
 
 
 </resources>

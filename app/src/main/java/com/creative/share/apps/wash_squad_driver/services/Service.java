@@ -59,6 +59,12 @@ public interface Service {
                           @Field("password") String password);
 
     @FormUrlEncoded
+    @POST("api/order/rate")
+    Call<Order_Data_Model.OrderModel> rateorder(@Field("order_id") String order_id,
+                                     @Field("opinion_des") String opinion_des,
+                                     @Field("rating") float rating);
+
+    @FormUrlEncoded
     @POST("api/client/cofirm-code")
     Call<ResponseBody> confirmCode(@Field("user_id") int user_id,
                                    @Field("code") String code
@@ -112,7 +118,9 @@ public interface Service {
 
     @FormUrlEncoded
     @POST("api/orders")
-    Call<Order_Data_Model> MyOrder(@Field("user_id") int user_id);
+    Call<Order_Data_Model> MyOrder(@Field("user_id") int user_id,
+    @Field("page")int page
+    );
 
     @POST("api/order/add")
     Call<Order_Data_Model.OrderModel> addOrder(@Body ItemToUpload itemToUpload);

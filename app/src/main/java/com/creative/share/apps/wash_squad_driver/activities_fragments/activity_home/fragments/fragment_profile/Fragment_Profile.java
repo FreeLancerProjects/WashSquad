@@ -75,6 +75,8 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
     private MyOrdrrAdapter myOrdrrAdapter;
     private List<Order_Data_Model.OrderModel> orderModelList;
     private LinearLayoutManager manager;
+    private boolean isLoading = false;
+    private int current_page = 1;
 
     public static Fragment_Profile newInstance() {
 
@@ -106,7 +108,28 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
         manager = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
         binding.recView.setLayoutManager(manager);
         binding.recView.setAdapter(myOrdrrAdapter);
+        binding.recView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dx> 0) {
+                    int totalItems = myOrdrrAdapter.getItemCount();
+                    int lastVisiblePos = manager.findLastCompletelyVisibleItemPosition();
 
+                    if (totalItems > 5 && (totalItems - lastVisiblePos) == 5 && !isLoading) {
+                        isLoading = true;
+                        orderModelList.add(null);
+                        myOrdrrAdapter.notifyItemInserted(orderModelList.size() - 1);
+                        if (userModel != null) {
+                            int page = current_page + 1;
+                            loadMore(page);
+                        }
+                    }
+
+
+                }
+            }
+        });
         userModel = preferences.getUserData(activity);
 
         binding.setUsermodel(userModel);
@@ -115,9 +138,9 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
         edit_profile_model = new EditProfileModel(userModel.getFull_name());
 
         binding.setEditprofilemodel(edit_profile_model);
+        binding.setEditprofilelistener(this);
         binding.tvCode.setText(userModel.getPhone_code().replaceFirst("00", "+"));
         binding.edtPhone.setText(userModel.getPhone());
-        binding.setEditprofilelistener(this);
         code = userModel.getPhone_code();
 
         createCountryDialog();
@@ -367,6 +390,10 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
         if (edit_profile_model.isDataValid(activity)) {
             editProfile(name);
         }
+        else {
+            binding.edtName.setError(getString(R.string.field_req));
+
+        }
     }
 
     private void editProfile(String name) {
@@ -442,7 +469,7 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
         }
     }
 
-    private void getOrders() {
+    public void getOrders() {
         ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();        // rec_sent.setVisibility(View.GONE);
@@ -450,7 +477,7 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
 
 
             Api.getService(Tags.base_url)
-                    .MyOrder(userModel.getId())
+                    .MyOrder(userModel.getId(),1)
                     .enqueue(new Callback<Order_Data_Model>() {
                         @Override
                         public void onResponse(Call<Order_Data_Model> call, Response<Order_Data_Model> response) {
@@ -501,6 +528,52 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
 
         }
     }
+    private void loadMore(int page) {
+        try {
 
+
+            Api.getService( Tags.base_url)
+                    .MyOrder(userModel.getId(),page)
+                    .enqueue(new Callback<Order_Data_Model>() {
+                        @Override
+                        public void onResponse(Call<Order_Data_Model> call, Response<Order_Data_Model> response) {
+                            orderModelList.remove(orderModelList.size() - 1);
+                            myOrdrrAdapter.notifyItemRemoved(orderModelList.size() - 1);
+                            isLoading = false;
+                            if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
+
+                                orderModelList.addAll(response.body().getData());
+                                // categories.addAll(response.body().getCategories());
+                                current_page = response.body().getCurrent_page();
+                                myOrdrrAdapter.notifyDataSetChanged();
+
+                            } else {
+                                //     Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                try {
+                                    Log.e("Error_code", response.code() + "_" + response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Order_Data_Model> call, Throwable t) {
+                            try {
+                                orderModelList.remove(orderModelList.size() - 1);
+                                myOrdrrAdapter.notifyItemRemoved(orderModelList.size() - 1);
+                                isLoading = false;
+                                //    Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                                Log.e("error", t.getMessage());
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            orderModelList.remove(orderModelList.size() - 1);
+            myOrdrrAdapter.notifyItemRemoved(orderModelList.size() - 1);
+            isLoading = false;
+        }
+    }
 
 }

@@ -35,7 +35,7 @@ public interface Listeners {
     }
     interface RatingListener
     {
-        void checkDataRating(String desc,float rate);
+        void checkDataRating(String desc);
 
     }
     interface BackListener

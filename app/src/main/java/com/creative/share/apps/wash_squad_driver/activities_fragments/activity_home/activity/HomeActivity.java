@@ -395,4 +395,10 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    public void updateprofile() {
+        if(fragment_profile!=null&&fragment_profile.isAdded()){
+            fragment_profile.getOrders();
+        }
+    }
 }

@@ -22,7 +22,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/gray0"
         android:paddingBottom="8dp">
 
@@ -127,7 +127,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
-                    app:srb_borderColor="@color/colorPrimary"
+                    app:srb_borderColor="@color/white"
                     app:srb_drawBorderEnabled="true"
                     app:srb_fillColor="@color/colorPrimary"
                     app:srb_isIndicator="true"

@@ -2,6 +2,7 @@ package com.creative.share.apps.wash_squad_driver.models;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -15,16 +16,16 @@ import java.io.Serializable;
 public class Rating_Order_Model extends BaseObservable implements Serializable {
 
     private String desc;
-    private float rate=0.0f;
+    private float rate = 0.0f;
     public ObservableField<String> error_desc = new ObservableField<>();
 
 
     public Rating_Order_Model() {
         this.desc = "";
-
+        this.rate = 0.0f;
     }
 
-    public Rating_Order_Model(String desc,float rate) {
+    public Rating_Order_Model(String desc, float rate) {
         setDesc(desc);
         notifyPropertyChanged(BR.desc);
         setRate(rate);
@@ -43,6 +44,7 @@ public class Rating_Order_Model extends BaseObservable implements Serializable {
 
 
     }
+
     @Bindable
     public float getRate() {
         return rate;
@@ -52,32 +54,26 @@ public class Rating_Order_Model extends BaseObservable implements Serializable {
         this.rate = rate;
     }
 
-    public boolean isDataValid(Context context)
-    {
+    public boolean isDataValid(Context context) {
+
         if (!TextUtils.isEmpty(desc)
-        )
-        {
+        ) {
+
+
             error_desc.set(null);
 
 
             return true;
-        }else
-        {
-            if (desc.isEmpty())
-            {
+        } else {
+            if (desc.isEmpty()) {
+              //  Log.e("llll","ssfmfff");
+
                 error_desc.set(context.getString(R.string.field_req));
-            }else
-            {
-                error_desc.set(null);
+            } else {
+                //Log.e("llll","ssffff");
+
+                error_desc.set(context.getString(R.string.field_req));
             }
-
-
-
-
-
-
-
-
 
 
             return false;

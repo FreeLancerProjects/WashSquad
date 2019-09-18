@@ -136,6 +136,7 @@
     <string name="service_provider">service provider : </string>
     <string name="your_rating_for_the_service">Your rating for the service</string>
     <string name="your_opinion_in_the_service">Your opinion in the service</string>
+    <string name="order_not_finished">Order Not Finished</string>
 
 
 </resources>
