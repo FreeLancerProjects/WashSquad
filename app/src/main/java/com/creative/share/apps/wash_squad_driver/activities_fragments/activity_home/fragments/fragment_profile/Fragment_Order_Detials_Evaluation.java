@@ -29,7 +29,10 @@ import com.creative.share.apps.wash_squad_driver.R;
 import com.creative.share.apps.wash_squad_driver.activities_fragments.activity_home.activity.HomeActivity;
 
 import com.creative.share.apps.wash_squad_driver.databinding.FragmentOrderDetialsEvaluationBinding;
+import com.creative.share.apps.wash_squad_driver.interfaces.Listeners;
+import com.creative.share.apps.wash_squad_driver.models.EditProfileModel;
 import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
+import com.creative.share.apps.wash_squad_driver.models.Rating_Order_Model;
 import com.creative.share.apps.wash_squad_driver.models.UserModel;
 import com.creative.share.apps.wash_squad_driver.preferences.Preferences;
 
@@ -37,9 +40,10 @@ import java.util.Locale;
 
 import io.paperdb.Paper;
 
-public class Fragment_Order_Detials_Evaluation extends Fragment {
+public class Fragment_Order_Detials_Evaluation extends Fragment implements Listeners.RatingListener {
     final static private String Tag = "order_detials";
     private Order_Data_Model.OrderModel orderModel;
+    private Rating_Order_Model rating_order_model;
 
     private HomeActivity activity;
     private FragmentOrderDetialsEvaluationBinding binding;
@@ -74,10 +78,22 @@ public class Fragment_Order_Detials_Evaluation extends Fragment {
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         userModel = preferences.getUserData(activity);
         orderModel = (Order_Data_Model.OrderModel) getArguments().getSerializable(Tag);
+        rating_order_model=new Rating_Order_Model();
         binding.setLang(lang);
         binding.setOrderModel(orderModel);
+        binding.setRatingOrderModel(rating_order_model);
+        binding.setRatelistner(this);
 
     }
 
 
+    @Override
+    public void checkDataRating(String desc,float rate) {
+        rating_order_model = new Rating_Order_Model(desc,rate);
+        binding.setRatelistner(this);
+
+        if (rating_order_model.isDataValid(activity)) {
+           // editProfile(name);
+        }
+    }
 }

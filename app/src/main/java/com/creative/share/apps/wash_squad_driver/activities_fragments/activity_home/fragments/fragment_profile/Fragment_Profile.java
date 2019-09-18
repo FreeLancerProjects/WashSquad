@@ -34,6 +34,7 @@ import com.creative.share.apps.wash_squad_driver.databinding.FragmentProfileBind
 import com.creative.share.apps.wash_squad_driver.interfaces.Listeners;
 import com.creative.share.apps.wash_squad_driver.models.EditProfileModel;
 import com.creative.share.apps.wash_squad_driver.models.Order_Data_Model;
+import com.creative.share.apps.wash_squad_driver.models.Rating_Order_Model;
 import com.creative.share.apps.wash_squad_driver.models.UserModel;
 import com.creative.share.apps.wash_squad_driver.preferences.Preferences;
 import com.creative.share.apps.wash_squad_driver.remote.Api;
@@ -56,7 +57,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Fragment_Profile extends Fragment implements  Listeners.EditProfileListener ,Listeners.ShowCountryDialogListener, OnCountryPickerListener {
+public class Fragment_Profile extends Fragment implements Listeners.EditProfileListener, Listeners.ShowCountryDialogListener, OnCountryPickerListener {
 
     private HomeActivity activity;
     private FragmentProfileBinding binding;
@@ -74,6 +75,7 @@ public class Fragment_Profile extends Fragment implements  Listeners.EditProfile
     private MyOrdrrAdapter myOrdrrAdapter;
     private List<Order_Data_Model.OrderModel> orderModelList;
     private LinearLayoutManager manager;
+
     public static Fragment_Profile newInstance() {
 
         return new Fragment_Profile();
@@ -90,19 +92,18 @@ public class Fragment_Profile extends Fragment implements  Listeners.EditProfile
     }
 
     private void initView() {
-        orderModelList =new ArrayList<>();
+        orderModelList = new ArrayList<>();
         activity = (HomeActivity) getActivity();
         preferences = Preferences.newInstance();
         Paper.init(activity);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
         binding.setShowCountryListener(this);
-
-        myOrdrrAdapter = new MyOrdrrAdapter(orderModelList, activity,this);
+        myOrdrrAdapter = new MyOrdrrAdapter(orderModelList, activity, this);
         binding.recView.setItemViewCacheSize(25);
         binding.recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         binding.recView.setDrawingCacheEnabled(true);
-        manager = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL,false);
+        manager = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
         binding.recView.setLayoutManager(manager);
         binding.recView.setAdapter(myOrdrrAdapter);
 
@@ -236,12 +237,12 @@ public class Fragment_Profile extends Fragment implements  Listeners.EditProfile
             imgUri1 = getUriFromBitmap(bitmap);
 
             // edit_profile_model.editImageProfile(userModel.getUser().getId(),imgUri1.toString());
-editImageProfile(userModel.getId(),userModel.getFull_name(),imgUri1.toString());
+            editImageProfile(userModel.getId(), userModel.getFull_name(), imgUri1.toString());
 
         } else if (requestCode == IMG_REQ1 && resultCode == Activity.RESULT_OK && data != null) {
 
             imgUri1 = data.getData();
-            editImageProfile(userModel.getId(),userModel.getFull_name(),imgUri1.toString());
+            editImageProfile(userModel.getId(), userModel.getFull_name(), imgUri1.toString());
 
             //  edit_profile_view_model.editImageProfile(userModel.getUser().getId(),imgUri1.toString());
 
@@ -270,7 +271,7 @@ editImageProfile(userModel.getId(),userModel.getFull_name(),imgUri1.toString());
                             //listener.onSuccess(response.body());
 
                             Toast.makeText(activity, getString(R.string.suc), Toast.LENGTH_SHORT).show();
-update(response.body());
+                            update(response.body());
 
                         } else {
                             Log.e("codeimage", response.code() + "_");
@@ -356,6 +357,7 @@ update(response.body());
         binding.tvCode.setText(country.getDialCode());
 
     }
+
     @Override
     public void checkDataEditProfile(String name) {
 
@@ -439,6 +441,7 @@ update(response.body());
 
         }
     }
+
     private void getOrders() {
         ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
         dialog.setCancelable(false);
@@ -451,26 +454,26 @@ update(response.body());
                     .enqueue(new Callback<Order_Data_Model>() {
                         @Override
                         public void onResponse(Call<Order_Data_Model> call, Response<Order_Data_Model> response) {
-dialog.dismiss();
-if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
+                            dialog.dismiss();
+                            if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                                 orderModelList.clear();
                                 orderModelList.addAll(response.body().getData());
                                 if (response.body().getData().size() > 0) {
                                     // rec_sent.setVisibility(View.VISIBLE);
                                     //  Log.e("data",response.body().getData().get(0).getAr_title());
 
-                                 //   binding.llNoOrders.setVisibility(View.GONE);
+                                    binding.llNoorder.setVisibility(View.GONE);
                                     myOrdrrAdapter.notifyDataSetChanged();
                                     //   total_page = response.body().getMeta().getLast_page();
 
                                 } else {
-                                 //   binding.llNoOrders.setVisibility(View.VISIBLE);
+                                    binding.llNoorder.setVisibility(View.VISIBLE);
 
                                 }
                             } else {
-                               // binding.llNoOrders.setVisibility(View.VISIBLE);
+                                binding.llNoorder.setVisibility(View.VISIBLE);
 
-                                Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                //   Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                                 try {
                                     Log.e("Error_code", response.code() + "_" + response.errorBody().string());
                                 } catch (IOException e) {
@@ -482,8 +485,8 @@ if (response.isSuccessful() && response.body() != null && response.body().getDat
                         @Override
                         public void onFailure(Call<Order_Data_Model> call, Throwable t) {
                             try {
-                               // binding.progBar.setVisibility(View.GONE);
-                                //binding.llNoOrders.setVisibility(View.VISIBLE);
+                                // binding.progBar.setVisibility(View.GONE);
+                                binding.llNoorder.setVisibility(View.VISIBLE);
 
 
                                 Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
@@ -492,9 +495,9 @@ if (response.isSuccessful() && response.body() != null && response.body().getDat
                             }
                         }
                     });
-        }catch (Exception e){
-dialog.dismiss();
-//binding.llNoOrders.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            dialog.dismiss();
+            binding.llNoorder.setVisibility(View.VISIBLE);
 
         }
     }
