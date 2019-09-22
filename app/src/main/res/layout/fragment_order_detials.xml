@@ -14,7 +14,7 @@
 
         <variable
             name="OrderModel"
-            type="com.creative.share.apps.wash_squad_driver.models.Order_Data_Model.OrderModel" />
+            type="com.creative.share.apps.wash_squad.models.Order_Data_Model.OrderModel" />
 
 
     </data>

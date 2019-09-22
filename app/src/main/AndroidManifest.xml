@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.creative.share.apps.wash_squad_driver">
+    package="com.creative.share.apps.wash_squad">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:name=".language.App"
+        android:name="com.creative.share.apps.wash_squad.language.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -32,54 +32,54 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activities_fragments.activity_payment.PaymentActivity"
+        <activity android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_payment.PaymentActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             />
-        <activity android:name=".activities_fragments.activity_time.TimeActivity"
+        <activity android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_time.TimeActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             />
 
         <activity
-            android:name=".activities_fragments.activity_contact_us.ContactUsActivity"
+            android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_contact_us.ContactUsActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".activities_fragments.activity_terms_conditions.TermsActivity"
+            android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_terms_conditions.TermsActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".activities_fragments.questions_activity.QuestionsActivity"
+            android:name="com.creative.share.apps.wash_squad.activities_fragments.questions_activity.QuestionsActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".activities_fragments.activity_help.HelpActivity"
+            android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_help.HelpActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".activities_fragments.calendar_activity.CalendarActivity"
+            android:name="com.creative.share.apps.wash_squad.activities_fragments.calendar_activity.CalendarActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".activities_fragments.activity_map.MapActivity"
+            android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_map.MapActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
-        <activity android:name=".activities_fragments.activity_service_details.ServiceDetailsActivity" />
+        <activity android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_service_details.ServiceDetailsActivity" />
         <activity
-            android:name=".activities_fragments.activity_service_category.ServiceCategoryActivity"
+            android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_service_category.ServiceCategoryActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".activities_fragments.activity_home.activity.HomeActivity"
+            android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_home.activity.HomeActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".activities_fragments.activity_sign_in.SignInActivity"
+            android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_sign_in.SignInActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".activities_fragments.activity_splash.SplashActivity"
+            android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_splash.SplashActivity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>

@@ -13,19 +13,19 @@
 
         <variable
             name="editprofilemodel"
-            type="com.creative.share.apps.wash_squad_driver.models.EditProfileModel" />
+            type="com.creative.share.apps.wash_squad.models.EditProfileModel" />
 
         <variable
             name="usermodel"
-            type="com.creative.share.apps.wash_squad_driver.models.UserModel" />
+            type="com.creative.share.apps.wash_squad.models.UserModel" />
 
         <variable
             name="editprofilelistener"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.EditProfileListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.EditProfileListener" />
 
         <variable
             name="showCountryListener"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.ShowCountryDialogListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.ShowCountryDialogListener" />
 
     </data>
 

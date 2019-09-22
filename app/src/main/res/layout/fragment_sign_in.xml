@@ -7,21 +7,21 @@
             type="String" />
         <variable
             name="loginModel"
-            type="com.creative.share.apps.wash_squad_driver.models.LoginModel" />
+            type="com.creative.share.apps.wash_squad.models.LoginModel" />
         <variable
             name="loginListener"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.LoginListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.LoginListener" />
         <variable
             name="skipListener"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.SkipListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.SkipListener" />
 
         <variable
             name="createAccountListener"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.CreateAccountListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.CreateAccountListener" />
 
         <variable
             name="showCountryListener"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.ShowCountryDialogListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.ShowCountryDialogListener" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout

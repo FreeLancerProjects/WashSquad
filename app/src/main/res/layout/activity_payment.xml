@@ -9,7 +9,7 @@
 
         <variable
             name="backListener"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.BackListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.BackListener" />
 
         <variable
             name="lang"
@@ -17,7 +17,7 @@
 
         <variable
             name="itemModel"
-            type="com.creative.share.apps.wash_squad_driver.models.ItemToUpload" />
+            type="com.creative.share.apps.wash_squad.models.ItemToUpload" />
 
 
     </data>

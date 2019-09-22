@@ -8,7 +8,7 @@
             type="String" />
         <variable
             name="carTypeModel"
-            type="com.creative.share.apps.wash_squad_driver.models.CarTypeDataModel.CarTypeModel" />
+            type="com.creative.share.apps.wash_squad.models.CarTypeDataModel.CarTypeModel" />
     </data>
     <TextView
         android:layout_width="match_parent"

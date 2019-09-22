@@ -8,7 +8,7 @@
             type="String" />
         <variable
             name="questionModel"
-            type="com.creative.share.apps.wash_squad_driver.models.QuestionDataModel.QuestionModel" />
+            type="com.creative.share.apps.wash_squad.models.QuestionDataModel.QuestionModel" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

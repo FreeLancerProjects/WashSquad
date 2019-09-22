@@ -6,7 +6,7 @@
     <data>
         <variable
             name="offerModel"
-            type="com.creative.share.apps.wash_squad_driver.models.OfferDataModel.OfferModel" />
+            type="com.creative.share.apps.wash_squad.models.OfferDataModel.OfferModel" />
     </data>
     <com.makeramen.roundedimageview.RoundedImageView
         android:layout_width="match_parent"
