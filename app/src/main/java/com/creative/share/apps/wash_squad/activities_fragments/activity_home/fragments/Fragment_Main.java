@@ -1,5 +1,6 @@
 package com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -146,7 +147,16 @@ public class Fragment_Main extends Fragment {
     public void setItemData(ServiceDataModel.ServiceModel serviceModel) {
         Intent intent = new Intent(activity, ServiceCategoryActivity.class);
         intent.putExtra("data",serviceModel);
-        startActivity(intent);
+        startActivityForResult(intent,1000);
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1000&&resultCode== Activity.RESULT_OK&&data!=null)
+        {
+            activity.refeshFragmentProfile();
+        }
     }
 }

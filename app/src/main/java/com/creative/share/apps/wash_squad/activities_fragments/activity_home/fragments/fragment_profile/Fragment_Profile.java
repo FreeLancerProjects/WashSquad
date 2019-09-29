@@ -111,7 +111,7 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dx> 0) {
+                if (dx > 0) {
                     int totalItems = myOrderAdapter.getItemCount();
                     int lastVisiblePos = manager.findLastCompletelyVisibleItemPosition();
 
@@ -388,8 +388,7 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
 
         if (edit_profile_model.isDataValid(activity)) {
             editProfile(name);
-        }
-        else {
+        } else {
             binding.edtName.setError(getString(R.string.field_req));
 
         }
@@ -476,7 +475,7 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
 
 
             Api.getService(Tags.base_url)
-                    .MyOrder(userModel.getId(),1)
+                    .MyOrder(userModel.getId(), 1)
                     .enqueue(new Callback<Order_Data_Model>() {
                         @Override
                         public void onResponse(Call<Order_Data_Model> call, Response<Order_Data_Model> response) {
@@ -527,12 +526,13 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
 
         }
     }
+
     private void loadMore(int page) {
         try {
 
 
-            Api.getService( Tags.base_url)
-                    .MyOrder(userModel.getId(),page)
+            Api.getService(Tags.base_url)
+                    .MyOrder(userModel.getId(), page)
                     .enqueue(new Callback<Order_Data_Model>() {
                         @Override
                         public void onResponse(Call<Order_Data_Model> call, Response<Order_Data_Model> response) {
@@ -575,4 +575,59 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
         }
     }
 
+    public void refreshOrders() {
+
+        try {
+
+
+            Api.getService(Tags.base_url)
+                    .MyOrder(userModel.getId(), 1)
+                    .enqueue(new Callback<Order_Data_Model>() {
+                        @Override
+                        public void onResponse(Call<Order_Data_Model> call, Response<Order_Data_Model> response) {
+                            if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
+                                orderModelList.clear();
+                                orderModelList.addAll(response.body().getData());
+                                if (response.body().getData().size() > 0) {
+                                    // rec_sent.setVisibility(View.VISIBLE);
+                                    //  Log.e("data",response.body().getData().get(0).getAr_title());
+
+                                    binding.llNoorder.setVisibility(View.GONE);
+                                    myOrderAdapter.notifyDataSetChanged();
+                                    //   total_page = response.body().getMeta().getLast_page();
+
+                                } else {
+                                    binding.llNoorder.setVisibility(View.VISIBLE);
+
+                                }
+                            } else {
+                                binding.llNoorder.setVisibility(View.VISIBLE);
+
+                                //   Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                try {
+                                    Log.e("Error_code", response.code() + "_" + response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Order_Data_Model> call, Throwable t) {
+                            try {
+                                // binding.progBar.setVisibility(View.GONE);
+                                binding.llNoorder.setVisibility(View.VISIBLE);
+
+
+                                Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                                Log.e("error", t.getMessage());
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            binding.llNoorder.setVisibility(View.VISIBLE);
+
+        }
+    }
 }

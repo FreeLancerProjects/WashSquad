@@ -86,11 +86,7 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
-        binding.imageHelp.setOnClickListener(view -> {
-            Intent intent = new Intent(this, HelpActivity.class);
-            startActivityForResult(intent,11);
 
-        });
     }
 
 
@@ -109,6 +105,24 @@ public class HomeActivity extends AppCompatActivity {
             updateVisit(now,(Calendar.getInstance().getTimeInMillis()/1000));
 
         }
+
+        binding.imageHelp.setOnClickListener(view -> {
+            Intent intent = new Intent(this, HelpActivity.class);
+            startActivityForResult(intent,11);
+
+        });
+
+        binding.imageLogout.setOnClickListener(view -> {
+            if (userModel!=null)
+            {
+                preferences.clear(this);
+                navigateToSinInActivity();
+            }else
+                {
+                    navigateToSinInActivity();
+                }
+
+        });
 
     }
 
@@ -335,6 +349,13 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    public void refeshFragmentProfile()
+    {
+        if (fragment_profile!=null&&fragment_profile.isAdded())
+        {
+            fragment_profile.refreshOrders();
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

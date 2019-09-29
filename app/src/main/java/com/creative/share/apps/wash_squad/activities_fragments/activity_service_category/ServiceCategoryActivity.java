@@ -91,6 +91,11 @@ public class ServiceCategoryActivity extends AppCompatActivity implements Listen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==1&&resultCode==RESULT_OK&&data!=null)
         {
+            Intent intent = getIntent();
+            if (intent!=null)
+            {
+                setResult(RESULT_OK,intent);
+            }
             finish();
         }
     }
