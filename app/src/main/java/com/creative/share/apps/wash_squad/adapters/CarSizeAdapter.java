@@ -65,12 +65,12 @@ public class CarSizeAdapter extends RecyclerView.Adapter<CarSizeAdapter.MyHolder
 
             }
 
-        holder.itemView.setOnClickListener(view -> {
+       /* holder.itemView.setOnClickListener(view -> {
             CarSizeDataModel.CarSizeModel carSizeModel1 = carSizeModelList.get(holder.getAdapterPosition());
             activity.setItemCarSizeSelected(carSizeModel1);
             selected_pos = holder.getAdapterPosition();
             notifyDataSetChanged();
-        });
+        });*/
 
     }
 
@@ -85,6 +85,12 @@ public class CarSizeAdapter extends RecyclerView.Adapter<CarSizeAdapter.MyHolder
             super(sizeRowBinding.getRoot());
             this.sizeRowBinding = sizeRowBinding;
         }
+    }
+
+    public void setSelection(int selected_pos)
+    {
+        this.selected_pos = selected_pos;
+        notifyDataSetChanged();
     }
 
 }

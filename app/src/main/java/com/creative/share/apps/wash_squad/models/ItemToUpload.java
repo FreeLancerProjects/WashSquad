@@ -19,6 +19,7 @@ public class ItemToUpload extends BaseObservable implements Serializable {
     private int service_id;
     private int carSize_id;
     private int carType_id;
+    private int brand_id;
     private String ar_car_type;
     private String en_car_type;
     private String user_name;
@@ -48,6 +49,7 @@ public class ItemToUpload extends BaseObservable implements Serializable {
         if (service_id!=0&&
                 carSize_id!=0&&
                 carType_id!=0&&
+                brand_id!=0&&
                 !TextUtils.isEmpty(address)&&
                 order_time_id!=0&&
                 order_date!=0
@@ -72,6 +74,11 @@ public class ItemToUpload extends BaseObservable implements Serializable {
                 if (carType_id==0)
                 {
                     Toast.makeText(context, R.string.ch_car_type, Toast.LENGTH_SHORT).show();
+                }
+
+                if (brand_id==0)
+                {
+                    Toast.makeText(context, R.string.ch_brand, Toast.LENGTH_SHORT).show();
                 }
 
                 if (TextUtils.isEmpty(address))
@@ -160,6 +167,10 @@ public class ItemToUpload extends BaseObservable implements Serializable {
         this.en_service_type = "";
         notifyPropertyChanged(BR.en_service_type);
 
+        this.brand_id = 0;
+        notifyPropertyChanged(BR.brand_id);
+
+
     }
 
 
@@ -174,7 +185,15 @@ public class ItemToUpload extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.ar_car_type);
 
     }
+    @Bindable
+    public int getBrand_id() {
+        return brand_id;
+    }
 
+    public void setBrand_id(int brand_id) {
+        this.brand_id = brand_id;
+        notifyPropertyChanged(BR.brand_id);
+    }
 
     @Bindable
     public String getEn_car_type() {
@@ -186,6 +205,9 @@ public class ItemToUpload extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.en_car_type);
 
     }
+
+
+
 
     @Bindable
     public int getUser_id() {
