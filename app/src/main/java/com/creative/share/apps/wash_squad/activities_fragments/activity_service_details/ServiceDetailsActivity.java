@@ -221,6 +221,8 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                             {
                                 carSizeAdapter.setSelection(-1);
                             }
+                            itemToUpload.setCarSize_id(0);
+
                         }else
                             {
                                 if (carSizeAdapter!=null)
