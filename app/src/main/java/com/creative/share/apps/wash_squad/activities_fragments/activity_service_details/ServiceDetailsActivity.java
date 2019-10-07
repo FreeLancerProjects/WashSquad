@@ -93,6 +93,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
         initView();
 
 
+
     }
 
     private void getDataFromIntent() {
