@@ -208,14 +208,13 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                     }
                 }else
                     {
-                        itemToUpload.setCarSize_id(carBrandModelList.get(i).getId());
                         itemToUpload.setService_price(carBrandModelList.get(i).getSize_price());
                         itemToUpload.setBrand_id(carBrandModelList.get(i).getId());
 
                         binding.setItemModel(itemToUpload);
 
                         int pos = getCarSizeItemPos(carBrandModelList.get(i).getSize());
-                        Log.e("pos",pos+"__");
+
                         if (pos==-1)
                         {
                             if (carSizeAdapter!=null)
@@ -228,6 +227,9 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                                 {
                                     carSizeAdapter.setSelection(pos);
                                 }
+
+                                itemToUpload.setCarSize_id(carSizeModelList.get(pos).getId());
+
                             }
                     }
             }
@@ -295,6 +297,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
 
         binding.btnSendOrder.setOnClickListener(view -> {
             if (itemToUpload.isDataValidStep1(this)) {
+                Log.e("size_id",itemToUpload.getCarSize_id()+"__");
                 if (userModel != null) {
                     itemToUpload.setUser_id(userModel.getId());
                     itemToUpload.setUser_name(userModel.getFull_name());
