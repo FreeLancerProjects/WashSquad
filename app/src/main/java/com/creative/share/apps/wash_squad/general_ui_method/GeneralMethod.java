@@ -68,7 +68,7 @@ public class GeneralMethod {
     public static void displayDate (TextView textView,long date,String work_time_choosen,String work_time)
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd/MMM",Locale.ENGLISH);
-        String m_date = dateFormat.format(new Date(date));
+        String m_date = dateFormat.format(new Date(date*1000));
         textView.setText(String.format("%s",m_date)+" "+work_time+" "+work_time_choosen);
 
     }
