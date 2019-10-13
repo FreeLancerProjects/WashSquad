@@ -87,7 +87,7 @@
     <string name="details">تفاصيل الطلب</string>
     <string name="my_order">طلباتي</string>
     <string name="no_orders_to_display">لا توجد طلبات لعرضها</string>
-    <string name="price">المبلغ</string>
+    <string name="price">السعر : </string>
     <string name="no_notifications_to_display">لا توجد إشعارات لعرضها</string>
     <string name="send_order">إرسال الطلب</string>
     <string name="add_comment">إضافة تعليق</string>

@@ -149,7 +149,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text='@{OrderModel.total_price}'
+                    android:text='@{lang.equals("ar")?OrderModel.total_price+"رس":OrderModel.total_price+"rs"}'
                     android:textColor="@color/black"
                     android:textSize="15sp"
 
