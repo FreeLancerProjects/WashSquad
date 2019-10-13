@@ -161,6 +161,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
         binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                carBrandModelList.clear();
 
                 if (i == 0) {
                     itemToUpload.setCarType_id(0);
@@ -168,7 +169,6 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                     itemToUpload.setEn_car_type("");
                     itemToUpload.setBrand_id(0);
                     binding.setItemModel(itemToUpload);
-                    carBrandModelList.clear();
                     carBrandModelList.add(new CarTypeDataModel.CarBrandModel("إختر الماركة", "Choose brand"));
                     carBrandAdapter.notifyDataSetChanged();
                     if (carSizeAdapter!=null)

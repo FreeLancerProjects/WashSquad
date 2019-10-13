@@ -113,11 +113,51 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
+                    android:text='@{lang.equals("ar")?OrderModel.carSize_ar_title:OrderModel.carSize_en_title}'
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/price"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text='@{OrderModel.total_price}'
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
                     android:text="@string/your_rating_for_the_service"
                     android:textColor="@color/white"
                     android:textSize="15sp"
 
                     />
+
 
                 <com.iarcuschin.simpleratingbar.SimpleRatingBar
                     android:id="@+id/rateBar"
