@@ -73,9 +73,7 @@ public class Fragment_Code_Verification extends Fragment {
             userModel = (UserModel) bundle.getSerializable(TAG);
             type=bundle.getInt(TAG2);
         }
-        if(type==1){
-            binding.btnResend.setVisibility(View.INVISIBLE);
-        }
+
         activity = (SignInActivity) getActivity();
         preferences = Preferences.newInstance();
         Paper.init(activity);
@@ -297,8 +295,12 @@ else {
 
             @Override
             public void onFinish() {
+                if(type==2){
                 canResend = true;
-                binding.btnResend.setText(getString(R.string.resend));
+                binding.btnResend.setText(getString(R.string.resend));}
+                else {
+                    activity.back();
+                }
             }
         }.start();
     }
