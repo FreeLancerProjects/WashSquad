@@ -215,7 +215,7 @@ public class Fragment_Sign_Up extends Fragment implements OnCountryPickerListene
 
         binding.btnCancel.setOnClickListener(view -> {
             dialog.dismiss();
-            activity.displayFragmentCodeVerification(userModel);
+            activity.displayFragmentCodeVerification(userModel,2);
 
 
         });

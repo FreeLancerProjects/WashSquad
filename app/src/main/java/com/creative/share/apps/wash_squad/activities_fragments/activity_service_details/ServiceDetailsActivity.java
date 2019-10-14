@@ -161,9 +161,10 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
         binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                carBrandModelList.clear();
 
                 if (i == 0) {
+                    carBrandModelList.clear();
+
                     itemToUpload.setCarType_id(0);
                     itemToUpload.setAr_car_type("");
                     itemToUpload.setEn_car_type("");
@@ -177,6 +178,9 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                     }
 
                 } else {
+                    carBrandModelList.clear();
+                    carBrandModelList.add(new CarTypeDataModel.CarBrandModel("إختر الماركة", "Choose brand"));
+
                     itemToUpload.setCarType_id(carTypeModelList.get(i).getId());
                     itemToUpload.setAr_car_type(carTypeModelList.get(i).getAr_title());
                     itemToUpload.setEn_car_type(carTypeModelList.get(i).getEn_title());

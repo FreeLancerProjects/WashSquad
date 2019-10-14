@@ -54,21 +54,39 @@ public interface Service {
     );
 
     @FormUrlEncoded
+    @POST("api/client/password/forget")
+    Call<UserModel> forget(@Field("phone") String phone,
+                           @Field("phone_code") String phone_code
+    );
+
+    @FormUrlEncoded
     @POST("api/client/login")
     Call<UserModel> login(@Field("phone") String phone,
                           @Field("phone_code") String phone_code,
                           @Field("password") String password);
 
     @FormUrlEncoded
+    @POST("api/client/password/reset")
+    Call<UserModel> login(
+            @Field("user_id") int user_id,
+            @Field("password") String password);
+
+    @FormUrlEncoded
     @POST("api/order/rate")
     Call<Order_Data_Model.OrderModel> rateorder(@Field("order_id") String order_id,
-                                     @Field("opinion_des") String opinion_des,
-                                     @Field("rating") float rating);
+                                                @Field("opinion_des") String opinion_des,
+                                                @Field("rating") float rating);
 
     @FormUrlEncoded
     @POST("api/client/cofirm-code")
     Call<ResponseBody> confirmCode(@Field("user_id") int user_id,
                                    @Field("code") String code
+    );
+
+    @FormUrlEncoded
+    @POST("api/client/passwordCode/confirm")
+    Call<ResponseBody> confirmCodepass(@Field("user_id") int user_id,
+                                       @Field("code") String code
     );
 
     @FormUrlEncoded
@@ -120,7 +138,7 @@ public interface Service {
     @FormUrlEncoded
     @POST("api/orders")
     Call<Order_Data_Model> MyOrder(@Field("user_id") int user_id,
-    @Field("page")int page
+                                   @Field("page") int page
     );
 
     @POST("api/order/add")

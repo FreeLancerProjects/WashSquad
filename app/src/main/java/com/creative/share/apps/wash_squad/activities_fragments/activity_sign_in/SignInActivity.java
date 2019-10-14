@@ -27,6 +27,8 @@ public class SignInActivity extends AppCompatActivity {
     private Fragment_Sign_Up fragment_sign_up;
     private Fragment_Code_Verification fragment_code_verification;
     private Preferences preferences;
+    private Fragment_ForgetPassword fragment_forgetpass;
+    private Fragment_Newpass fragment_newpass;
 
 
     @Override
@@ -57,15 +59,27 @@ public class SignInActivity extends AppCompatActivity {
         manager.beginTransaction().add(R.id.fragment_sign_in_container, fragment_language, "fragment_language").addToBackStack("fragment_language").commit();
 
     }
-
-    public void displayFragmentCodeVerification(UserModel userModel) {
+    public void displayFragmentForgetpass() {
         fragment_count ++;
-        fragment_code_verification = Fragment_Code_Verification.newInstance(userModel);
+        fragment_forgetpass = Fragment_ForgetPassword.newInstance();
+
+        manager.beginTransaction().add(R.id.fragment_sign_in_container, fragment_forgetpass, "fragment_forgetpass").addToBackStack("fragment_forgetpass").commit();
+
+    }
+    public void displayFragmentCodeVerification(UserModel userModel,int type) {
+        fragment_count ++;
+        fragment_code_verification = Fragment_Code_Verification.newInstance(userModel,type);
 
         manager.beginTransaction().add(R.id.fragment_sign_in_container, fragment_code_verification, "fragment_code_verification").addToBackStack("fragment_code_verification").commit();
 
     }
+    public void displayFragmentNewpass(UserModel userModel) {
+        fragment_count ++;
+        fragment_newpass = Fragment_Newpass.newInstance(userModel);
 
+        manager.beginTransaction().add(R.id.fragment_sign_in_container, fragment_newpass, "fragment_newpass").addToBackStack("fragment_newpass").commit();
+
+    }
     public void displayFragmentSignIn() {
         fragment_count++;
         fragment_sign_in = Fragment_Sign_In.newInstance();
