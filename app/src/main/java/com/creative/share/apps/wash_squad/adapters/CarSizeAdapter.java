@@ -64,14 +64,14 @@ public class CarSizeAdapter extends RecyclerView.Adapter<CarSizeAdapter.MyHolder
                 holder.sizeRowBinding.tvPrice.setBackgroundResource(R.drawable.expand_bg);
 
             }
-
+/*
         holder.itemView.setOnClickListener(view -> {
             CarSizeDataModel.CarSizeModel carSizeModel1 = carSizeModelList.get(holder.getAdapterPosition());
             activity.setItemCarSizeSelected(carSizeModel1);
             selected_pos = holder.getAdapterPosition();
             notifyDataSetChanged();
         });
-
+*/
     }
 
     @Override

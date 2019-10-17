@@ -93,7 +93,6 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
         initView();
 
 
-
     }
 
     private void getDataFromIntent() {
@@ -119,6 +118,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
         itemToUpload.setService_id(service_id);
         itemToUpload.setAr_service_type(service_name_ar);
         itemToUpload.setEn_service_type(service_name_en);
+       itemToUpload.setLevel2(serviceModel);
         binding.setItemModel(itemToUpload);
         additional_service = new ArrayList<>();
         carSizeModelList = new ArrayList<>();
@@ -172,8 +172,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                     binding.setItemModel(itemToUpload);
                     carBrandModelList.add(new CarTypeDataModel.CarBrandModel("إختر الماركة", "Choose brand"));
                     carBrandAdapter.notifyDataSetChanged();
-                    if (carSizeAdapter!=null)
-                    {
+                    if (carSizeAdapter != null) {
                         carSizeAdapter.setSelection(-1);
                     }
 
@@ -201,44 +200,41 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
         binding.spinnerBrand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i==0)
-                {
+                if (i == 0) {
                     itemToUpload.setCarSize_id(0);
                     itemToUpload.setService_price(0);
                     itemToUpload.setBrand_id(0);
+                    itemToUpload.setEn_brand_name("");
+                    itemToUpload.setAr_brand_name("");
                     binding.setItemModel(itemToUpload);
-                    if (carSizeAdapter!=null)
-                    {
+                    if (carSizeAdapter != null) {
                         carSizeAdapter.setSelection(-1);
                     }
-                }else
-                    {
-                        itemToUpload.setService_price(carBrandModelList.get(i).getSize_price());
-                        itemToUpload.setBrand_id(carBrandModelList.get(i).getId());
+                } else {
+                    itemToUpload.setService_price(carBrandModelList.get(i).getSize_price());
+                    itemToUpload.setBrand_id(carBrandModelList.get(i).getId());
+                    itemToUpload.setEn_brand_name(carBrandModelList.get(i).getEn_title());
+                    itemToUpload.setAr_brand_name(carBrandModelList.get(i).getAr_title());
 
-                        binding.setItemModel(itemToUpload);
+                    binding.setItemModel(itemToUpload);
 
-                        int pos = getCarSizeItemPos(carBrandModelList.get(i).getSize());
+                    int pos = getCarSizeItemPos(carBrandModelList.get(i).getSize());
 
-                        if (pos==-1)
-                        {
-                            if (carSizeAdapter!=null)
-                            {
-                                carSizeAdapter.setSelection(-1);
-                            }
-                            itemToUpload.setCarSize_id(0);
+                    if (pos == -1) {
+                        if (carSizeAdapter != null) {
+                            carSizeAdapter.setSelection(-1);
+                        }
+                        itemToUpload.setCarSize_id(0);
 
-                        }else
-                            {
-                                if (carSizeAdapter!=null)
-                                {
-                                    carSizeAdapter.setSelection(pos);
-                                }
+                    } else {
+                        if (carSizeAdapter != null) {
+                            carSizeAdapter.setSelection(pos);
+                        }
 
-                                itemToUpload.setCarSize_id(carSizeModelList.get(pos).getId());
+                        itemToUpload.setCarSize_id(carSizeModelList.get(pos).getId());
 
-                            }
                     }
+                }
             }
 
             @Override
@@ -304,7 +300,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
 
         binding.btnSendOrder.setOnClickListener(view -> {
             if (itemToUpload.isDataValidStep1(this)) {
-                Log.e("size_id",itemToUpload.getCarSize_id()+"__");
+                Log.e("size_id", itemToUpload.getCarSize_id() + "__");
                 if (userModel != null) {
                     itemToUpload.setUser_id(userModel.getId());
                     itemToUpload.setUser_name(userModel.getFull_name());
@@ -543,13 +539,10 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
         return 0;
     }
 
-    private int getCarSizeItemPos(String id)
-    {
+    private int getCarSizeItemPos(String id) {
         int position = -1;
-        for (int pos =0;pos<carSizeModelList.size();pos++)
-        {
-            if (Integer.parseInt(id) == carSizeModelList.get(pos).getId())
-            {
+        for (int pos = 0; pos < carSizeModelList.size(); pos++) {
+            if (Integer.parseInt(id) == carSizeModelList.get(pos).getId()) {
                 return pos;
             }
         }

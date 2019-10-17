@@ -180,16 +180,17 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
 
     private void updateTotalPrice(double coupon_value)
     {
+        total = 0;
+
         if (itemToUpload.getSub_services().size()>0)
         {
-            total = 0;
             total +=itemToUpload.getService_price();
             total += getAdditionalServicePrice(itemToUpload.getSub_services());
 
-            total = total -(total*coupon_value);
+            total = total -((total*coupon_value)/100);
         }else
             {
-                total +=(itemToUpload.getService_price())-(itemToUpload.getService_price()*coupon_value);
+                total +=(itemToUpload.getService_price())-((itemToUpload.getService_price()*coupon_value)/100);
 
             }
 

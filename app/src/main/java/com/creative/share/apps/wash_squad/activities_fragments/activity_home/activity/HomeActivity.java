@@ -335,6 +335,7 @@ public class HomeActivity extends AppCompatActivity {
             if(fragment_order_detials_evaluation!=null&&fragment_order_detials_evaluation.isAdded()){
                 fragmentManager.beginTransaction().hide(fragment_order_detials_evaluation).commit();
             }
+
             if (fragment_order_detials.isAdded()) {
                 fragmentManager.beginTransaction().show(fragment_order_detials).commit();
 

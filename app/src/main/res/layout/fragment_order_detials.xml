@@ -24,7 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray0"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -85,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <TextView
@@ -113,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
-                    android:text='@{lang.equals("ar")?OrderModel.carSize_ar_title:OrderModel.carSize_en_title}'
+                    android:text='@{lang.equals("ar")?OrderModel.carType__ar_title:OrderModel.carType_en_title}'
                     android:textColor="@color/white"
                     android:textSize="15sp"
 
@@ -140,7 +143,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text='@{lang.equals("ar")?OrderModel.total_price+"رس":OrderModel.total_price+"rs"}'
+                        android:text='@{lang.equals("ar")?Math.round(OrderModel.total_price)+"رس":Math.round(OrderModel.total_price)+"rs"}'
                         android:textColor="@color/white"
                         android:textSize="15sp"
 
@@ -169,7 +172,7 @@
                     android:layout_marginBottom="20dp"
                     app:srb_borderColor="@color/white"
                     app:srb_drawBorderEnabled="true"
-                    app:srb_fillColor="@color/colorPrimary"
+                    app:srb_fillColor="@color/color_second"
                     app:srb_isIndicator="true"
                     app:srb_numberOfStars="5"
                     app:srb_starBackgroundColor="@color/white"

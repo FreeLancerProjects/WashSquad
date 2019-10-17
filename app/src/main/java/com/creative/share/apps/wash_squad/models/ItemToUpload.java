@@ -12,6 +12,7 @@ import com.creative.share.apps.wash_squad.BR;
 import com.creative.share.apps.wash_squad.R;
 
 import java.io.Serializable;
+import java.security.Provider;
 import java.util.List;
 
 public class ItemToUpload extends BaseObservable implements Serializable {
@@ -20,6 +21,8 @@ public class ItemToUpload extends BaseObservable implements Serializable {
     private int carSize_id;
     private int carType_id;
     private int brand_id;
+    private String en_brand_name;
+    private String ar_brand_name;
     private String ar_car_type;
     private String en_car_type;
     private String user_name;
@@ -37,6 +40,7 @@ public class ItemToUpload extends BaseObservable implements Serializable {
     private String coupon_serial;
     private String ar_service_type;
     private String en_service_type;
+    private ServiceDataModel.Level2 level2;
     private List<SubServiceModel> sub_services;
 
     public ObservableField<String> address_error = new ObservableField<>();
@@ -170,6 +174,10 @@ public class ItemToUpload extends BaseObservable implements Serializable {
         this.brand_id = 0;
         notifyPropertyChanged(BR.brand_id);
 
+this.ar_brand_name="";
+        notifyPropertyChanged(BR.ar_brand_name);
+        this.en_brand_name="";
+        notifyPropertyChanged(BR.en_brand_name);
 
     }
 
@@ -194,7 +202,24 @@ public class ItemToUpload extends BaseObservable implements Serializable {
         this.brand_id = brand_id;
         notifyPropertyChanged(BR.brand_id);
     }
+    @Bindable
+    public String getAr_brand_name() {
+        return ar_brand_name;
+    }
 
+    public void setEn_brand_name(String en_brand_name) {
+        this.en_brand_name = en_brand_name;
+        notifyPropertyChanged(BR.en_brand_name);
+    }
+    @Bindable
+    public String getEn_brand_name() {
+        return en_brand_name;
+    }
+
+    public void setAr_brand_name(String ar_brand_name) {
+        this.ar_brand_name = ar_brand_name;
+        notifyPropertyChanged(BR.ar_brand_name);
+    }
     @Bindable
     public String getEn_car_type() {
         return en_car_type;
@@ -401,6 +426,13 @@ public class ItemToUpload extends BaseObservable implements Serializable {
         this.sub_services = sub_services;
     }
 
+    public ServiceDataModel.Level2 getLevel2() {
+        return level2;
+    }
+
+    public void setLevel2(ServiceDataModel.Level2 level2) {
+        this.level2 = level2;
+    }
     public double getService_price() {
         return service_price;
     }

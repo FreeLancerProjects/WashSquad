@@ -42,7 +42,7 @@ public class Order_Data_Model implements Serializable {
         private int cancel_reason;
         private String opinion_des;
         private double rating;
-        private String total_price;
+        private double total_price;
         private String coupon_serial;
         private String created_at;
         private String updated_at;
@@ -168,7 +168,7 @@ public class Order_Data_Model implements Serializable {
             return rating;
         }
 
-        public String getTotal_price() {
+        public double getTotal_price() {
             return total_price;
         }
 
