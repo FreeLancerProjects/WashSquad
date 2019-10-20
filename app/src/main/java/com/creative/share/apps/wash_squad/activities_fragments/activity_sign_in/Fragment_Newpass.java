@@ -23,6 +23,7 @@ import com.creative.share.apps.wash_squad.databinding.DialogAlertBinding;
 import com.creative.share.apps.wash_squad.databinding.FragmentNewpasswordBinding;
 import com.creative.share.apps.wash_squad.databinding.FragmentSignInBinding;
 import com.creative.share.apps.wash_squad.interfaces.Listeners;
+import com.creative.share.apps.wash_squad.models.EditProfileModel;
 import com.creative.share.apps.wash_squad.models.LoginModel;
 import com.creative.share.apps.wash_squad.models.PasswordModel;
 import com.creative.share.apps.wash_squad.models.UserModel;
@@ -46,23 +47,28 @@ import retrofit2.Response;
 public class Fragment_Newpass extends Fragment implements Listeners.PasswordListner {
     private FragmentNewpasswordBinding binding;
     private SignInActivity activity;
+    private HomeActivity homeActivity;
     private String lang;
     private Preferences preferences;
     private PasswordModel passwordModel;
     private UserModel userModel;
-    private static final String TAG ="DATA";
+    private int type;
+    private static final String TAG = "DATA";
+    private static final String TAG2 = "TYPE";
 
-    public static Fragment_Newpass newInstance(UserModel userModel) {
+    public static Fragment_Newpass newInstance(UserModel userModel, int type) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(TAG,userModel);
-      Fragment_Newpass fragment_newpass=new Fragment_Newpass();
-      fragment_newpass.setArguments(bundle);
+        bundle.putSerializable(TAG, userModel);
+        bundle.putInt(TAG2, type);
+        Fragment_Newpass fragment_newpass = new Fragment_Newpass();
+        fragment_newpass.setArguments(bundle);
+
         return fragment_newpass;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_newpassword, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_newpassword, container, false);
         View view = binding.getRoot();
         initView();
         return view;
@@ -70,21 +76,25 @@ public class Fragment_Newpass extends Fragment implements Listeners.PasswordList
 
     private void initView() {
         Bundle bundle = getArguments();
-        if (bundle!=null)
-        {
+        if (bundle != null) {
             userModel = (UserModel) bundle.getSerializable(TAG);
+            type = bundle.getInt(TAG2);
         }
         passwordModel = new PasswordModel();
-        activity = (SignInActivity) getActivity();
+        if (type == 1) {
+            activity = (SignInActivity) getActivity();
+            Paper.init(activity);
+
+        } else {
+            homeActivity = (HomeActivity) getActivity();
+            Paper.init(homeActivity);
+
+        }
         preferences = Preferences.newInstance();
-        Paper.init(activity);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
         binding.setPassModel(passwordModel);
         binding.setPassListener(this);
-
-
-
 
 
     }
@@ -92,36 +102,41 @@ public class Fragment_Newpass extends Fragment implements Listeners.PasswordList
 
     @Override
     public void checkDatapass(String pass) {
-if(passwordModel.isDataValid(activity)){
-login(pass);
-}
+        if (type == 1) {
+            if (passwordModel.isDataValid(activity)) {
+                login(pass);
+            }
+        } else if (type == 2) {
+            if (passwordModel.isDataValid(homeActivity)) {
+                change_pass(passwordModel.getPassword());
+            }
+        }
+
     }
-    private void login( String password)
-    {
-        ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+
+    private void login(String password) {
+        ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         try {
 
             Api.getService(Tags.base_url)
-                    .login(userModel.getId(),password)
+                    .login(userModel.getId(), password)
                     .enqueue(new Callback<UserModel>() {
                         @Override
                         public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                             dialog.dismiss();
-                            if (response.isSuccessful()&&response.body()!=null)
-                            {
-                                preferences.create_update_userData(activity,response.body());
+                            if (response.isSuccessful() && response.body() != null) {
+                                preferences.create_update_userData(activity, response.body());
                                 preferences.createSession(activity, Tags.session_login);
-                                Intent intent = new Intent(activity,HomeActivity.class);
+                                Intent intent = new Intent(activity, HomeActivity.class);
                                 startActivity(intent);
                                 activity.finish();
 
-                            }else
-                            {
+                            } else {
                                 try {
 
-                                    Log.e("error",response.code()+"_"+response.errorBody().string());
+                                    Log.e("error", response.code() + "_" + response.errorBody().string());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -129,15 +144,13 @@ login(pass);
                                     Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                                     //  Log.e("error",response.code()+"_"+response.errorBody()+response.message()+password+phone+phone_code);
 
-                                } else if (response.code()==404)
-                                {
+                                } else if (response.code() == 404) {
                                     Toast.makeText(activity, R.string.inc_phone_pas, Toast.LENGTH_SHORT).show();
 
-                                }else if (response.code() == 500) {
+                                } else if (response.code() == 500) {
                                     Toast.makeText(activity, "Server Error", Toast.LENGTH_SHORT).show();
 
-                                }else
-                                {
+                                } else {
                                     Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
 
 
@@ -149,24 +162,94 @@ login(pass);
                         public void onFailure(Call<UserModel> call, Throwable t) {
                             try {
                                 dialog.dismiss();
-                                if (t.getMessage()!=null)
-                                {
-                                    Log.e("error",t.getMessage());
-                                    if (t.getMessage().toLowerCase().contains("failed to connect")||t.getMessage().toLowerCase().contains("unable to resolve host"))
-                                    {
-                                        Toast.makeText(activity,R.string.something, Toast.LENGTH_SHORT).show();
-                                    }else
-                                    {
-                                        Toast.makeText(activity,t.getMessage(), Toast.LENGTH_SHORT).show();
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(activity, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(activity, t.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
-                            }catch (Exception e){}
+                            } catch (Exception e) {
+                            }
                         }
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             dialog.dismiss();
 
         }
     }
+
+    private void change_pass(String pass) {
+        ProgressDialog dialog = Common.createProgressDialog(homeActivity, getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        try {
+
+            Api.getService(Tags.base_url)
+                    .edit_pass(userModel.getId() + "", pass)
+                    .enqueue(new Callback<UserModel>() {
+                        @Override
+                        public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                            dialog.dismiss();
+                            if (response.isSuccessful() && response.body() != null) {
+                                userModel = response.body();
+                                preferences.create_update_userData(homeActivity, userModel);
+                                homeActivity.refreshprofile(userModel);
+                                Toast.makeText(homeActivity, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+
+
+                            } else {
+                                try {
+
+                                    Log.e("error", response.code() + "_" + response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                if (response.code() == 422) {
+                                    Toast.makeText(homeActivity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 403) {
+                                    Toast.makeText(homeActivity, R.string.user_not_active, Toast.LENGTH_SHORT).show();
+
+                                } else if (response.code() == 404) {
+                                    Toast.makeText(homeActivity, R.string.inc_phone_pas, Toast.LENGTH_SHORT).show();
+
+                                } else if (response.code() == 405) {
+                                    Toast.makeText(homeActivity, R.string.not_active_phone, Toast.LENGTH_SHORT).show();
+
+                                } else if (response.code() == 500) {
+                                    Toast.makeText(homeActivity, "Server Error", Toast.LENGTH_SHORT).show();
+
+                                } else {
+                                    Toast.makeText(homeActivity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UserModel> call, Throwable t) {
+                            try {
+                                dialog.dismiss();
+                                if (t.getMessage() != null) {
+                                    Log.e("error", t.getMessage());
+                                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                        Toast.makeText(homeActivity, R.string.something, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(homeActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            dialog.dismiss();
+
+        }
+    }
+
 }

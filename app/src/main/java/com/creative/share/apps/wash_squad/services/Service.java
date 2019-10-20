@@ -127,6 +127,11 @@ public interface Service {
     Call<UserModel> edit_profile(@Field("user_id") String user_id,
                                  @Field("full_name") String full_name
     );
+    @FormUrlEncoded
+    @POST("api/client/password/change")
+    Call<UserModel> edit_pass(@Field("user_id") String user_id,
+                                 @Field("new_pass") String new_pass
+    );
 
     @Multipart
     @POST("api/profile/edit")

@@ -141,6 +141,8 @@
     <string name="cong">Congratulation ! you get</string>
     <string name="disc">discount.</string>
     <string name="ch_brand">Choose brand</string>
+    <string name="change_password">Change Password</string>
+    <string name="see_your_photo">See Your Photo</string>
 
 
 </resources>

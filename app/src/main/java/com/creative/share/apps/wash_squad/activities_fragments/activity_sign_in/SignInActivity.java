@@ -75,7 +75,7 @@ public class SignInActivity extends AppCompatActivity {
     }
     public void displayFragmentNewpass(UserModel userModel) {
         fragment_count ++;
-        fragment_newpass = Fragment_Newpass.newInstance(userModel);
+        fragment_newpass = Fragment_Newpass.newInstance(userModel,1);
 
         manager.beginTransaction().add(R.id.fragment_sign_in_container, fragment_newpass, "fragment_newpass").addToBackStack("fragment_newpass").commit();
 

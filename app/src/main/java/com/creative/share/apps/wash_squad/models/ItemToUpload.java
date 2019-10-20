@@ -11,6 +11,8 @@ import androidx.databinding.ObservableField;
 import com.creative.share.apps.wash_squad.BR;
 import com.creative.share.apps.wash_squad.R;
 
+import org.stringtemplate.v4.ST;
+
 import java.io.Serializable;
 import java.security.Provider;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.List;
 public class ItemToUpload extends BaseObservable implements Serializable {
     private int user_id;
     private int service_id;
+    private int sub_serv_id;
     private int carSize_id;
     private int carType_id;
     private int brand_id;
@@ -32,7 +35,7 @@ public class ItemToUpload extends BaseObservable implements Serializable {
     private String address;
     private String time;
     private String time_type;
-    private long order_date;
+    private String order_date;
     private int order_time_id;
     private int payment_method;
     private double service_price;
@@ -51,12 +54,14 @@ public class ItemToUpload extends BaseObservable implements Serializable {
     public boolean isDataValidStep1(Context context)
     {
         if (service_id!=0&&
+                sub_serv_id!=0&&
                 carSize_id!=0&&
                 carType_id!=0&&
                 brand_id!=0&&
+
                 !TextUtils.isEmpty(address)&&
                 order_time_id!=0&&
-                order_date!=0
+                !order_date.isEmpty()
 
 
 
@@ -85,6 +90,7 @@ public class ItemToUpload extends BaseObservable implements Serializable {
                     Toast.makeText(context, R.string.ch_brand, Toast.LENGTH_SHORT).show();
                 }
 
+
                 if (TextUtils.isEmpty(address))
                 {
                     address_error.set(context.getString(R.string.field_req));
@@ -103,7 +109,7 @@ public class ItemToUpload extends BaseObservable implements Serializable {
 
                     }
 
-                if (order_date==0)
+                if (order_date.isEmpty())
                 {
                     date_error.set(context.getString(R.string.field_req));
                 }else
@@ -133,6 +139,8 @@ public class ItemToUpload extends BaseObservable implements Serializable {
     public ItemToUpload() {
         this.service_id=0;
         notifyPropertyChanged(BR.service_id);
+        this.sub_serv_id=0;
+        notifyPropertyChanged(BR.sub_serv_id);
 
         this.carType_id=0;
         notifyPropertyChanged(BR.carType_id);
@@ -160,7 +168,7 @@ public class ItemToUpload extends BaseObservable implements Serializable {
         this.time = "";
         notifyPropertyChanged(BR.time);
 
-        this.order_date=0;
+        this.order_date="";
         notifyPropertyChanged(BR.order_date);
         this.payment_method=0;
         notifyPropertyChanged(BR.payment_method);
@@ -253,6 +261,17 @@ this.ar_brand_name="";
     public void setService_id(int service_id) {
         this.service_id = service_id;
         notifyPropertyChanged(BR.service_id);
+
+    }
+
+    @Bindable
+    public int getSub_serv_id() {
+        return sub_serv_id;
+    }
+
+    public void setSub_serv_id(int sub_serv_id) {
+        this.sub_serv_id = sub_serv_id;
+        notifyPropertyChanged(BR.sub_serv_id);
 
     }
 
@@ -353,11 +372,11 @@ this.ar_brand_name="";
     }
 
     @Bindable
-    public long getOrder_date() {
+    public String getOrder_date() {
         return order_date;
     }
 
-    public void setOrder_date(long order_date) {
+    public void setOrder_date(String order_date) {
         this.order_date = order_date;
         notifyPropertyChanged(BR.order_date);
 

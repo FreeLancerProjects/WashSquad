@@ -139,6 +139,8 @@
     <string name="cong">تهانينا ! تم حصولك على</string>
     <string name="disc">خصم.</string>
     <string name="ch_brand">إختر الماركة</string>
+    <string name="change_password">Change Password</string>
+    <string name="see_your_photo">See Your Photo</string>
 
 
 </resources>

@@ -44,18 +44,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="50dp"
+    android:gravity="center"
 
+    >
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
                 android:gravity="center"
                 android:text='@{lang.equals("ar")?(OrderModel.service_ar_title??""):(OrderModel.service_en_title??"")}'
                 android:textColor="@color/white"
                 android:textSize="15sp"
 
                 />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text='@{lang.equals("ar")?(OrderModel.service_level2_ar_title??""):(OrderModel.service_level2_en_title??"")}'
+        android:textColor="@color/white"
+        android:textSize="15sp"
 
+        />
+</LinearLayout>
             <TextView
                 date="@{OrderModel.order_date}"
                 workTime="@{OrderModel.work_time_choosen}"
@@ -182,7 +197,17 @@
                 app:srb_starsSeparation="10dp"
                 app:srb_stepSize=".5"
                 />
+            <TextView
+                android:id="@+id/tv_see"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@string/see_your_photo"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
 
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

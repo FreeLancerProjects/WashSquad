@@ -110,18 +110,31 @@
 
                         />
                 </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
 
+    >
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:text='@{lang.equals("ar")?OrderModel.carType__ar_title:OrderModel.carType_en_title}'
                     android:textColor="@color/white"
                     android:textSize="15sp"
 
                     />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text='@{lang.equals("ar")?OrderModel.brand__ar_title:OrderModel.brand_en_title}'
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
 
+                    />
+</LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -180,7 +193,17 @@
                     app:srb_starSize="25dp"
                     app:srb_starsSeparation="10dp"
                     app:srb_stepSize=".5" />
+                <TextView
+                    android:id="@+id/tv_see"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/see_your_photo"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
 
+                    />
 
             </LinearLayout>
 

@@ -144,6 +144,12 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
 
         createCountryDialog();
         binding.image.setOnClickListener(view -> CreateImageAlertDialog());
+        binding.llChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.displayFragmentNewpass();
+            }
+        });
     }
 
     private void CreateImageAlertDialog() {
@@ -320,7 +326,7 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
                 });
     }
 
-    private void update(UserModel body) {
+    public void update(UserModel body) {
 
         userModel = body;
         preferences.create_update_userData(activity, userModel);

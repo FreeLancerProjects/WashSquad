@@ -15,7 +15,7 @@ public class Order_Data_Model implements Serializable {
         return data;
     }
 
-    public static  class OrderModel implements Serializable {
+    public static class OrderModel implements Serializable {
         private int id;
         private int order_type;
         private int user_id;
@@ -63,6 +63,11 @@ public class Order_Data_Model implements Serializable {
         private String work_time_choosen;
         private String work_time_en_title;
         private String work_time_ar_title;
+        private String service_level2_en_title;
+        private String service_level2_ar_title;
+        private String brand_en_title;
+        private String brand__ar_title;
+        private String see_images;
 
         public int getId() {
             return id;
@@ -250,6 +255,26 @@ public class Order_Data_Model implements Serializable {
 
         public String getWork_time_ar_title() {
             return work_time_ar_title;
+        }
+
+        public String getService_level2_en_title() {
+            return service_level2_en_title;
+        }
+
+        public String getService_level2_ar_title() {
+            return service_level2_ar_title;
+        }
+
+        public String getBrand_en_title() {
+            return brand_en_title;
+        }
+
+        public String getBrand__ar_title() {
+            return brand__ar_title;
+        }
+
+        public String getSee_images() {
+            return see_images;
         }
 
         private List<order_images> order_images;

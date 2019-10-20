@@ -21,6 +21,7 @@ import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fra
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.fragment_profile.Fragment_Order_Detials;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.fragment_profile.Fragment_Order_Detials_Evaluation;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.fragment_profile.Fragment_Profile;
+import com.creative.share.apps.wash_squad.activities_fragments.activity_sign_in.Fragment_Newpass;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_sign_in.SignInActivity;
 import com.creative.share.apps.wash_squad.databinding.ActivityHomeBinding;
 import com.creative.share.apps.wash_squad.language.LanguageHelper;
@@ -52,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
     private Preferences preferences;
     private UserModel userModel;
     private SingleTon singleTon;
+    private Fragment_Newpass fragment_newpass;
 
     @Override
     protected void onResume() {
@@ -306,12 +308,23 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+    public void displayFragmentNewpass() {
+        fragment_count ++;
+        fragment_newpass = Fragment_Newpass.newInstance(userModel,2);
+
+        fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_newpass, "fragment_newpass").addToBackStack("fragment_newpass").commit();
+
+    }
     public void DisplayFragmentOrderDetialsEvaluation(Order_Data_Model.OrderModel orderModel)
     {
         try {
-
-                fragment_order_detials_evaluation = Fragment_Order_Detials_Evaluation.newInstance(orderModel);
-            if(fragment_order_detials!=null&&fragment_order_detials.isAdded()){
+                if(fragment_order_detials_evaluation==null) {
+                    fragment_order_detials_evaluation = Fragment_Order_Detials_Evaluation.newInstance(orderModel);
+                }
+                else {
+                    fragment_order_detials_evaluation.refresh(orderModel);
+                }
+                if(fragment_order_detials!=null&&fragment_order_detials.isAdded()){
                 fragmentManager.beginTransaction().hide(fragment_order_detials).commit();
             }
             if (fragment_order_detials_evaluation.isAdded()) {
@@ -330,8 +343,12 @@ public class HomeActivity extends AppCompatActivity {
     public void DisplayFragmentOrderDetials(Order_Data_Model.OrderModel orderModel)
     {
         try {
+if(fragment_order_detials==null){
+            fragment_order_detials = Fragment_Order_Detials.newInstance(orderModel);}
+else {
+    fragment_order_detials.refresh(orderModel);
+}
 
-            fragment_order_detials = Fragment_Order_Detials.newInstance(orderModel);
             if(fragment_order_detials_evaluation!=null&&fragment_order_detials_evaluation.isAdded()){
                 fragmentManager.beginTransaction().hide(fragment_order_detials_evaluation).commit();
             }
@@ -421,6 +438,13 @@ public class HomeActivity extends AppCompatActivity {
     public void updateprofile() {
         if(fragment_profile!=null&&fragment_profile.isAdded()){
             fragment_profile.getOrders();
+        }
+    }
+
+    public void refreshprofile(UserModel userModel) {
+        this.userModel=userModel;
+        if(fragment_profile!=null){
+            fragment_profile.update(userModel);
         }
     }
 }

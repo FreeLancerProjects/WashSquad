@@ -1,5 +1,7 @@
 package com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.fragment_profile;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,8 +61,24 @@ public class Fragment_Order_Detials extends Fragment {
         orderModel = (Order_Data_Model.OrderModel) getArguments().getSerializable(Tag);
         binding.setLang(lang);
         binding.setOrderModel(orderModel);
+        binding.tvSee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(orderModel.getSee_images()!=null){
+                    createSocialIntent(orderModel.getSee_images());
+                }
+            }
+        });
 
     }
+    private void createSocialIntent(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+    }
 
+    public void refresh(Order_Data_Model.OrderModel orderModel) {
+        this.orderModel=orderModel;
+        binding.setOrderModel(orderModel);
 
+    }
 }

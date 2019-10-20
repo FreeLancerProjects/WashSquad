@@ -120,6 +120,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
         itemToUpload.setEn_service_type(service_name_en);
        itemToUpload.setLevel2(serviceModel);
         binding.setItemModel(itemToUpload);
+        itemToUpload.setSub_serv_id(serviceModel.getId());
         additional_service = new ArrayList<>();
         carSizeModelList = new ArrayList<>();
         carTypeModelList = new ArrayList<>();
@@ -279,7 +280,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                 d = dateFormat.format(new Date(date));
                 binding.tvDate.setText(d);
 
-                itemToUpload.setOrder_date(date / 1000);
+                itemToUpload.setOrder_date(d);
                 binding.setItemModel(itemToUpload);
 
                 Intent intent = new Intent(ServiceDetailsActivity.this, TimeActivity.class);
@@ -456,7 +457,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                 d = dateFormat.format(new Date(date));
                 binding.tvDate.setText(d);
-                itemToUpload.setOrder_date(date / 1000);
+                itemToUpload.setOrder_date(d);
                 binding.setItemModel(itemToUpload);
 
 

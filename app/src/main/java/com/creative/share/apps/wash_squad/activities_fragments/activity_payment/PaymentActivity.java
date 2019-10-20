@@ -92,7 +92,8 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
         binding.progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd/MMM",Locale.ENGLISH);
-        String m_date = dateFormat.format(new Date(itemToUpload.getOrder_date()*1000));
+       // String m_date = dateFormat.format(new Date(itemToUpload.getOrder_date()*1000));
+        String m_date=itemToUpload.getOrder_date();
         binding.tvDate.setText(String.format("%s %s %s",m_date,itemToUpload.getTime(),itemToUpload.getTime_type()));
 
 

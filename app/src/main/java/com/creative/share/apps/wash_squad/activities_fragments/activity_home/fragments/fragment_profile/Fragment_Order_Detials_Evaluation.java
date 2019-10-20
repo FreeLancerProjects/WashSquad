@@ -1,6 +1,8 @@
 package com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.fragment_profile;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -81,7 +83,20 @@ public class Fragment_Order_Detials_Evaluation extends Fragment implements Liste
         binding.setOrderModel(orderModel);
         binding.setRatingOrderModel(rating_order_model);
         binding.setRatelistner(this);
-
+        if(orderModel.getStatus()==3){
+            binding.tvSee.setVisibility(View.VISIBLE);
+        }
+        else {
+            binding.tvSee.setVisibility(View.GONE);
+        }
+        binding.tvSee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+if(orderModel.getSee_images()!=null){
+    createSocialIntent(orderModel.getSee_images());
+}
+            }
+        });
         binding.rateBar.setOnRatingBarChangeListener(new SimpleRatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(SimpleRatingBar simpleRatingBar, float rating, boolean fromUser) {
@@ -154,5 +169,15 @@ public class Fragment_Order_Detials_Evaluation extends Fragment implements Liste
                         }
                     }
                 });
+    }
+    private void createSocialIntent(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+    }
+
+    public void refresh(Order_Data_Model.OrderModel orderModel) {
+        this.orderModel=orderModel;
+        binding.setOrderModel(orderModel);
+
     }
 }
