@@ -84,10 +84,12 @@ public class Fragment_Newpass extends Fragment implements Listeners.PasswordList
         if (type == 1) {
             activity = (SignInActivity) getActivity();
             Paper.init(activity);
+            binding.btnLogin.setText(activity.getString(R.string.login));
 
         } else {
             homeActivity = (HomeActivity) getActivity();
             Paper.init(homeActivity);
+            binding.btnLogin.setText(homeActivity.getResources().getString(R.string.change_password));
 
         }
         preferences = Preferences.newInstance();
@@ -196,8 +198,9 @@ public class Fragment_Newpass extends Fragment implements Listeners.PasswordList
                             if (response.isSuccessful() && response.body() != null) {
                                 userModel = response.body();
                                 preferences.create_update_userData(homeActivity, userModel);
-                                homeActivity.refreshprofile(userModel);
                                 Toast.makeText(homeActivity, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+
+                                homeActivity.refreshprofile(userModel);
 
 
                             } else {
