@@ -114,13 +114,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
+    android:orientation="horizontal"
 
     >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text='@{lang.equals("ar")?OrderModel.carType__ar_title:OrderModel.carType_en_title}'
+                    android:text='@{lang.equals("ar")?OrderModel.carType__ar_title+"-":OrderModel.carType_en_title+"-"}'
                     android:textColor="@color/white"
                     android:textSize="15sp"
 

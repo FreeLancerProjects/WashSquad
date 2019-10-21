@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text='@{lang.equals("ar")?(OrderModel.service_ar_title??""):(OrderModel.service_en_title??"")}'
+                android:text='@{lang.equals("ar")?(OrderModel.service_ar_title+"-"??""):(OrderModel.service_en_title+"-"??"")}'
                 android:textColor="@color/white"
                 android:textSize="15sp"
 
@@ -133,17 +133,35 @@
             android:background="@color/white"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/ll">
-            <TextView
-                android:layout_width="match_parent"
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginTop="5dp"
+android:layout_gravity="center"
+                >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text='@{lang.equals("ar")?OrderModel.carType__ar_title:OrderModel.carType_en_title}'
+                android:layout_gravity="center"
+                android:text='@{lang.equals("ar")?OrderModel.carType__ar_title+"-":OrderModel.carType_en_title+"-"}'
                 android:textColor="@color/colorPrimary"
                 android:textSize="15sp"
 
                 />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text='@{lang.equals("ar")?OrderModel.brand__ar_title:OrderModel.brand_en_title}'
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
 
+                    />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

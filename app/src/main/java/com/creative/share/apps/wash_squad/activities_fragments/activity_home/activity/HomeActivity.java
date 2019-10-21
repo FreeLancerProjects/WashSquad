@@ -446,5 +446,6 @@ else {
         if(fragment_profile!=null){
             fragment_profile.update(userModel);
         }
+        back();
     }
 }

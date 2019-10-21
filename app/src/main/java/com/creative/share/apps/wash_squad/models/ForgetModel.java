@@ -28,7 +28,6 @@ public class ForgetModel extends BaseObservable {
         notifyPropertyChanged(BR.phone_code);
         this.phone = phone;
         notifyPropertyChanged(BR.phone);
-        notifyPropertyChanged(BR.password);
 
 
     }

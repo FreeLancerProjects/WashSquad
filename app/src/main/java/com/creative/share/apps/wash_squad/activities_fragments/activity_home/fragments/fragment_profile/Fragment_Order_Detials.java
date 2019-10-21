@@ -78,7 +78,9 @@ public class Fragment_Order_Detials extends Fragment {
 
     public void refresh(Order_Data_Model.OrderModel orderModel) {
         this.orderModel=orderModel;
+
         binding.setOrderModel(orderModel);
+
 
     }
 }

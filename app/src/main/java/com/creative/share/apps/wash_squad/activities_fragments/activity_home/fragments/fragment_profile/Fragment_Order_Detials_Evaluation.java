@@ -178,6 +178,8 @@ if(orderModel.getSee_images()!=null){
     public void refresh(Order_Data_Model.OrderModel orderModel) {
         this.orderModel=orderModel;
         binding.setOrderModel(orderModel);
+        rating_order_model=new Rating_Order_Model();
+        binding.setRatingOrderModel(rating_order_model);
 
     }
 }
