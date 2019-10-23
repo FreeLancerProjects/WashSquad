@@ -9,7 +9,7 @@
             type="String" />
         <variable
             name="carSizeModel"
-            type="com.creative.share.apps.wash_squad_driver.models.CarSizeDataModel.CarSizeModel" />
+            type="com.creative.share.apps.wash_squad.models.CarSizeDataModel.CarSizeModel" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"

@@ -89,7 +89,7 @@
 
     <string name="my_order">My order</string>
     <string name="no_orders_to_display">No Orders to display</string>
-    <string name="price">Price</string>
+    <string name="price">Price : </string>
     <string name="no_notifications_to_display">No notifications to display</string>
     <string name="send_order">Send Order</string>
     <string name="add_comment">Add Comment</string>
@@ -140,6 +140,9 @@
     <string name="inv_coupon">Invalid coupon</string>
     <string name="cong">Congratulation ! you get</string>
     <string name="disc">discount.</string>
+    <string name="ch_brand">Choose brand</string>
+    <string name="change_password">Change Password</string>
+    <string name="see_your_photo">See Your Photo</string>
 
 
 </resources>

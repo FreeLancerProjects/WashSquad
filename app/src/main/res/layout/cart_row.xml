@@ -8,7 +8,7 @@
             type="String" />
         <variable
             name="itemModel"
-            type="com.creative.share.apps.wash_squad_driver.models.ItemToUpload" />
+            type="com.creative.share.apps.wash_squad.models.ItemToUpload" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"

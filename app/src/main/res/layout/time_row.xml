@@ -5,7 +5,7 @@
     <data>
         <variable
             name="time"
-            type="com.creative.share.apps.wash_squad_driver.models.TimeDataModel.TimeModel" />
+            type="com.creative.share.apps.wash_squad.models.TimeDataModel.TimeModel" />
     </data>
 
     <LinearLayout

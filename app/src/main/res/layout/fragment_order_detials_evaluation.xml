@@ -8,7 +8,7 @@
 
         <variable
             name="ratelistner"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.RatingListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.RatingListener" />
 
         <variable
             name="lang"
@@ -16,11 +16,11 @@
 
         <variable
             name="OrderModel"
-            type="com.creative.share.apps.wash_squad_driver.models.Order_Data_Model.OrderModel" />
+            type="com.creative.share.apps.wash_squad.models.Order_Data_Model.OrderModel" />
 
         <variable
             name="RatingOrderModel"
-            type="com.creative.share.apps.wash_squad_driver.models.Rating_Order_Model" />
+            type="com.creative.share.apps.wash_squad.models.Rating_Order_Model" />
 
     </data>
 
@@ -44,18 +44,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="50dp"
+    android:gravity="center"
 
+    >
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
                 android:gravity="center"
-                android:text='@{lang.equals("ar")?(OrderModel.service_ar_title??""):(OrderModel.service_en_title??"")}'
+                android:text='@{lang.equals("ar")?(OrderModel.service_ar_title+"-"??""):(OrderModel.service_en_title+"-"??"")}'
                 android:textColor="@color/white"
                 android:textSize="15sp"
 
                 />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text='@{lang.equals("ar")?(OrderModel.service_level2_ar_title??""):(OrderModel.service_level2_en_title??"")}'
+        android:textColor="@color/white"
+        android:textSize="15sp"
 
+        />
+</LinearLayout>
             <TextView
                 date="@{OrderModel.order_date}"
                 workTime="@{OrderModel.work_time_choosen}"
@@ -72,6 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+               android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
@@ -118,6 +134,61 @@
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/ll">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+android:layout_gravity="center"
+                >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text='@{lang.equals("ar")?OrderModel.carType__ar_title+"-":OrderModel.carType_en_title+"-"}'
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
+
+                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text='@{lang.equals("ar")?OrderModel.brand__ar_title:OrderModel.brand_en_title}'
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/price"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text='@{lang.equals("ar")?Math.round(OrderModel.total_price)+"رس":Math.round(OrderModel.total_price)+"rs"}'
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+
+                    />
+            </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,7 +215,17 @@
                 app:srb_starsSeparation="10dp"
                 app:srb_stepSize=".5"
                 />
+            <TextView
+                android:id="@+id/tv_see"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@string/see_your_photo"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
 
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

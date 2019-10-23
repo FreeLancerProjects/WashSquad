@@ -9,7 +9,7 @@
 
         <variable
             name="backListener"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.BackListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.BackListener" />
 
         <variable
             name="lang"
@@ -17,7 +17,7 @@
 
         <variable
             name="itemModel"
-            type="com.creative.share.apps.wash_squad_driver.models.ItemToUpload" />
+            type="com.creative.share.apps.wash_squad.models.ItemToUpload" />
 
 
     </data>
@@ -297,7 +297,7 @@
                             android:gravity="center_vertical|end"
                             android:paddingLeft="8dp"
                             android:paddingRight="8dp"
-                            android:text="@{itemModel.user_phone}"
+                            android:text='@{"0"+itemModel.user_phone}'
                             android:textColor="@color/gray5"
                             android:textSize="14sp"
 
@@ -318,12 +318,22 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical|end"
                             android:paddingLeft="8dp"
                             android:paddingRight="8dp"
                             android:text='@{lang.equals("ar")?itemModel.ar_car_type:itemModel.en_car_type}'
+                            android:textColor="@color/gray5"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical|end"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:text='@{lang.equals("ar")?"-"+itemModel.ar_brand_name:"-"+itemModel.en_brand_name}'
                             android:textColor="@color/gray5"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -342,12 +352,21 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical|end"
                             android:paddingLeft="8dp"
                             android:paddingRight="8dp"
                             android:text='@{lang.equals("ar")?itemModel.ar_service_type:itemModel.en_service_type}'
+                            android:textColor="@color/gray5"
+                            android:textSize="14sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical|end"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:text='@{lang.equals("ar")?"-"+itemModel.level2.ar_title:"-"+itemModel.level2.en_title}'
                             android:textColor="@color/gray5"
                             android:textSize="14sp" />
                     </LinearLayout>

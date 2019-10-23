@@ -9,7 +9,7 @@
             type="String" />
         <variable
             name="serviceModel"
-            type="com.creative.share.apps.wash_squad_driver.models.ServiceDataModel.ServiceModel" />
+            type="com.creative.share.apps.wash_squad.models.ServiceDataModel.ServiceModel" />
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

@@ -14,7 +14,7 @@
 
         <variable
             name="OrderModel"
-            type="com.creative.share.apps.wash_squad_driver.models.Order_Data_Model.OrderModel" />
+            type="com.creative.share.apps.wash_squad.models.Order_Data_Model.OrderModel" />
 
 
     </data>
@@ -24,7 +24,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray0"
-        android:paddingBottom="8dp">
+        android:paddingBottom="8dp"
+
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -85,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <TextView
@@ -107,6 +110,59 @@
 
                         />
                 </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:orientation="horizontal"
+
+    >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text='@{lang.equals("ar")?OrderModel.carType__ar_title+"-":OrderModel.carType_en_title+"-"}'
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text='@{lang.equals("ar")?OrderModel.brand__ar_title:OrderModel.brand_en_title}'
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+
+                    />
+</LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/price"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text='@{lang.equals("ar")?Math.round(OrderModel.total_price)+"رس":Math.round(OrderModel.total_price)+"rs"}'
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+
+                        />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -119,6 +175,7 @@
 
                     />
 
+
                 <com.iarcuschin.simpleratingbar.SimpleRatingBar
                     android:id="@+id/rateBar"
                     rate="@{OrderModel.rating}"
@@ -129,7 +186,7 @@
                     android:layout_marginBottom="20dp"
                     app:srb_borderColor="@color/white"
                     app:srb_drawBorderEnabled="true"
-                    app:srb_fillColor="@color/colorPrimary"
+                    app:srb_fillColor="@color/color_second"
                     app:srb_isIndicator="true"
                     app:srb_numberOfStars="5"
                     app:srb_starBackgroundColor="@color/white"
@@ -137,7 +194,17 @@
                     app:srb_starSize="25dp"
                     app:srb_starsSeparation="10dp"
                     app:srb_stepSize=".5" />
+                <TextView
+                    android:id="@+id/tv_see"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/see_your_photo"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
 
+                    />
 
             </LinearLayout>
 

@@ -10,18 +10,18 @@
 
         <variable
             name="signUpModel"
-            type="com.creative.share.apps.wash_squad_driver.models.SignUpModel" />
+            type="com.creative.share.apps.wash_squad.models.SignUpModel" />
 
         <variable
             name="showCountryListener"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.ShowCountryDialogListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.ShowCountryDialogListener" />
 
         <variable
             name="signUpListener"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.SignUpListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.SignUpListener" />
         <variable
             name="backListener"
-            type="com.creative.share.apps.wash_squad_driver.interfaces.Listeners.BackListener" />
+            type="com.creative.share.apps.wash_squad.interfaces.Listeners.BackListener" />
     </data>
     <ScrollView
         android:layout_width="match_parent"

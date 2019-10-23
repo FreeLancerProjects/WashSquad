@@ -43,6 +43,20 @@
 
                 />
 
+            <ImageView
+                android:id="@+id/imageLogout"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_logout"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:padding="5dp"
+                android:layout_gravity="end"
+                android:tint="@color/white"
+
+
+                />
+
         </androidx.appcompat.widget.Toolbar>
 
 
