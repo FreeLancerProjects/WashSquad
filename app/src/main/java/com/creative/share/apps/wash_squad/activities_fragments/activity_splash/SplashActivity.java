@@ -40,7 +40,6 @@ public class SplashActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this,R.layout.activity_splash);
         preferences = Preferences.newInstance();
-
         animation= AnimationUtils.loadAnimation(getBaseContext(),R.anim.lanuch);
         binding.cons.startAnimation(animation);
 
