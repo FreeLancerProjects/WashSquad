@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.creative.share.apps.wash_squad.R;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.activity.HomeActivity;
+import com.creative.share.apps.wash_squad.activities_fragments.activity_intro.Intro_Activity;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_sign_in.SignInActivity;
 import com.creative.share.apps.wash_squad.databinding.ActivitySplashBinding;
 import com.creative.share.apps.wash_squad.language.LanguageHelper;
@@ -59,8 +60,14 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }else
                 {
+                    if(preferences.getisfirsttime(SplashActivity.this)==true){
+                        Intent i = new Intent(SplashActivity.this, Intro_Activity.class);
+                        startActivity(i);
+
+                    }
+                    else {
                     Intent intent=new Intent(SplashActivity.this, SignInActivity.class);
-                    startActivity(intent);
+                    startActivity(intent);}
                     finish();
                 }
 

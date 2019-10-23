@@ -112,5 +112,16 @@ public class Preferences {
         editor2.apply();
 
     }
+    public void create_first_time(Context context, boolean isfirsttime){
+        SharedPreferences sharedPreferences=context.getSharedPreferences("isfirsttime",Context.MODE_PRIVATE);
 
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putBoolean("isfirsttime",isfirsttime);
+        editor.apply();
+
+    }
+    public boolean getisfirsttime(Context context){
+        SharedPreferences sharedPreferences=context.getSharedPreferences("isfirsttime",Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean("isfirsttime",true);
+    }
 }
