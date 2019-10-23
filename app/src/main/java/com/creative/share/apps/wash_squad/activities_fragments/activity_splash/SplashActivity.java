@@ -42,7 +42,6 @@ public class SplashActivity extends AppCompatActivity {
         preferences = Preferences.newInstance();
         animation= AnimationUtils.loadAnimation(getBaseContext(),R.anim.lanuch);
         binding.cons.startAnimation(animation);
-
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
