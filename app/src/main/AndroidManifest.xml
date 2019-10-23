@@ -79,17 +79,15 @@
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_splash.SplashActivity"
-            android:configChanges="screenSize|orientation|keyboardHidden"
-            android:windowSoftInputMode="stateAlwaysHidden">
-
+            android:name=".activities_fragments.activity_splash.SplashActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
+        </activity>        <activity
             android:name="com.creative.share.apps.wash_squad.activities_fragments.activity_intro.Intro_Activity"
             android:configChanges="screenSize|orientation|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden"/>

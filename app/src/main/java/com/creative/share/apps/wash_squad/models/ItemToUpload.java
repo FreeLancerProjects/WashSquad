@@ -11,7 +11,6 @@ import androidx.databinding.ObservableField;
 import com.creative.share.apps.wash_squad.BR;
 import com.creative.share.apps.wash_squad.R;
 
-import org.stringtemplate.v4.ST;
 
 import java.io.Serializable;
 import java.security.Provider;

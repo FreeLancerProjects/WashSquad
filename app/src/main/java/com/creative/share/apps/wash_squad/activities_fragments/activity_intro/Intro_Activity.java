@@ -28,7 +28,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
-import org.apache.commons.codec.language.bm.Languages;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -94,8 +93,8 @@ binding.btnNext.setOnClickListener(new View.OnClickListener() {
         }
     }
     public class Intro_Pager_Adapter extends PagerAdapter {
-        private int[] layouts = new int[]{R.layout.introslider1, R.layout.introslider2, R.layout.introslider3, R.layout.introslider4,R.layout.introslider5};
-        private int image[]=new int[]{R.drawable.slider1,R.drawable.slider2,R.drawable.slider3,R.drawable.slider4,R.drawable.slider5};
+        private int[] layouts = new int[]{R.layout.introslider1, R.layout.introslider2, R.layout.introslider3};
+        private int image[]=new int[]{R.drawable.slider1,R.drawable.slider2,R.drawable.slider3};
         private LayoutInflater layoutInflater;
         Intro_Activity intro_activity;
         View view = null;

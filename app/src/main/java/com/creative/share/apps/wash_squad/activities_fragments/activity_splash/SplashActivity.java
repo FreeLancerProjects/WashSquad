@@ -7,13 +7,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
 
 import com.creative.share.apps.wash_squad.R;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.activity.HomeActivity;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_intro.Intro_Activity;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_sign_in.SignInActivity;
-import com.creative.share.apps.wash_squad.databinding.ActivitySplashBinding;
 import com.creative.share.apps.wash_squad.language.LanguageHelper;
 import com.creative.share.apps.wash_squad.preferences.Preferences;
 import com.creative.share.apps.wash_squad.tags.Tags;
@@ -22,11 +20,13 @@ import java.util.Locale;
 
 import io.paperdb.Paper;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.DataBindingUtil;
+
 public class SplashActivity extends AppCompatActivity {
-    private ActivitySplashBinding binding;
     private Animation animation;
     private Preferences preferences;
-
+private ConstraintLayout cons;
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
@@ -37,11 +37,13 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_splash);
+        setContentView(R.layout.activity_splash);
         preferences = Preferences.newInstance();
         animation= AnimationUtils.loadAnimation(getBaseContext(),R.anim.lanuch);
-        binding.cons.startAnimation(animation);
+        //binding.cons.getMaxHeight();
+        cons=findViewById(R.id.cons);
+        cons.startAnimation(animation);
+
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
