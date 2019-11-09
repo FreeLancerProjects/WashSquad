@@ -39,7 +39,6 @@
             android:textColor="@color/color_second"
             android:textSize="13sp"
             android:gravity="center"
-            android:text='@{level3.price+" "+@string/sar}'
             android:clickable="false"
             android:longClickable="false"
             />

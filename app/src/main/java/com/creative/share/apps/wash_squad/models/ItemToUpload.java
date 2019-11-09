@@ -190,6 +190,7 @@ this.ar_brand_name="";
 
 
 
+
     @Bindable
     public String getAr_car_type() {
         return ar_car_type;

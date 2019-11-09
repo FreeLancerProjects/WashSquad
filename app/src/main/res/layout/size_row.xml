@@ -45,21 +45,6 @@
                 android:text='@{lang.equals("ar")?carSizeModel.ar_title:carSizeModel.en_title}'
                 />
         </LinearLayout>
-        <TextView
-            android:id="@+id/tvPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="35dp"
-            android:background="@drawable/expand_bg"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:textSize="13sp"
-            android:textColor="@color/gray5"
-            android:text='@{carSizeModel.price+" "+@string/sar}'
-
-            />
     </LinearLayout>
 
 </layout>

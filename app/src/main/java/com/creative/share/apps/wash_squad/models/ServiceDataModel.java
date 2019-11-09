@@ -110,7 +110,7 @@ public class ServiceDataModel implements Serializable {
         private String ar_des;
         private String en_des;
         private String image;
-        private String price;
+        private double price;
         private String parent_id;
 
         public int getId() {
@@ -137,8 +137,12 @@ public class ServiceDataModel implements Serializable {
             return image;
         }
 
-        public String getPrice() {
+        public double getPrice() {
             return price;
+        }
+
+        public void setPrice(double price) {
+            this.price = price;
         }
 
         public String getParent_id() {

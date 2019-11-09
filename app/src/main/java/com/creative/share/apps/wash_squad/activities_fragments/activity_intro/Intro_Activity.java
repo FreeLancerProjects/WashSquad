@@ -18,7 +18,6 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 
-
 import com.creative.share.apps.wash_squad.R;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_sign_in.SignInActivity;
 import com.creative.share.apps.wash_squad.databinding.ActivityIntroBinding;
@@ -35,14 +34,14 @@ import java.util.Locale;
 import io.paperdb.Paper;
 
 public class Intro_Activity extends AppCompatActivity {
-ActivityIntroBinding binding;
+    ActivityIntroBinding binding;
     private ViewPager viewPager;
     private TabLayout indicator;
     private Button start;
     private Intro_Pager_Adapter intro_pager_adapter;
     Preferences preferences;
-private  int count=0;
-private ArrayList<View> views;
+    private int count = 0;
+    private ArrayList<View> views;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -55,22 +54,22 @@ private ArrayList<View> views;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro_);
-        if(savedInstanceState==null) {
-            preferences=Preferences.newInstance();
+        if (savedInstanceState == null) {
+            preferences = Preferences.newInstance();
             intro_pager_adapter = new Intro_Pager_Adapter(this);
 
             binding.tab1.setupWithViewPager(viewPager);
             binding.viewPager.setAdapter(intro_pager_adapter);
-            views=new ArrayList<>();
-binding.btnNext.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        preferences.create_first_time(Intro_Activity.this,false);
-        Intent i = new Intent(Intro_Activity.this, SignInActivity.class);
-        startActivity(i);
-        finish();
-    }
-});
+            views = new ArrayList<>();
+            binding.btnNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    preferences.create_first_time(Intro_Activity.this, false);
+                    Intent i = new Intent(Intro_Activity.this, SignInActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
             ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
 
 
@@ -92,33 +91,32 @@ binding.btnNext.setOnClickListener(new View.OnClickListener() {
             };
         }
     }
+
     public class Intro_Pager_Adapter extends PagerAdapter {
         private int[] layouts = new int[]{R.layout.introslider1, R.layout.introslider2, R.layout.introslider3};
-        private int image[]=new int[]{R.drawable.slider1,R.drawable.slider2,R.drawable.slider3};
+        private int image[] = new int[]{R.drawable.slider1, R.drawable.slider2, R.drawable.slider3};
         private LayoutInflater layoutInflater;
         Intro_Activity intro_activity;
         View view = null;
+
         public Intro_Pager_Adapter(Intro_Activity intro_activity) {
-            this.intro_activity=intro_activity;
+            this.intro_activity = intro_activity;
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-try {
+            try {
 
-    view = layoutInflater.inflate(layouts[position], container, false);
-    ImageView imageView = view.findViewById(R.id.item_image);
-Picasso.with(intro_activity).load(image[position]).fit().memoryPolicy(MemoryPolicy.NO_CACHE).into(imageView);
-container.addView(view);
-
-
+                view = layoutInflater.inflate(layouts[position], container, false);
+                ImageView imageView = view.findViewById(R.id.item_image);
+                Picasso.with(intro_activity).load(image[position]).fit().memoryPolicy(MemoryPolicy.NO_CACHE).into(imageView);
+                container.addView(view);
 
 
-
-}catch (OutOfMemoryError e){
-    Log.e("Error",e.getCause()+"");
-}
+            } catch (OutOfMemoryError e) {
+                Log.e("Error", e.getCause() + "");
+            }
 
             return view;
         }

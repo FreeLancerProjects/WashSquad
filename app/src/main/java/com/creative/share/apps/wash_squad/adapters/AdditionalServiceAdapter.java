@@ -1,6 +1,7 @@
 package com.creative.share.apps.wash_squad.adapters;
 
 import android.content.Context;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -24,6 +25,7 @@ public class AdditionalServiceAdapter extends RecyclerView.Adapter<AdditionalSer
     private Context context;
     private String lang;
     private ServiceDetailsActivity activity;
+    private SparseBooleanArray sparseBooleanArray;
 
     public AdditionalServiceAdapter(List<ServiceDataModel.Level3> serviceModelList, Context context) {
         this.serviceModelList = serviceModelList;
@@ -31,6 +33,7 @@ public class AdditionalServiceAdapter extends RecyclerView.Adapter<AdditionalSer
         activity = (ServiceDetailsActivity) context;
         Paper.init(context);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+        sparseBooleanArray = new SparseBooleanArray();
     }
 
     @NonNull
@@ -47,26 +50,45 @@ public class AdditionalServiceAdapter extends RecyclerView.Adapter<AdditionalSer
         holder.additionalServiceRowBinding.setLang(lang);
         holder.additionalServiceRowBinding.setLevel3(serviceModel);
 
+        if (sparseBooleanArray.get(position,false) ) {
+            holder.additionalServiceRowBinding.checkbox.setChecked(true);
+        } else {
+            holder.additionalServiceRowBinding.checkbox.setChecked(false);
+
+        }
 
         holder.additionalServiceRowBinding.checkbox.setOnClickListener(view -> {
 
             if (holder.additionalServiceRowBinding.checkbox.isChecked()) {
+
+                sparseBooleanArray.put(holder.getAdapterPosition(),true);
+
                 ServiceDataModel.Level3 serviceModel1 = serviceModelList.get(holder.getAdapterPosition());
                 activity.setItemAdditionService(serviceModel1);
+                notifyDataSetChanged();
 
 
             } else {
+
+                sparseBooleanArray.put(holder.getAdapterPosition(),false);
+
                 ServiceDataModel.Level3 serviceModel1 = serviceModelList.get(holder.getAdapterPosition());
 
                 activity.removeAdditionalItem(serviceModel1);
+                notifyDataSetChanged();
 
             }
-
 
 
         });
 
 
+    }
+
+    public void clearSelection()
+    {
+        this.sparseBooleanArray.clear();
+        notifyDataSetChanged();
     }
 
     @Override

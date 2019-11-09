@@ -127,10 +127,11 @@ public interface Service {
     Call<UserModel> edit_profile(@Field("user_id") String user_id,
                                  @Field("full_name") String full_name
     );
+
     @FormUrlEncoded
     @POST("api/client/password/change")
     Call<UserModel> edit_pass(@Field("user_id") String user_id,
-                                 @Field("new_pass") String new_pass
+                              @Field("new_pass") String new_pass
     );
 
     @Multipart
@@ -157,6 +158,12 @@ public interface Service {
     @POST("api/coupon/check")
     Call<CouponModel> getCoupon(@Field("user_id") int user_id,
                                 @Field("coupon_serial") String coupon_serial
+    );
+
+    @FormUrlEncoded
+    @POST("api/getPrice")
+    Call<Double> getPrice(@Field("service_id") int service_id,
+                          @Field("size_id") int size_id
     );
 
 }

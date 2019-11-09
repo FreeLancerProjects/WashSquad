@@ -77,6 +77,10 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
     private UserModel userModel;
     private Preferences preferences;
     private List<ItemToUpload.SubServiceModel> subServiceModelList;
+    private int count=1;
+    private int size_id=0;
+    private double total = 0.0,final_total=0.0;
+
 
 
     @Override
@@ -112,13 +116,15 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
         carBrandModelList.add(new CarTypeDataModel.CarBrandModel("إختر الماركة", "Choose brand"));
         subServiceModelList = new ArrayList<>();
         preferences = Preferences.newInstance();
+        binding.setPrice(0.0);
+        binding.setTotal(total);
         userModel = preferences.getUserData(this);
         itemToUpload = new ItemToUpload();
         itemToUpload.setSub_services(subServiceModelList);
         itemToUpload.setService_id(service_id);
         itemToUpload.setAr_service_type(service_name_ar);
         itemToUpload.setEn_service_type(service_name_en);
-       itemToUpload.setLevel2(serviceModel);
+        itemToUpload.setLevel2(serviceModel);
         binding.setItemModel(itemToUpload);
         itemToUpload.setSub_serv_id(serviceModel.getId());
         additional_service = new ArrayList<>();
@@ -159,12 +165,19 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
         carTypeAdapter = new CarTypeAdapter(this, carTypeModelList);
         binding.spinner.setAdapter(carTypeAdapter);
 
+
         binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 if (i == 0) {
                     carBrandModelList.clear();
+                    count =1;
+                    total = 0.0;
+                    binding.setTotal(total);
+
+                    binding.setPrice(0.0);
+                    binding.tvCount.setText(String.valueOf(count));
 
                     itemToUpload.setCarType_id(0);
                     itemToUpload.setAr_car_type("");
@@ -173,6 +186,12 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                     binding.setItemModel(itemToUpload);
                     carBrandModelList.add(new CarTypeDataModel.CarBrandModel("إختر الماركة", "Choose brand"));
                     carBrandAdapter.notifyDataSetChanged();
+
+                    if (additionalServiceAdapter!=null)
+                    {
+                        additionalServiceAdapter.clearSelection();
+                    }
+
                     if (carSizeAdapter != null) {
                         carSizeAdapter.setSelection(-1);
                     }
@@ -198,10 +217,18 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
 
             }
         });
+
         binding.spinnerBrand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
+                    count =1;
+                    total = 0.0;
+                    binding.setTotal(total);
+
+                    binding.setPrice(0.0);
+                    binding.tvCount.setText(String.valueOf(count));
+
                     itemToUpload.setCarSize_id(0);
                     itemToUpload.setService_price(0);
                     itemToUpload.setBrand_id(0);
@@ -211,6 +238,12 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                     if (carSizeAdapter != null) {
                         carSizeAdapter.setSelection(-1);
                     }
+
+                    if (additionalServiceAdapter!=null)
+                    {
+                        additionalServiceAdapter.clearSelection();
+                    }
+
                 } else {
                     itemToUpload.setService_price(carBrandModelList.get(i).getSize_price());
                     itemToUpload.setBrand_id(carBrandModelList.get(i).getId());
@@ -225,6 +258,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                         if (carSizeAdapter != null) {
                             carSizeAdapter.setSelection(-1);
                         }
+                        size_id = 0;
                         itemToUpload.setCarSize_id(0);
 
                     } else {
@@ -232,9 +266,15 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                             carSizeAdapter.setSelection(pos);
                         }
 
+                        size_id = carSizeModelList.get(pos).getId();
+                        getPrice(serviceModel.getId(),carSizeModelList.get(pos).getId());
+
                         itemToUpload.setCarSize_id(carSizeModelList.get(pos).getId());
 
                     }
+
+
+
                 }
             }
 
@@ -301,12 +341,11 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
 
         binding.btnSendOrder.setOnClickListener(view -> {
             if (itemToUpload.isDataValidStep1(this)) {
-                Log.e("size_id", itemToUpload.getCarSize_id() + "__");
                 if (userModel != null) {
                     itemToUpload.setUser_id(userModel.getId());
                     itemToUpload.setUser_name(userModel.getFull_name());
                     itemToUpload.setUser_phone(userModel.getPhone());
-
+                    itemToUpload.setTotal_price(final_total);
                     Intent intent = new Intent(this, PaymentActivity.class);
                     intent.putExtra("item", itemToUpload);
                     startActivityForResult(intent, 4);
@@ -318,10 +357,160 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
             }
         });
 
+        binding.imageIncrease.setOnClickListener(view -> {
+            count++;
+            binding.tvCount.setText(String.valueOf(count));
+            final_total = total *count;
+
+            binding.setTotal(final_total);
+        });
+
+        binding.imageDecrease.setOnClickListener(view -> {
+            if (count>1)
+            {
+                count--;
+                final_total = total *count;
+                binding.setTotal(final_total);
+                binding.setTotal(total);
+                binding.tvCount.setText(String.valueOf(count));
+            }
+
+        });
         getCarSize();
         getCarType();
 
 
+    }
+
+    private void getPrice(int service_id,int size_id) {
+
+
+        total = 0.0;
+        binding.setTotal(total);
+
+        ProgressDialog dialog = Common.createProgressDialog(ServiceDetailsActivity.this, getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Api.getService(Tags.base_url)
+                .getPrice(service_id,size_id)
+                .enqueue(new Callback<Double>() {
+                    @Override
+                    public void onResponse(Call<Double> call, Response<Double> response) {
+                        dialog.dismiss();
+                        if (response.isSuccessful() && response.body() != null) {
+                            binding.setPrice(response.body());
+                            total =total+ response.body();
+                            final_total = total*count;
+                            binding.setTotal(final_total);
+
+                        } else {
+
+                            try {
+
+                                Log.e("error", response.code() + "_" + response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (response.code() == 404) {
+                            } else if (response.code() == 500) {
+                                Toast.makeText(ServiceDetailsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(ServiceDetailsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Double> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            if (t.getMessage() != null) {
+                                Log.e("error", t.getMessage());
+                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                    Toast.makeText(ServiceDetailsActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(ServiceDetailsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        } catch (Exception e) {
+                        }
+                    }
+                });
+    }
+
+    private void getPriceForAdditionalService(ServiceDataModel.Level3 level3, int size_id) {
+
+        ProgressDialog dialog = Common.createProgressDialog(ServiceDetailsActivity.this, getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Api.getService(Tags.base_url)
+                .getPrice(level3.getId(),size_id)
+                .enqueue(new Callback<Double>() {
+                    @Override
+                    public void onResponse(Call<Double> call, Response<Double> response) {
+                        dialog.dismiss();
+                        if (response.isSuccessful() && response.body() != null) {
+
+                            Log.e("asss",response.body()+"__");
+                            total = total+response.body();
+                            final_total = total*count;
+                            binding.setTotal(final_total);
+
+                            level3.setPrice(response.body());
+                            additional_service.add(level3);
+
+                            subServiceModelList.clear();
+
+                            for (ServiceDataModel.Level3 level3 : additional_service) {
+                                ItemToUpload.SubServiceModel subServiceModel = new ItemToUpload.SubServiceModel(level3.getId(), level3.getPrice(), level3.getAr_title(), level3.getEn_title());
+                                subServiceModelList.add(subServiceModel);
+
+
+                            }
+
+                            itemToUpload.setSub_services(subServiceModelList);
+                        } else {
+                            try {
+
+                                Log.e("error", response.code() + "_" + response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (response.code() == 404) {
+                            } else if (response.code() == 500) {
+                                Toast.makeText(ServiceDetailsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(ServiceDetailsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Double> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            if (t.getMessage() != null) {
+                                Log.e("error", t.getMessage());
+                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                    Toast.makeText(ServiceDetailsActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(ServiceDetailsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        } catch (Exception e) {
+                        }
+                    }
+                });
     }
 
 
@@ -495,26 +684,38 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
     public void setItemAdditionService(ServiceDataModel.Level3 serviceModel) {
 
         if (!hasItem(serviceModel)) {
-            additional_service.add(serviceModel);
 
-            subServiceModelList.clear();
-            for (ServiceDataModel.Level3 level3 : additional_service) {
-                ItemToUpload.SubServiceModel subServiceModel = new ItemToUpload.SubServiceModel(level3.getId(), Double.parseDouble(level3.getPrice()), level3.getAr_title(), level3.getEn_title());
-                subServiceModelList.add(subServiceModel);
+            if (size_id!=0)
+            {
+                getPriceForAdditionalService(serviceModel,size_id);
+            }else
+                {
+                    if (additionalServiceAdapter!=null)
+                    {
+                        additionalServiceAdapter.clearSelection();
+                    }
+                    Toast.makeText(this, getString(R.string.ch_car_size), Toast.LENGTH_SHORT).show();
+                }
 
 
-            }
-
-            itemToUpload.setSub_services(subServiceModelList);
         }
     }
 
     public void removeAdditionalItem(ServiceDataModel.Level3 m_level3) {
         additional_service.remove(getItemPos(m_level3));
+        Log.e("vvvvvvv",m_level3.getPrice()+"__");
+
+        total = total- m_level3.getPrice();
+
+        final_total = total*count;
+
+        Log.e("bbb",final_total+"__");
+
+        binding.setTotal(final_total);
 
         List<ItemToUpload.SubServiceModel> subServiceModelList = new ArrayList<>();
         for (ServiceDataModel.Level3 level3 : additional_service) {
-            ItemToUpload.SubServiceModel subServiceModel = new ItemToUpload.SubServiceModel(level3.getId(), Double.parseDouble(level3.getPrice()), level3.getAr_title(), level3.getEn_title());
+            ItemToUpload.SubServiceModel subServiceModel = new ItemToUpload.SubServiceModel(level3.getId(),level3.getPrice(), level3.getAr_title(), level3.getEn_title());
             subServiceModelList.add(subServiceModel);
 
         }
