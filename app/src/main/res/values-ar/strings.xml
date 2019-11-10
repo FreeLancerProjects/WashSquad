@@ -142,6 +142,7 @@
     <string name="change_password">تغير الرقم السرى </string>
     <string name="see_your_photo">شاهد صورك</string>
     <string name="start_app"> ابدا التطبيق</string>
+    <string name="num_exceed">تم تجاوز الحد الأقصى لعدد طلبات الخدمة المحددة</string>
 
 
 </resources>

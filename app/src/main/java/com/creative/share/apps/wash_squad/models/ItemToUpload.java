@@ -39,6 +39,8 @@ public class ItemToUpload extends BaseObservable implements Serializable {
     private int payment_method;
     private double service_price;
     private double total_price;
+    private int number_of_cars;
+
     private String coupon_serial;
     private String ar_service_type;
     private String en_service_type;
@@ -189,8 +191,6 @@ this.ar_brand_name="";
     }
 
 
-
-
     @Bindable
     public String getAr_car_type() {
         return ar_car_type;
@@ -240,7 +240,13 @@ this.ar_brand_name="";
     }
 
 
+    public int getAmount() {
+        return number_of_cars;
+    }
 
+    public void setAmount(int number_of_cars) {
+        this.number_of_cars = number_of_cars;
+    }
 
     @Bindable
     public int getUser_id() {

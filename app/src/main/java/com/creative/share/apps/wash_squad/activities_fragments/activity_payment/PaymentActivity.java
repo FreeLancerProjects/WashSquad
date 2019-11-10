@@ -32,7 +32,6 @@ import com.creative.share.apps.wash_squad.tags.Tags;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -304,6 +303,9 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
                                 }
                                 if (response.code() == 422) {
                                     Toast.makeText(PaymentActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+
+                                }else if (response.code() == 402) {
+                                    Toast.makeText(PaymentActivity.this, R.string.num_exceed, Toast.LENGTH_SHORT).show();
 
                                 }else if (response.code() == 500) {
                                     Toast.makeText(PaymentActivity.this, "Server Error", Toast.LENGTH_SHORT).show();

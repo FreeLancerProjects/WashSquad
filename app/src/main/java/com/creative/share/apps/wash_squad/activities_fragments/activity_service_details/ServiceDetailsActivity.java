@@ -359,6 +359,7 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
 
         binding.imageIncrease.setOnClickListener(view -> {
             count++;
+            itemToUpload.setAmount(count);
             binding.tvCount.setText(String.valueOf(count));
             final_total = total *count;
 
@@ -369,6 +370,8 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
             if (count>1)
             {
                 count--;
+                itemToUpload.setAmount(count);
+
                 final_total = total *count;
                 binding.setTotal(final_total);
                 binding.setTotal(total);
