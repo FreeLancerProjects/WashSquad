@@ -182,7 +182,7 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
     {
         total = 0;
 
-        if (itemToUpload.getSub_services().size()>0)
+        /*if (itemToUpload.getSub_services().size()>0)
         {
             total +=itemToUpload.getService_price();
             total += getAdditionalServicePrice(itemToUpload.getSub_services());
@@ -192,8 +192,9 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
             {
                 total +=(itemToUpload.getService_price())-((itemToUpload.getService_price()*coupon_value)/100);
 
-            }
+            }*/
 
+        total = itemToUpload.getTotal_price()-((itemToUpload.getTotal_price()*coupon_value)/100);
 
 
         itemToUpload.setTotal_price(total);

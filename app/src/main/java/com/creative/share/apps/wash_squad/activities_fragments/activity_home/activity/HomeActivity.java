@@ -279,9 +279,8 @@ public class HomeActivity extends AppCompatActivity {
     public void DisplayFragmentCart()
     {
         try {
-            if (fragment_cart == null) {
-                fragment_cart = Fragment_Cart.newInstance();
-            }
+            fragment_cart = Fragment_Cart.newInstance();
+
             if (fragment_main != null && fragment_main.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_main).commit();
             }
