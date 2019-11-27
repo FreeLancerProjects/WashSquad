@@ -1,8 +1,10 @@
 package com.creative.share.apps.wash_squad.activities_fragments.activity_intro;
 
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,9 +37,6 @@ import io.paperdb.Paper;
 
 public class Intro_Activity extends AppCompatActivity {
     ActivityIntroBinding binding;
-    private ViewPager viewPager;
-    private TabLayout indicator;
-    private Button start;
     private Intro_Pager_Adapter intro_pager_adapter;
     Preferences preferences;
     private int count = 0;
@@ -58,8 +57,9 @@ public class Intro_Activity extends AppCompatActivity {
             preferences = Preferences.newInstance();
             intro_pager_adapter = new Intro_Pager_Adapter(this);
 
-            binding.tab1.setupWithViewPager(viewPager);
+            binding.tab1.setupWithViewPager(binding.viewPager);
             binding.viewPager.setAdapter(intro_pager_adapter);
+
             views = new ArrayList<>();
             binding.btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,31 +70,13 @@ public class Intro_Activity extends AppCompatActivity {
                     finish();
                 }
             });
-            ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
 
-
-                @Override
-                public void onPageSelected(int position) {
-                    if (position == 4) {
-                        viewPager.removeAllViews();
-                    }
-                    viewPager.setCurrentItem(position);
-                }
-
-                @Override
-                public void onPageScrolled(int arg0, float arg1, int arg2) {
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int arg0) {
-                }
-            };
         }
     }
 
     public class Intro_Pager_Adapter extends PagerAdapter {
         private int[] layouts = new int[]{R.layout.introslider1, R.layout.introslider2, R.layout.introslider3};
-        private int image[] = new int[]{R.drawable.slider1, R.drawable.slider2, R.drawable.slider3};
+        private int images[] = new int[]{R.drawable.slider1, R.drawable.slider2, R.drawable.slider3};
         private LayoutInflater layoutInflater;
         Intro_Activity intro_activity;
         View view = null;
@@ -107,10 +89,10 @@ public class Intro_Activity extends AppCompatActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             try {
-
                 view = layoutInflater.inflate(layouts[position], container, false);
                 ImageView imageView = view.findViewById(R.id.item_image);
-                Picasso.with(intro_activity).load(image[position]).fit().memoryPolicy(MemoryPolicy.NO_CACHE).into(imageView);
+            //    Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+intro_activity.getPackageName()+"/drawable/" + getResources().getDrawable(image[position]));
+                Picasso.with(intro_activity).load(images[position]).placeholder(R.drawable.slider1).fit().memoryPolicy(MemoryPolicy.NO_CACHE).into(imageView);
                 container.addView(view);
 
 
