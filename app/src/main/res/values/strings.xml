@@ -145,6 +145,8 @@
     <string name="see_your_photo">See Your Photo</string>
     <string name="start_app">Start App</string>
     <string name="num_exceed">The maximum number of requests for the selected service has been exceeded</string>
+    <string name="next">Next</string>
+    <string name="Start">start</string>
 
 
 </resources>

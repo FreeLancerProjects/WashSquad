@@ -6,12 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,7 +44,7 @@ public class Intro_Activity extends AppCompatActivity {
     Preferences preferences;
     private int count = 0;
     private ArrayList<View> views;
-
+    private TextView[] dots;
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
@@ -57,11 +60,54 @@ public class Intro_Activity extends AppCompatActivity {
             preferences = Preferences.newInstance();
             intro_pager_adapter = new Intro_Pager_Adapter(this);
 
-            binding.tab1.setupWithViewPager(binding.viewPager);
+           // binding.tab1.setupWithViewPager(binding.viewPager);
             binding.viewPager.setAdapter(intro_pager_adapter);
 
             views = new ArrayList<>();
             binding.btnNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int current = binding.viewPager.getCurrentItem()+1;
+                    if (current < 2) {
+                        // move to next screen
+                        binding.viewPager.setCurrentItem(current);
+                    } else {
+                        preferences.create_first_time(Intro_Activity.this, false);
+                        Intent i = new Intent(Intro_Activity.this, SignInActivity.class);
+                        startActivity(i);
+                        finish();                    }
+                }
+            });
+
+            ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+
+                @Override
+                public void onPageSelected(int position) {
+                    addBottomDots(position);
+
+                    // changing the next button text 'NEXT' / 'GOT IT'
+                    if (position == 2) {
+                        // last page. make button text to GOT IT
+                        binding.btnNext.setText(getString(R.string.Start));
+                       binding.btnSkip.setVisibility(View.GONE);
+                    } else {
+                        // still pages are left
+                        binding.btnNext.setText(getString(R.string.next));
+                        binding.btnSkip.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int arg0) {
+
+                }
+            };
+            binding.btnSkip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     preferences.create_first_time(Intro_Activity.this, false);
@@ -119,6 +165,24 @@ public class Intro_Activity extends AppCompatActivity {
             collection.removeView(itemView);
             itemView=null;*/
         }
+    }
+    private void addBottomDots(int currentPage) {
+        dots = new TextView[3];
+
+        int[] colorsActive = getResources().getIntArray(R.array.array_dot_active);
+        int[] colorsInactive = getResources().getIntArray(R.array.array_dot_inactive);
+
+        binding.layoutDots.removeAllViews();
+        for (int i = 0; i < dots.length; i++) {
+            dots[i] = new TextView(this);
+            dots[i].setText(Html.fromHtml("&#8226;"));
+            dots[i].setTextSize(35);
+            dots[i].setTextColor(colorsInactive[currentPage]);
+            binding.layoutDots.addView(dots[i]);
+        }
+
+        if (dots.length > 0)
+            dots[currentPage].setTextColor(colorsActive[currentPage]);
     }
 
 }
