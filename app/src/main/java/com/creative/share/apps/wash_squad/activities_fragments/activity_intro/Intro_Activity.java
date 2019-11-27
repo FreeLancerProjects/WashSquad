@@ -4,13 +4,17 @@ package com.creative.share.apps.wash_squad.activities_fragments.activity_intro;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,15 +66,19 @@ public class Intro_Activity extends AppCompatActivity {
 
            // binding.tab1.setupWithViewPager(binding.viewPager);
             binding.viewPager.setAdapter(intro_pager_adapter);
-
+            addBottomDots(0);
             views = new ArrayList<>();
             binding.btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int current = binding.viewPager.getCurrentItem()+1;
-                    if (current < 2) {
+                    if (current < 3) {
                         // move to next screen
                         binding.viewPager.setCurrentItem(current);
+                        if(current==2){
+                            binding.btnNext.setText(getResources().getString(R.string.Start));
+                            binding.btnSkip.setVisibility(View.GONE);
+                        }
                     } else {
                         preferences.create_first_time(Intro_Activity.this, false);
                         Intent i = new Intent(Intro_Activity.this, SignInActivity.class);
@@ -79,35 +87,32 @@ public class Intro_Activity extends AppCompatActivity {
                 }
             });
 
-            ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        // changing the next button text 'NEXT' / 'GOT IT'
+        addBottomDots(position);
+        if (position == 2) {
+            // last page. make button text to GOT IT
+            binding.btnNext.setText(getString(R.string.Start));
+            binding.btnSkip.setVisibility(View.GONE);
+        } else {
+            // still pages are left
+            binding.btnNext.setText(getString(R.string.next));
+            binding.btnSkip.setVisibility(View.VISIBLE);
+        }
+    }
 
-                @Override
-                public void onPageSelected(int position) {
-                    addBottomDots(position);
+    @Override
+    public void onPageSelected(int position) {
 
-                    // changing the next button text 'NEXT' / 'GOT IT'
-                    if (position == 2) {
-                        // last page. make button text to GOT IT
-                        binding.btnNext.setText(getString(R.string.Start));
-                       binding.btnSkip.setVisibility(View.GONE);
-                    } else {
-                        // still pages are left
-                        binding.btnNext.setText(getString(R.string.next));
-                        binding.btnSkip.setVisibility(View.VISIBLE);
-                    }
-                }
+    }
 
-                @Override
-                public void onPageScrolled(int arg0, float arg1, int arg2) {
+    @Override
+    public void onPageScrollStateChanged(int state) {
 
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int arg0) {
-
-                }
-            };
-            binding.btnSkip.setOnClickListener(new View.OnClickListener() {
+    }
+});            binding.btnSkip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     preferences.create_first_time(Intro_Activity.this, false);
