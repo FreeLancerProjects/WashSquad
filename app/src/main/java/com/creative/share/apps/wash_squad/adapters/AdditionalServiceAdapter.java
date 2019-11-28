@@ -1,6 +1,7 @@
 package com.creative.share.apps.wash_squad.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -61,6 +62,7 @@ public class AdditionalServiceAdapter extends RecyclerView.Adapter<AdditionalSer
 
             if (holder.additionalServiceRowBinding.checkbox.isChecked()) {
 
+                Log.e("ddd","tttt");
                 sparseBooleanArray.put(holder.getAdapterPosition(),true);
 
                 ServiceDataModel.Level3 serviceModel1 = serviceModelList.get(holder.getAdapterPosition());
@@ -69,6 +71,8 @@ public class AdditionalServiceAdapter extends RecyclerView.Adapter<AdditionalSer
 
 
             } else {
+
+                Log.e("bb","rrr");
 
                 sparseBooleanArray.put(holder.getAdapterPosition(),false);
 

@@ -178,7 +178,6 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
 
                     binding.setPrice(0.0);
                     binding.tvCount.setText(String.valueOf(count));
-
                     itemToUpload.setCarType_id(0);
                     itemToUpload.setAr_car_type("");
                     itemToUpload.setEn_car_type("");
@@ -196,7 +195,11 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                         carSizeAdapter.setSelection(-1);
                     }
 
+                    additional_service.clear();
+
+
                 } else {
+                    additional_service.clear();
                     carBrandModelList.clear();
                     carBrandModelList.add(new CarTypeDataModel.CarBrandModel("إختر الماركة", "Choose brand"));
 
@@ -224,6 +227,8 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                 if (i == 0) {
                     count =1;
                     total = 0.0;
+                    additional_service.clear();
+
                     binding.setTotal(total);
 
                     binding.setPrice(0.0);
@@ -266,9 +271,9 @@ public class ServiceDetailsActivity extends AppCompatActivity implements Listene
                             carSizeAdapter.setSelection(pos);
                         }
 
+                        additional_service.clear();
                         size_id = carSizeModelList.get(pos).getId();
                         getPrice(serviceModel.getId(),carSizeModelList.get(pos).getId());
-
                         itemToUpload.setCarSize_id(carSizeModelList.get(pos).getId());
 
                     }
