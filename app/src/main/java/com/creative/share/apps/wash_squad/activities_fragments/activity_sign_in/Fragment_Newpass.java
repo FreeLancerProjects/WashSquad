@@ -123,7 +123,7 @@ public class Fragment_Newpass extends Fragment implements Listeners.PasswordList
         try {
 
             Api.getService(Tags.base_url)
-                    .login(userModel.getId(), password)
+                    .changpass(userModel.getId(), password)
                     .enqueue(new Callback<UserModel>() {
                         @Override
                         public void onResponse(Call<UserModel> call, Response<UserModel> response) {

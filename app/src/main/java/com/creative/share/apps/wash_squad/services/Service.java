@@ -67,7 +67,7 @@ public interface Service {
 
     @FormUrlEncoded
     @POST("api/client/password/reset")
-    Call<UserModel> login(
+    Call<UserModel> changpass(
             @Field("user_id") int user_id,
             @Field("password") String password);
 
