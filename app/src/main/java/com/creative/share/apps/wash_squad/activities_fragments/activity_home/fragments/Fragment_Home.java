@@ -83,7 +83,7 @@ public class Fragment_Home extends Fragment {
     private void setUpBottomNavigation() {
 
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(getString(R.string.profile), R.drawable.ic_user);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getString(R.string.notifications), R.drawable.ic_car);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getString(R.string.notifications), R.drawable.logo_only);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem(getString(R.string.offer), R.drawable.ic_offer);
         AHBottomNavigationItem item4 = new AHBottomNavigationItem("", R.drawable.ic_nav_cart);
 
