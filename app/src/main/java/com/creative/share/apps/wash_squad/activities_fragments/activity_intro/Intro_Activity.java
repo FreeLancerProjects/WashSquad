@@ -49,6 +49,7 @@ public class Intro_Activity extends AppCompatActivity {
     private int count = 0;
     private ArrayList<View> views;
     private TextView[] dots;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
@@ -64,18 +65,18 @@ public class Intro_Activity extends AppCompatActivity {
             preferences = Preferences.newInstance();
             intro_pager_adapter = new Intro_Pager_Adapter(this);
 
-           // binding.tab1.setupWithViewPager(binding.viewPager);
+            // binding.tab1.setupWithViewPager(binding.viewPager);
             binding.viewPager.setAdapter(intro_pager_adapter);
             addBottomDots(0);
             views = new ArrayList<>();
             binding.btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int current = binding.viewPager.getCurrentItem()+1;
+                    int current = binding.viewPager.getCurrentItem() + 1;
                     if (current < 3) {
                         // move to next screen
                         binding.viewPager.setCurrentItem(current);
-                        if(current==2){
+                        if (current == 2) {
                             binding.btnNext.setText(getResources().getString(R.string.Start));
                             binding.btnSkip.setVisibility(View.GONE);
                         }
@@ -83,36 +84,38 @@ public class Intro_Activity extends AppCompatActivity {
                         preferences.create_first_time(Intro_Activity.this, false);
                         Intent i = new Intent(Intro_Activity.this, SignInActivity.class);
                         startActivity(i);
-                        finish();                    }
+                        finish();
+                    }
                 }
             });
 
-binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        // changing the next button text 'NEXT' / 'GOT IT'
-        addBottomDots(position);
-        if (position == 2) {
-            // last page. make button text to GOT IT
-            binding.btnNext.setText(getString(R.string.Start));
-            binding.btnSkip.setVisibility(View.GONE);
-        } else {
-            // still pages are left
-            binding.btnNext.setText(getString(R.string.next));
-            binding.btnSkip.setVisibility(View.VISIBLE);
-        }
-    }
+            binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    // changing the next button text 'NEXT' / 'GOT IT'
+                    addBottomDots(position);
+                    if (position == 2) {
+                        // last page. make button text to GOT IT
+                        binding.btnNext.setText(getString(R.string.Start));
+                        binding.btnSkip.setVisibility(View.GONE);
+                    } else {
+                        // still pages are left
+                        binding.btnNext.setText(getString(R.string.next));
+                        binding.btnSkip.setVisibility(View.VISIBLE);
+                    }
+                }
 
-    @Override
-    public void onPageSelected(int position) {
+                @Override
+                public void onPageSelected(int position) {
 
-    }
+                }
 
-    @Override
-    public void onPageScrollStateChanged(int state) {
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
-    }
-});            binding.btnSkip.setOnClickListener(new View.OnClickListener() {
+                }
+            });
+            binding.btnSkip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     preferences.create_first_time(Intro_Activity.this, false);
@@ -142,7 +145,7 @@ binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             try {
                 view = layoutInflater.inflate(layouts[position], container, false);
                 ImageView imageView = view.findViewById(R.id.item_image);
-            //    Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+intro_activity.getPackageName()+"/drawable/" + getResources().getDrawable(image[position]));
+                //    Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+intro_activity.getPackageName()+"/drawable/" + getResources().getDrawable(image[position]));
                 Picasso.with(intro_activity).load(images[position]).placeholder(R.drawable.slider1).fit().memoryPolicy(MemoryPolicy.NO_CACHE).into(imageView);
                 container.addView(view);
 
@@ -171,6 +174,7 @@ binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             itemView=null;*/
         }
     }
+
     private void addBottomDots(int currentPage) {
         dots = new TextView[3];
 
