@@ -87,7 +87,6 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
         initView();
-        getOrders();
 
         return binding.getRoot();
     }
@@ -131,25 +130,29 @@ public class Fragment_Profile extends Fragment implements Listeners.EditProfileL
         });
         userModel = preferences.getUserData(activity);
 
-        binding.setUsermodel(userModel);
-        binding.edtName.setText(userModel.getFull_name());
 
-        edit_profile_model = new EditProfileModel(userModel.getFull_name());
+        if (userModel!=null)
+        {
+            binding.setUsermodel(userModel);
+            binding.edtName.setText(userModel.getFull_name());
 
-        binding.setEditprofilemodel(edit_profile_model);
-        binding.setEditprofilelistener(this);
-        binding.tvCode.setText(userModel.getPhone_code().replaceFirst("00", "+"));
-        binding.edtPhone.setText(userModel.getPhone());
-        code = userModel.getPhone_code();
+            edit_profile_model = new EditProfileModel(userModel.getFull_name());
 
-        createCountryDialog();
+            binding.setEditprofilemodel(edit_profile_model);
+            binding.setEditprofilelistener(this);
+            binding.tvCode.setText(userModel.getPhone_code().replaceFirst("00", "+"));
+            binding.edtPhone.setText(userModel.getPhone());
+            code = userModel.getPhone_code();
+
+            createCountryDialog();
+
+            getOrders();
+        }
+
         binding.image.setOnClickListener(view -> CreateImageAlertDialog());
-        binding.llChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                activity.displayFragmentNewpass();
-            }
-        });
+        binding.llChange.setOnClickListener(view -> activity.displayFragmentNewpass());
+        binding.btnLogin.setOnClickListener(view -> activity.navigateToSinInActivity());
+
     }
 
     private void CreateImageAlertDialog() {

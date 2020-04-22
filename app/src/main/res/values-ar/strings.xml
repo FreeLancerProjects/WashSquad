@@ -145,6 +145,12 @@
     <string name="num_exceed">تم تجاوز الحد الأقصى لعدد طلبات الخدمة المحددة</string>
     <string name="next">التالى</string>
     <string name="Start">إبدا</string>
+    <string name="sign_in_to_be_able_to_view_orders">من فضلك سجل دخولك لتتمكن من الإطلاع على طلباتك</string>
+    <string name="sign_in_to_view_profile">سجل دخولك لتتمكن من الإطلاع على ملفك</string>
+    <string name="current">الحالية</string>
+    <string name="prevoius">السابقة</string>
+    <string name="coupons">الكوبون</string>
+    <string name="no_coupons_to_show">لا توجد كوبونات لعرضها</string>
 
 
 </resources>

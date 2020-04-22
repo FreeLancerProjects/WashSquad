@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -17,7 +16,8 @@ import com.creative.share.apps.wash_squad.activities_fragments.activity_help.Hel
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.Fragment_Cart;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.Fragment_Home;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.Fragment_Main;
-import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.Fragment_Offer;
+import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.fragment_offers.Fragment_Offer;
+import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.fragment_order.Fragment_Order;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.fragment_profile.Fragment_Order_Detials;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.fragment_profile.Fragment_Order_Detials_Evaluation;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.fragment_profile.Fragment_Profile;
@@ -49,26 +49,14 @@ public class HomeActivity extends AppCompatActivity {
     private Fragment_Order_Detials_Evaluation fragment_order_detials_evaluation;
     private Fragment_Order_Detials fragment_order_detials;
     private Fragment_Offer fragment_offer;
+    private Fragment_Order fragment_order;
 
     private Preferences preferences;
     private UserModel userModel;
     private SingleTon singleTon;
     private Fragment_Newpass fragment_newpass;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        int cart_count = singleTon.getItemsCount();
-        updateCount(cart_count);
-    }
 
-    public void updateCount(int cart_count)
-    {
-        if (fragment_home!=null&&fragment_home.isAdded())
-        {
-            fragment_home.setNotificationCartCount(cart_count);
-        }
-    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -114,6 +102,8 @@ public class HomeActivity extends AppCompatActivity {
 
         });
 
+        binding.imageCart.setOnClickListener(view -> DisplayFragmentCart());
+
         binding.imageLogout.setOnClickListener(view -> {
             if (userModel!=null)
             {
@@ -126,6 +116,22 @@ public class HomeActivity extends AppCompatActivity {
 
         });
 
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int cart_count = singleTon.getItemsCount();
+        updateCount(cart_count);
+    }
+
+    public void updateCount(int cart_count)
+    {
+        if (fragment_home!=null&&fragment_home.isAdded())
+        {
+           binding.tvCartCount.setText(String.valueOf(cart_count));
+        }
     }
 
     private void updateVisit(String now, long time) {
@@ -184,6 +190,10 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_profile != null && fragment_profile.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_profile).commit();
             }
+
+            if (fragment_order != null && fragment_order.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_order).commit();
+            }
             if (fragment_offer != null && fragment_offer.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_offer).commit();
             }
@@ -201,8 +211,7 @@ public class HomeActivity extends AppCompatActivity {
             binding.setTitle(getString(R.string.services));
             binding.imageHelp.setVisibility(View.GONE);
             if (fragment_home != null && fragment_home.isAdded()) {
-                fragment_home.updateBottomNavigationPosition(1);
-                Log.e("ddd","fff");
+                fragment_home.updateBottomNavigationPosition(3);
             }
         }catch (Exception e){}
 
@@ -221,6 +230,9 @@ public class HomeActivity extends AppCompatActivity {
             }
             if (fragment_offer != null && fragment_offer.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_offer).commit();
+            }
+            if (fragment_order != null && fragment_order.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_order).commit();
             }
             if (fragment_cart != null && fragment_cart.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_cart).commit();
@@ -251,6 +263,9 @@ public class HomeActivity extends AppCompatActivity {
             }
             if (fragment_main != null && fragment_main.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_main).commit();
+            }
+            if (fragment_order != null && fragment_order.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_order).commit();
             }
             if (fragment_profile != null && fragment_profile.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_profile).commit();
@@ -287,9 +302,15 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_profile != null && fragment_profile.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_profile).commit();
             }
+
             if (fragment_offer != null && fragment_offer.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_offer).commit();
             }
+
+            if (fragment_order != null && fragment_order.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_order).commit();
+            }
+
             if (fragment_cart.isAdded()) {
                 fragmentManager.beginTransaction().show(fragment_cart).commit();
 
@@ -299,14 +320,50 @@ public class HomeActivity extends AppCompatActivity {
             }
             binding.setTitle(getString(R.string.cart));
             binding.imageHelp.setVisibility(View.GONE);
+
+        }catch (Exception e){}
+
+
+
+    }
+
+    public void DisplayFragmentOrder()
+    {
+        try {
+            if (fragment_order == null) {
+                fragment_order = Fragment_Order.newInstance();
+            }
+            if (fragment_main != null && fragment_main.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_main).commit();
+            }
+            if (fragment_offer != null && fragment_offer.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_offer).commit();
+            }
+            if (fragment_profile != null && fragment_profile.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_profile).commit();
+            }
+            if (fragment_cart != null && fragment_cart.isAdded()) {
+                fragmentManager.beginTransaction().hide(fragment_cart).commit();
+            }
+            if (fragment_order.isAdded()) {
+                fragmentManager.beginTransaction().show(fragment_order).commit();
+
+            } else {
+                fragmentManager.beginTransaction().add(R.id.fragment_home_container, fragment_order, "fragment_order").addToBackStack("fragment_order").commit();
+
+            }
+            binding.setTitle(getString(R.string.my_order));
+            binding.imageHelp.setVisibility(View.GONE);
             if (fragment_home != null && fragment_home.isAdded()) {
-                fragment_home.updateBottomNavigationPosition(3);
+                fragment_home.updateBottomNavigationPosition(1);
             }
         }catch (Exception e){}
 
 
 
     }
+
+
     public void displayFragmentNewpass() {
         fragment_count ++;
         fragment_newpass = Fragment_Newpass.newInstance(userModel,2);
@@ -428,7 +485,7 @@ else {
             }
     }
 
-    private void navigateToSinInActivity() {
+    public void navigateToSinInActivity() {
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
         finish();

@@ -1,4 +1,4 @@
-package com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments;
+package com.creative.share.apps.wash_squad.activities_fragments.activity_home.fragments.fragment_offers;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.creative.share.apps.wash_squad.R;
 import com.creative.share.apps.wash_squad.activities_fragments.activity_home.activity.HomeActivity;
 import com.creative.share.apps.wash_squad.adapters.OffersAdapter;
-import com.creative.share.apps.wash_squad.databinding.FragmentOfferBinding;
+import com.creative.share.apps.wash_squad.databinding.FragmentOffersBinding;
 import com.creative.share.apps.wash_squad.models.OfferDataModel;
 import com.creative.share.apps.wash_squad.remote.Api;
 import com.creative.share.apps.wash_squad.tags.Tags;
@@ -31,21 +31,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Fragment_Offer extends Fragment {
+public class Fragment_Offers extends Fragment {
 
     private HomeActivity activity;
-    private FragmentOfferBinding binding;
+    private FragmentOffersBinding binding;
     private List<OfferDataModel.OfferModel> offerModelList;
     private LinearLayoutManager manager;
     private OffersAdapter adapter;
-    public static Fragment_Offer newInstance() {
-        return new Fragment_Offer();
+    public static Fragment_Offers  newInstance() {
+        return new Fragment_Offers();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_offer,container,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_offers,container,false);
         initView();
         return binding.getRoot();
     }
@@ -78,9 +78,17 @@ public class Fragment_Offer extends Fragment {
                         if (response.isSuccessful() && response.body() != null) {
                             offerModelList.clear();
                             offerModelList.addAll(response.body().getData());
-                            adapter.notifyDataSetChanged();
 
-                            binding.llNoOffer.setVisibility(View.GONE);
+                            if (offerModelList.size()>0)
+                            {
+                                binding.llNoOffer.setVisibility(View.GONE);
+                                adapter.notifyDataSetChanged();
+
+                            }else
+                                {
+                                    binding.llNoOffer.setVisibility(View.VISIBLE);
+
+                                }
 
                         } else {
                             binding.swipeRefresh.setRefreshing(false);

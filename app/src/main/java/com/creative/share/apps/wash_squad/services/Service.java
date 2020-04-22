@@ -82,6 +82,10 @@ public interface Service {
     Call<ResponseBody> confirmCode(@Field("user_id") int user_id,
                                    @Field("code") String code
     );
+    @FormUrlEncoded
+    @POST("api/client/code/send")
+    Call<ResponseBody> resendCode(@Field("user_id") int user_id
+    );
 
     @FormUrlEncoded
     @POST("api/client/passwordCode/confirm")
@@ -89,10 +93,7 @@ public interface Service {
                                        @Field("code") String code
     );
 
-    @FormUrlEncoded
-    @POST("api/client/code/send")
-    Call<ResponseBody> resendCode(@Field("user_id") int user_id
-    );
+
 
     @GET("api/services")
     Call<ServiceDataModel> getAllServices();

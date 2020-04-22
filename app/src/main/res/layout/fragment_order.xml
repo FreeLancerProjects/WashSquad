@@ -4,7 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     >
+    <data>
+        <variable
+            name="model"
+            type="com.creative.share.apps.wash_squad.models.UserModel" />
+        <import type="android.view.View"/>
 
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:visibility="@{model!=null?View.VISIBLE:View.GONE,default=gone}"
 
                 >
                 <com.google.android.material.tabs.TabLayout
@@ -46,6 +53,39 @@
                     android:layout_marginTop="10dp"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical"
+                android:visibility="@{model==null?View.VISIBLE:View.GONE,default=gone}"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:text="@string/sign_in_to_be_able_to_view_orders"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    />
+
+                <Button
+                    android:id="@+id/btnLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@drawable/btn_bg"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:text="@string/log_in"
+                    />
+
+            </LinearLayout>
 
 
         </FrameLayout>
