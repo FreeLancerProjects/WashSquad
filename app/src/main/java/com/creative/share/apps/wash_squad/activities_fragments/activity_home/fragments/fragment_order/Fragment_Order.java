@@ -74,6 +74,10 @@ public class Fragment_Order extends Fragment {
 
         }
 
+        binding.btnLogin.setOnClickListener(v -> {
+            activity.navigateToSinInActivity();
+        });
+
     }
 
 }

@@ -151,6 +151,16 @@
     <string name="prevoius">السابقة</string>
     <string name="coupons">الكوبون</string>
     <string name="no_coupons_to_show">لا توجد كوبونات لعرضها</string>
+    <string name="order_num">رقم الطلب #</string>
+    <string name="sent">تم الإرسال</string>
+    <string name="in_location">في موقعك</string>
+    <string name="in_way">الفريق قادم</string>
+    <string name="order">الطلب</string>
+    <string name="price2">سعر الطلب</string>
+    <string name="driver_name">إسم السائق</string>
+    <string name="order_date">تاريخ الطلب</string>
+    <string name="products">المنتجات</string>
+    <string name="info">المعلومات</string>
 
 
 </resources>

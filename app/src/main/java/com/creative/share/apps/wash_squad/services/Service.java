@@ -4,6 +4,7 @@ package com.creative.share.apps.wash_squad.services;
 import com.creative.share.apps.wash_squad.models.AboutDataModel;
 import com.creative.share.apps.wash_squad.models.CarSizeDataModel;
 import com.creative.share.apps.wash_squad.models.CarTypeDataModel;
+import com.creative.share.apps.wash_squad.models.CouponDataModel;
 import com.creative.share.apps.wash_squad.models.CouponModel;
 import com.creative.share.apps.wash_squad.models.ItemToUpload;
 import com.creative.share.apps.wash_squad.models.OfferDataModel;
@@ -82,6 +83,7 @@ public interface Service {
     Call<ResponseBody> confirmCode(@Field("user_id") int user_id,
                                    @Field("code") String code
     );
+
     @FormUrlEncoded
     @POST("api/client/code/send")
     Call<ResponseBody> resendCode(@Field("user_id") int user_id
@@ -92,7 +94,6 @@ public interface Service {
     Call<ResponseBody> confirmCodepass(@Field("user_id") int user_id,
                                        @Field("code") String code
     );
-
 
 
     @GET("api/services")
@@ -148,12 +149,31 @@ public interface Service {
                                    @Field("page") int page
     );
 
+    @FormUrlEncoded
+    @POST("api/user-current-orders")
+    Call<Order_Data_Model> currentOrder(@Field("user_id") int user_id,
+                                        @Field("page") int page
+    );
+
+    @FormUrlEncoded
+    @POST("api/user-previous-orders")
+    Call<Order_Data_Model> previousOrder(@Field("user_id") int user_id,
+                                        @Field("page") int page
+    );
+
+
+
+    @FormUrlEncoded
     @POST("api/order/add")
     Call<Order_Data_Model.OrderModel> addOrder(@Body ItemToUpload itemToUpload);
 
 
     @GET("api/offers")
     Call<OfferDataModel> getOffers();
+
+    @GET("api/all-coupons")
+    Call<CouponDataModel> getCoupons();
+
 
     @FormUrlEncoded
     @POST("api/coupon/check")

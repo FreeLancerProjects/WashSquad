@@ -1,6 +1,7 @@
 package com.creative.share.apps.wash_squad.general_ui_method;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
@@ -46,6 +47,7 @@ public class GeneralMethod {
     @BindingAdapter("serviceImage")
     public static void serviceImage(ImageView imageView,String endPoint)
     {
+        Log.e("path",Tags.IMAGE_URL+endPoint);
         Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_URL+endPoint)).fit().into(imageView);
     }
 
@@ -62,6 +64,12 @@ public class GeneralMethod {
     }
 
 
+    @BindingAdapter("couponImage")
+    public static void couponImage(RoundedImageView imageView, String endPoint)
+    {
+        Picasso.with(imageView.getContext()).load(Uri.parse(Tags.IMAGE_URL+endPoint)).fit().into(imageView);
+    }
+
 
 
     @BindingAdapter({"date","workTimehoosen","workTime"})
@@ -77,6 +85,15 @@ public class GeneralMethod {
 
     }
 
+
+    @BindingAdapter({"orderDate"})
+    public static void displayOrderDate (TextView textView,long orderDate)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH);
+        String m_date = dateFormat.format(new Date(orderDate*1000));
+        textView.setText(m_date);
+
+    }
 
     @BindingAdapter("rate")
     public static void rate (SimpleRatingBar simpleRatingBar, double rate)

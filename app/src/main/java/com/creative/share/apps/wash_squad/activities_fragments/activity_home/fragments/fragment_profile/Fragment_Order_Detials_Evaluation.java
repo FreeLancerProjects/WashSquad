@@ -141,8 +141,7 @@ if(orderModel.getSee_images()!=null){
                             //listener.onSuccess(response.body());
 
                             Toast.makeText(activity, getString(R.string.suc), Toast.LENGTH_SHORT).show();
-                            activity.updateprofile();
-                            activity.DisplayFragmentOrderDetials(response.body());
+                            //activity.DisplayFragmentOrderDetials(response.body());
 
                             //update(response.body());
 

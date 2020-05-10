@@ -57,17 +57,17 @@ public class HomeActivity extends AppCompatActivity {
     private Fragment_Newpass fragment_newpass;
 
 
-
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
-        super.attachBaseContext(LanguageHelper.updateResources(newBase,Paper.book().read("lang", Locale.getDefault().getLanguage())));
+        super.attachBaseContext(LanguageHelper.updateResources(newBase, Paper.book().read("lang", Locale.getDefault().getLanguage())));
 
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_home);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         initView();
 
         if (savedInstanceState == null) {
@@ -87,32 +87,29 @@ public class HomeActivity extends AppCompatActivity {
         preferences = Preferences.newInstance();
         userModel = preferences.getUserData(this);
         String lastVisit = preferences.getLastVisit(this);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         String now = dateFormat.format(new Date(Calendar.getInstance().getTimeInMillis()));
 
-        if (!lastVisit.equals(now))
-        {
-            updateVisit(now,(Calendar.getInstance().getTimeInMillis()/1000));
+        if (!lastVisit.equals(now)) {
+            updateVisit(now, (Calendar.getInstance().getTimeInMillis() / 1000));
 
         }
 
         binding.imageHelp.setOnClickListener(view -> {
             Intent intent = new Intent(this, HelpActivity.class);
-            startActivityForResult(intent,11);
+            startActivityForResult(intent, 11);
 
         });
 
         binding.imageCart.setOnClickListener(view -> DisplayFragmentCart());
 
         binding.imageLogout.setOnClickListener(view -> {
-            if (userModel!=null)
-            {
+            if (userModel != null) {
                 preferences.clear(this);
                 navigateToSinInActivity();
-            }else
-                {
-                    navigateToSinInActivity();
-                }
+            } else {
+                navigateToSinInActivity();
+            }
 
         });
 
@@ -126,11 +123,9 @@ public class HomeActivity extends AppCompatActivity {
         updateCount(cart_count);
     }
 
-    public void updateCount(int cart_count)
-    {
-        if (fragment_home!=null&&fragment_home.isAdded())
-        {
-           binding.tvCartCount.setText(String.valueOf(cart_count));
+    public void updateCount(int cart_count) {
+        if (fragment_home != null && fragment_home.isAdded()) {
+            binding.tvCartCount.setText(String.valueOf(cart_count));
         }
     }
 
@@ -177,12 +172,12 @@ public class HomeActivity extends AppCompatActivity {
                 fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_home, "fragment_home").addToBackStack("fragment_home").commit();
 
             }
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
 
     }
 
-    public void DisplayFragmentMain()
-    {
+    public void DisplayFragmentMain() {
         try {
             if (fragment_main == null) {
                 fragment_main = Fragment_Main.newInstance();
@@ -213,14 +208,13 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_home != null && fragment_home.isAdded()) {
                 fragment_home.updateBottomNavigationPosition(3);
             }
-        }catch (Exception e){}
-
+        } catch (Exception e) {
+        }
 
 
     }
 
-    public void DisplayFragmentProfile()
-    {
+    public void DisplayFragmentProfile() {
         try {
             if (fragment_profile == null) {
                 fragment_profile = Fragment_Profile.newInstance();
@@ -249,14 +243,13 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_home != null && fragment_home.isAdded()) {
                 fragment_home.updateBottomNavigationPosition(0);
             }
-        }catch (Exception e){}
-
+        } catch (Exception e) {
+        }
 
 
     }
 
-    public void DisplayFragmentOffer()
-    {
+    public void DisplayFragmentOffer() {
         try {
             if (fragment_offer == null) {
                 fragment_offer = Fragment_Offer.newInstance();
@@ -285,14 +278,13 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_home != null && fragment_home.isAdded()) {
                 fragment_home.updateBottomNavigationPosition(2);
             }
-        }catch (Exception e){}
-
+        } catch (Exception e) {
+        }
 
 
     }
 
-    public void DisplayFragmentCart()
-    {
+    public void DisplayFragmentCart() {
         try {
             fragment_cart = Fragment_Cart.newInstance();
 
@@ -321,14 +313,13 @@ public class HomeActivity extends AppCompatActivity {
             binding.setTitle(getString(R.string.cart));
             binding.imageHelp.setVisibility(View.GONE);
 
-        }catch (Exception e){}
-
+        } catch (Exception e) {
+        }
 
 
     }
 
-    public void DisplayFragmentOrder()
-    {
+    public void DisplayFragmentOrder() {
         try {
             if (fragment_order == null) {
                 fragment_order = Fragment_Order.newInstance();
@@ -357,55 +348,31 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_home != null && fragment_home.isAdded()) {
                 fragment_home.updateBottomNavigationPosition(1);
             }
-        }catch (Exception e){}
-
+        } catch (Exception e) {
+        }
 
 
     }
 
 
     public void displayFragmentNewpass() {
-        fragment_count ++;
-        fragment_newpass = Fragment_Newpass.newInstance(userModel,2);
+        fragment_count++;
+        fragment_newpass = Fragment_Newpass.newInstance(userModel, 2);
 
         fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_newpass, "fragment_newpass").addToBackStack("fragment_newpass").commit();
 
     }
-    public void DisplayFragmentOrderDetialsEvaluation(Order_Data_Model.OrderModel orderModel)
-    {
-        try {
-                if(fragment_order_detials_evaluation==null) {
-                    fragment_order_detials_evaluation = Fragment_Order_Detials_Evaluation.newInstance(orderModel);
-                }
-                else {
-                    fragment_order_detials_evaluation.refresh(orderModel);
-                }
-                if(fragment_order_detials!=null&&fragment_order_detials.isAdded()){
-                fragmentManager.beginTransaction().hide(fragment_order_detials).commit();
-            }
-            if (fragment_order_detials_evaluation.isAdded()) {
-                fragmentManager.beginTransaction().show(fragment_order_detials_evaluation).commit();
 
+/*
+    public void DisplayFragmentOrderDetials(Order_Data_Model.OrderModel orderModel) {
+        try {
+            if (fragment_order_detials == null) {
+                fragment_order_detials = Fragment_Order_Detials.newInstance(orderModel);
             } else {
-                fragmentManager.beginTransaction().add(R.id.fragment_order_details_container, fragment_order_detials_evaluation, "fragment_order_detials_evaluation").addToBackStack("fragment_order_detials_evaluation").commit();
-
+                fragment_order_detials.refresh(orderModel);
             }
 
-        }catch (Exception e){}
-
-
-
-    }
-    public void DisplayFragmentOrderDetials(Order_Data_Model.OrderModel orderModel)
-    {
-        try {
-if(fragment_order_detials==null){
-            fragment_order_detials = Fragment_Order_Detials.newInstance(orderModel);}
-else {
-    fragment_order_detials.refresh(orderModel);
-}
-
-            if(fragment_order_detials_evaluation!=null&&fragment_order_detials_evaluation.isAdded()){
+            if (fragment_order_detials_evaluation != null && fragment_order_detials_evaluation.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_order_detials_evaluation).commit();
             }
 
@@ -417,30 +384,22 @@ else {
 
             }
 
-        }catch (Exception e){}
-
-
-
-    }
-
-    public void refeshFragmentProfile()
-    {
-        if (fragment_profile!=null&&fragment_profile.isAdded())
-        {
-            fragment_profile.refreshOrders();
+        } catch (Exception e) {
         }
+
+
     }
+*/
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==11&&resultCode==RESULT_OK&&data!=null)
-        {
-            if (data.hasExtra("lang"))
-            {
+        if (requestCode == 11 && resultCode == RESULT_OK && data != null) {
+            if (data.hasExtra("lang")) {
                 String lang = data.getStringExtra("lang");
                 new Handler()
-                        .postDelayed(() -> refreshActivity(lang),1000);
+                        .postDelayed(() -> refreshActivity(lang), 1000);
 
             }
         }
@@ -455,34 +414,29 @@ else {
         startActivity(intent);
 
     }
+
     @Override
     public void onBackPressed() {
         back();
     }
 
     private void back() {
-        if (fragment_count>1)
-        {
+        if (fragment_count > 1) {
             super.onBackPressed();
             fragment_count--;
 
-        }else
-            {
-                if (fragment_main!=null&&fragment_main.isAdded()&&fragment_main.isVisible())
-                {
-                    if (userModel==null)
-                    {
-                        navigateToSinInActivity();
-                    }else
-                    {
-                        finish();
-                    }
-                }else
-                    {
-                        DisplayFragmentMain();
-                    }
-
+        } else {
+            if (fragment_main != null && fragment_main.isAdded() && fragment_main.isVisible()) {
+                if (userModel == null) {
+                    navigateToSinInActivity();
+                } else {
+                    finish();
+                }
+            } else {
+                DisplayFragmentMain();
             }
+
+        }
     }
 
     public void navigateToSinInActivity() {
@@ -491,15 +445,10 @@ else {
         finish();
     }
 
-    public void updateprofile() {
-        if(fragment_profile!=null&&fragment_profile.isAdded()){
-            fragment_profile.getOrders();
-        }
-    }
 
     public void refreshprofile(UserModel userModel) {
-        this.userModel=userModel;
-        if(fragment_profile!=null){
+        this.userModel = userModel;
+        if (fragment_profile != null) {
             fragment_profile.update(userModel);
         }
         back();

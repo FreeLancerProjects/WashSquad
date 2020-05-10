@@ -53,9 +53,7 @@ public class Fragment_Home extends Fragment {
                 case 1:
 
                     activity.DisplayFragmentOrder();
-
-
-
+                    
 
                     break;
                 case 2:

@@ -15,7 +15,8 @@ public class Order_Data_Model implements Serializable {
         return data;
     }
 
-    public static class OrderModel implements Serializable {
+    public static class OrderModel implements Serializable
+    {
         private int id;
         private int order_type;
         private int user_id;
@@ -68,6 +69,7 @@ public class Order_Data_Model implements Serializable {
         private String brand_en_title;
         private String brand__ar_title;
         private String see_images;
+        private List<Products> order_sub_services;
 
         public int getId() {
             return id;
@@ -277,13 +279,17 @@ public class Order_Data_Model implements Serializable {
             return see_images;
         }
 
+        public List<Products> getOrder_sub_services() {
+            return order_sub_services;
+        }
+
         private List<order_images> order_images;
 
         public List<OrderModel.order_images> getOrder_images() {
             return order_images;
         }
 
-        public class order_images implements Serializable {
+        public static class order_images implements Serializable {
             private int id;
             private int order_id;
             private String image;
@@ -306,4 +312,59 @@ public class Order_Data_Model implements Serializable {
             }
         }
     }
+
+    public static class Products implements Serializable
+    {
+        private int id;
+        private int order_id;
+        private int sub_service_id;
+        private double price;
+        private String sub_service_en_title;
+        private String sub_service_ar_title;
+        private String sub_service_image;
+        private int sub_service_price;
+        private int sub_service_parent_id;
+        private int sub_service_level;
+
+        public int getId() {
+            return id;
+        }
+
+        public int getOrder_id() {
+            return order_id;
+        }
+
+        public int getSub_service_id() {
+            return sub_service_id;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+        public String getSub_service_en_title() {
+            return sub_service_en_title;
+        }
+
+        public String getSub_service_ar_title() {
+            return sub_service_ar_title;
+        }
+
+        public String getSub_service_image() {
+            return sub_service_image;
+        }
+
+        public int getSub_service_price() {
+            return sub_service_price;
+        }
+
+        public int getSub_service_parent_id() {
+            return sub_service_parent_id;
+        }
+
+        public int getSub_service_level() {
+            return sub_service_level;
+        }
+    }
+
 }
