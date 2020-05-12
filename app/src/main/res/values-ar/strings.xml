@@ -161,6 +161,9 @@
     <string name="order_date">تاريخ الطلب</string>
     <string name="products">المنتجات</string>
     <string name="info">المعلومات</string>
+    <string name="address">الموقع</string>
+    <string name="not_available">لم يستخدم اي كوبون خصم</string>
+    <string name="cash">نقدي</string>
 
 
 </resources>

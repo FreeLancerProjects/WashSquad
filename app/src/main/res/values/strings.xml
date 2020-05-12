@@ -124,7 +124,7 @@
     <string name="payment">Payment</string>
     <string name="no_additional_services">No additional services</string>
     <string name="total">Total</string>
-    <string name="cache">Cache</string>
+    <string name="cache">Cash</string>
     <string name="mada">Mada</string>
     <string name="enter_discount_code">Enter discount code</string>
     <string name="discount">Discount</string>
@@ -163,6 +163,9 @@
     <string name="order_date">Order date</string>
     <string name="products">Products</string>
     <string name="info">Information</string>
+    <string name="address">Address</string>
+    <string name="not_available">Not available</string>
+    <string name="cash">Cash</string>
 
 
 </resources>

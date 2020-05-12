@@ -114,11 +114,13 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
         {
             itemToUpload.setPayment_method(1);
             binding.setItemModel(itemToUpload);
+            binding.tvPayment.setText(R.string.cache);
         });
         binding.rb2.setOnClickListener(view ->
         {
             itemToUpload.setPayment_method(2);
             binding.setItemModel(itemToUpload);
+            binding.tvPayment.setText(R.string.mada);
 
         });
 
@@ -136,6 +138,7 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
             }
         });
 
+/*
         binding.btnOther.setOnClickListener(view -> {
             if (itemToUpload.isDataValidStep2(this))
             {
@@ -158,6 +161,7 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
                 finish();
             }
         });
+*/
 
         binding.btnDiscount.setOnClickListener(view -> {
             String coupon = binding.edtCoupon.getText().toString().trim();
@@ -216,6 +220,7 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
 
                             couponModel = response.body();
                             updateTotalPrice(couponModel.getRatio()/100.0);
+                            binding.tvCoupon.setText(String.format(Locale.ENGLISH,"%s %s",String.valueOf(couponModel.getRatio()/100.0),getString(R.string.discount)));
                             binding.iconChecked.setVisibility(View.VISIBLE);
                             Common.CreateDialogAlert(PaymentActivity.this,getString(R.string.cong)+" "+(couponModel.getRatio()/100)+" "+getString(R.string.disc));
 
