@@ -163,7 +163,6 @@ public interface Service {
 
 
 
-    @FormUrlEncoded
     @POST("api/order/add")
     Call<Order_Data_Model.OrderModel> addOrder(@Body ItemToUpload itemToUpload);
 
