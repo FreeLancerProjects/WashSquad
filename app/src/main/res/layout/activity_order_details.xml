@@ -235,8 +235,10 @@
                     app:layout_constraintEnd_toStartOf="@id/tvPrice"
                     android:layout_marginTop="40dp"
                     android:textColor="@color/gray4"
-                    android:textSize="16sp"
-                    android:text="@{model.created_at}"
+                    android:textSize="14sp"
+                    startTime="@{model.start_time_work}"
+                    date="@{model.order_date}"
+
                     android:gravity="center"
                     />
 

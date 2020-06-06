@@ -107,7 +107,18 @@ public class GeneralMethod {
     }
 
 
+    @BindingAdapter({"startTime","date"})
+    public static void displayTime(TextView textView, long start_time,long date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa", Locale.ENGLISH);
+        String sTime = dateFormat.format(new Date(start_time * 1000));
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyy", Locale.ENGLISH);
+        String d = dateFormat1.format(new Date(date * 1000));
+        //   SimpleDateFormat dateFormat2 = new SimpleDateFormat("hh:mm aa", Locale.ENGLISH);
 
+        //  String eTime = dateFormat2.format(new Date(Long.parseLong(end_time)*1000));
+
+        textView.setText(d+"\n"+sTime);
+    }
 
 
 
