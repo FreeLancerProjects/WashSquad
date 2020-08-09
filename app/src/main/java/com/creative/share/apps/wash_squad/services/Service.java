@@ -192,5 +192,17 @@ public interface Service {
     Call<Double> getPrice(@Field("service_id") int service_id,
                           @Field("size_id") int size_id
     );
+    @FormUrlEncoded
+    @POST("api/update-firebase")
+    Call<ResponseBody> updatePhoneToken(
+                                        @Field("phone_token") String phone_token,
+                                        @Field("user_id") int user_id,
+                                        @Field("soft_type") String soft_type
 
+    );
+    @FormUrlEncoded
+    @POST("api/driver/logout")
+    Call<ResponseBody> logout(
+            @Field("user_id") int user_id
+    );
 }
