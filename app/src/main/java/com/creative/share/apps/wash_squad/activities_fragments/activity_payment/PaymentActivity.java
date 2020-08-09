@@ -284,6 +284,8 @@ public class PaymentActivity extends AppCompatActivity implements Listeners.Back
         dialog.show();
         try {
 
+
+
             Api.getService(Tags.base_url)
                     .addOrder(itemToUpload)
                     .enqueue(new Callback<Order_Data_Model.OrderModel>() {

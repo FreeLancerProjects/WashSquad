@@ -122,8 +122,8 @@
     <string name="payment">طريقة الدفع</string>
     <string name="no_additional_services">لا توجد خدمات إضافية</string>
     <string name="total">الإجمالي</string>
-    <string name="cache">نقدي</string>
-    <string name="mada">مدى</string>
+    <string name="cache">كاش</string>
+    <string name="mada">شبكة</string>
     <string name="enter_discount_code">أدخل كود الخصم</string>
     <string name="discount">خصم</string>
     <string name="choose_payment_method">إختر طريقة الدفع</string>

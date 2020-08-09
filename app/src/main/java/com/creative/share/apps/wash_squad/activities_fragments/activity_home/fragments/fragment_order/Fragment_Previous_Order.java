@@ -49,8 +49,8 @@ public class Fragment_Previous_Order extends Fragment {
     private int current_page = 1;
 
 
-    public static Fragment_Current_Order newInstance() {
-        return new Fragment_Current_Order();
+    public static Fragment_Previous_Order newInstance() {
+        return new Fragment_Previous_Order();
     }
 
     @Nullable
@@ -108,7 +108,7 @@ public class Fragment_Previous_Order extends Fragment {
 
         try {
 
-
+            Log.e("mmmmmmm",userModel.getId()+"");
             Api.getService(Tags.base_url)
                     .previousOrder(userModel.getId(), 1)
                     .enqueue(new Callback<Order_Data_Model>() {
