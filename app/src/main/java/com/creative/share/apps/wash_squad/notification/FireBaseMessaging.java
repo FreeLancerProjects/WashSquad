@@ -17,21 +17,18 @@ import java.util.Map;
 public class FireBaseMessaging extends FirebaseMessagingService {
 
     private Preferences preferences = Preferences.newInstance();
-    private Map<String,String> map;
+    private Map<String, String> map;
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        if (remoteMessage.getData().size()>0)
-        {
-             map= remoteMessage.getData();
-            for (String key : map.keySet())
-            {
-                Log.e("Key :"+key,"__ value :"+map.get(key));
+        if (remoteMessage.getData().size() > 0) {
+            map = remoteMessage.getData();
+            for (String key : map.keySet()) {
+                Log.e("Key :" + key, "__ value :" + map.get(key));
             }
 
-            if (getSession().equals(Tags.session_login))
-            {
+            if (getSession().equals(Tags.session_login)) {
 
 
             }
@@ -40,37 +37,28 @@ public class FireBaseMessaging extends FirebaseMessagingService {
     }
 
     private void manageNotification() {
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             sendNotificationNew();
-        }else
-            {
-                sendNotificationOld();
-            }
+        } else {
+            sendNotificationOld();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void sendNotificationNew()
-    {
-
-
-
+    private void sendNotificationNew() {
 
 
     }
 
-    private void sendNotificationOld()
-    {
+    private void sendNotificationOld() {
 
     }
 
-    private UserModel getUserData()
-    {
+    private UserModel getUserData() {
         return preferences.getUserData(this);
     }
 
-    private String getSession()
-    {
+    private String getSession() {
         return preferences.getSession(this);
     }
 }
