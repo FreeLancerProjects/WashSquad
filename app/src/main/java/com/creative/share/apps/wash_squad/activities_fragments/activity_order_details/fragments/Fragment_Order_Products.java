@@ -25,16 +25,15 @@ import io.paperdb.Paper;
 
 public class Fragment_Order_Products extends Fragment {
     private FragmentProductsBinding binding;
-    private static final String tag= "DATA";
+    private static final String tag = "DATA";
     private Order_Data_Model.OrderModel orderModel;
     private OrderDetailsActivity activity;
     private List<Order_Data_Model.Products> productsList;
     private ProductAdapter adapter;
 
-    public static Fragment_Order_Products newInstance(Order_Data_Model.OrderModel orderModel)
-    {
+    public static Fragment_Order_Products newInstance(Order_Data_Model.OrderModel orderModel) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(tag,orderModel);
+        bundle.putSerializable(tag, orderModel);
         Fragment_Order_Products fragment_order_products = new Fragment_Order_Products();
         fragment_order_products.setArguments(bundle);
         return fragment_order_products;
@@ -44,10 +43,11 @@ public class Fragment_Order_Products extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_products,container,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_products, container, false);
         initView();
         return binding.getRoot();
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -58,14 +58,14 @@ public class Fragment_Order_Products extends Fragment {
 
         activity = (OrderDetailsActivity) getActivity();
         Bundle bundle = getArguments();
-        if (bundle!=null)
-        {
+        if (bundle != null) {
             orderModel = (Order_Data_Model.OrderModel) bundle.getSerializable(tag);
         }
-
-        productsList.addAll(orderModel.getOrder_sub_services());
-        binding.recView.setLayoutManager(new GridLayoutManager(activity,2));
-        adapter = new ProductAdapter(productsList,activity);
+        if (orderModel.getOrder_sub_services() != null) {
+            productsList.addAll(orderModel.getOrder_sub_services());
+        }
+        binding.recView.setLayoutManager(new GridLayoutManager(activity, 2));
+        adapter = new ProductAdapter(productsList, activity);
         binding.recView.setAdapter(adapter);
     }
 

@@ -24,6 +24,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -77,6 +78,13 @@ public interface Service {
     Call<Order_Data_Model.OrderModel> rateorder(@Field("order_id") String order_id,
                                                 @Field("opinion_des") String opinion_des,
                                                 @Field("rating") float rating);
+
+    @FormUrlEncoded
+    @POST("api/single-order")
+    Call<Order_Data_Model.OrderModel> getOrdersById(
+            @Field("order_id") String order_id
+
+    );
 
     @FormUrlEncoded
     @POST("api/client/cofirm-code")
@@ -158,9 +166,8 @@ public interface Service {
     @FormUrlEncoded
     @POST("api/user-previous-orders")
     Call<Order_Data_Model> previousOrder(@Field("user_id") int user_id,
-                                        @Field("page") int page
+                                         @Field("page") int page
     );
-
 
 
     @POST("api/order/add")
