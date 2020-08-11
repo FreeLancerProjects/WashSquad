@@ -145,7 +145,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         fragmentList.add(Fragment_Product_Details.newInstance(orderModel));
         title.add(getString(R.string.products));
         title.add(getString(R.string.info));
-        adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(),1);
         adapter.addFragment(fragmentList);
         adapter.addTitles(title);
         binding.pager.setAdapter(adapter);

@@ -60,7 +60,7 @@ public class Fragment_Order extends Fragment {
             fragmentList.add(Fragment_Previous_Order.newInstance());
             title.add(getString(R.string.current));
             title.add(getString(R.string.prevoius));
-            adapter = new ViewPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+            adapter = new ViewPagerAdapter(getChildFragmentManager(), 1);
             adapter.addFragment(fragmentList);
             adapter.addTitles(title);
             binding.pager.setAdapter(adapter);

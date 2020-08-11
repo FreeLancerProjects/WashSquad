@@ -50,7 +50,7 @@ public class Fragment_Offer extends Fragment {
         fragmentList.add(Fragment_Coupon.newInstance());
         title.add(getString(R.string.offer));
         title.add(getString(R.string.coupons));
-        adapter = new ViewPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        adapter = new ViewPagerAdapter(getChildFragmentManager(),1);
         adapter.addFragment(fragmentList);
         adapter.addTitles(title);
         binding.pager.setAdapter(adapter);
