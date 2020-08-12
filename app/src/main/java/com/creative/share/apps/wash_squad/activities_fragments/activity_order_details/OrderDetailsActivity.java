@@ -114,6 +114,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
                             } else {
                                 if (response.code() == 500) {
                                     Toast.makeText(OrderDetailsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                                    try {
+                                        Log.e("errorsssss", response.code() + "_" + response.errorBody().string());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
 
 
                                 } else {
@@ -169,6 +174,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
             params.setMargins(10, 0, 10, 0);
         }
+        Log.e("ldlfllf",orderModel.getStatus()+"");
         if (orderModel.getStatus() == 0) {
             binding.img1.setBackground(getResources().getDrawable(R.drawable.circle_primary));
             binding.img2.setBackground(getResources().getDrawable(R.drawable.circle_gray));

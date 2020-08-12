@@ -66,7 +66,8 @@ public class FireBaseMessaging extends FirebaseMessagingService {
         String not_type = map.get("message_key");
         ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         String class_path = activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
-        if (class_path.equals("com.creative.share.apps.wash_squad.activities_fragments.activity_order_details")) {
+        Log.e("llllll", class_path);
+        if (class_path.equals("com.creative.share.apps.wash_squad.activities_fragments.activity_order_details.OrderDetailsActivity")) {
             if (not_type.equals("new_order") || not_type.equals("driver_start_work") || not_type.equals("driver_end_work")) {
 
 
@@ -111,13 +112,14 @@ public class FireBaseMessaging extends FirebaseMessagingService {
 //        }
 
     }
+
     private void sendNotificationOld() {
 
         String sound_Path = "android.resource://" + getPackageName() + "/" + R.raw.not;
         String not_type = map.get("message_key");
         ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         String class_path = activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
-        if (class_path.equals("com.creative.share.apps.wash_squad.activities_fragments.activity_order_details")) {
+        if (class_path.equals("com.creative.share.apps.wash_squad.activities_fragments.activity_order_details.OrderDetailsActivity")) {
             if (not_type.equals("new_order") || not_type.equals("driver_start_work") || not_type.equals("driver_end_work")) {
 
 

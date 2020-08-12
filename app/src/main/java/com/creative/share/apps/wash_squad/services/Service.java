@@ -192,14 +192,16 @@ public interface Service {
     Call<Double> getPrice(@Field("service_id") int service_id,
                           @Field("size_id") int size_id
     );
+
     @FormUrlEncoded
-    @POST("api/update-firebase")
+    @POST("api/phone-tokens")
     Call<ResponseBody> updatePhoneToken(
-                                        @Field("phone_token") String phone_token,
-                                        @Field("user_id") int user_id,
-                                        @Field("soft_type") String soft_type
+            @Field("phone_token") String phone_token,
+            @Field("user_id") int user_id,
+            @Field("software_type") String software_type
 
     );
+
     @FormUrlEncoded
     @POST("api/token/delete")
     Call<ResponseBody> deltePhoneToken(
@@ -207,6 +209,7 @@ public interface Service {
             @Field("user_id") int user_id
 
     );
+
     @FormUrlEncoded
     @POST("api/driver/logout")
     Call<ResponseBody> logout(
