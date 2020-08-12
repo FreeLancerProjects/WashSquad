@@ -201,6 +201,13 @@ public interface Service {
 
     );
     @FormUrlEncoded
+    @POST("api/token/delete")
+    Call<ResponseBody> deltePhoneToken(
+            @Field("phone_token") String phone_token,
+            @Field("user_id") int user_id
+
+    );
+    @FormUrlEncoded
     @POST("api/driver/logout")
     Call<ResponseBody> logout(
             @Field("user_id") int user_id

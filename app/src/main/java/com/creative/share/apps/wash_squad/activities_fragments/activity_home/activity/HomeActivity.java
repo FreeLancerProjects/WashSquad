@@ -37,6 +37,10 @@ import com.creative.share.apps.wash_squad.singleton.SingleTon;
 import com.creative.share.apps.wash_squad.tags.Tags;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -123,7 +127,8 @@ public class HomeActivity extends AppCompatActivity {
 
         binding.imageLogout.setOnClickListener(view -> {
             if (userModel != null) {
-                logout();
+                //logout();
+                DeleteTokenFireBase();
             } else {
                 navigateToSinInActivity();
             }
@@ -598,5 +603,64 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+    private void DeleteTokenFireBase() {
+
+
+        FirebaseInstanceId.getInstance()
+                .getInstanceId().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String token = task.getResult().getToken();
+
+                try {
+
+                    try {
+
+                        Api.getService(Tags.base_url)
+                                .deltePhoneToken(token, userModel.getId())
+                                .enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if (response.isSuccessful() && response.body() != null) {
+                                           logout();
+                                        } else {
+                                            try {
+
+                                                Log.e("error", response.code() + "_" + response.errorBody().string());
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        try {
+
+                                            if (t.getMessage() != null) {
+                                                Log.e("error", t.getMessage());
+                                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                                    Toast.makeText(HomeActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(HomeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+
+                                        } catch (Exception e) {
+                                        }
+                                    }
+                                });
+                    } catch (Exception e) {
+
+
+                    }
+                } catch (Exception e) {
+
+
+                }
+
+            }
+        });
+    }
+
 
 }

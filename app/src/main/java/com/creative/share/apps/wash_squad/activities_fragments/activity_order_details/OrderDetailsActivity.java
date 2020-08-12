@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,17 @@ import com.creative.share.apps.wash_squad.activities_fragments.activity_order_de
 import com.creative.share.apps.wash_squad.adapters.ViewPagerAdapter;
 import com.creative.share.apps.wash_squad.databinding.ActivityOrderDetailsBinding;
 import com.creative.share.apps.wash_squad.language.LanguageHelper;
+import com.creative.share.apps.wash_squad.models.NotStateModel;
 import com.creative.share.apps.wash_squad.models.Order_Data_Model;
+import com.creative.share.apps.wash_squad.models.UserModel;
+import com.creative.share.apps.wash_squad.preferences.Preferences;
 import com.creative.share.apps.wash_squad.remote.Api;
 import com.creative.share.apps.wash_squad.share.Common;
 import com.creative.share.apps.wash_squad.tags.Tags;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,6 +50,8 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private List<Fragment> fragmentList;
     private List<String> title;
     private String lang;
+    private UserModel userModel;
+    private Preferences preferences;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -78,7 +88,11 @@ public class OrderDetailsActivity extends AppCompatActivity {
         title = new ArrayList<>();
         binding.tab.setupWithViewPager(binding.pager);
         binding.pager.setOffscreenPageLimit(2);
-
+        preferences = Preferences.newInstance();
+        userModel = preferences.getUserData(this);
+        if (userModel != null) {
+            EventBus.getDefault().register(this);
+        }
 
     }
 
@@ -145,7 +159,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         fragmentList.add(Fragment_Product_Details.newInstance(orderModel));
         title.add(getString(R.string.products));
         title.add(getString(R.string.info));
-        adapter = new ViewPagerAdapter(getSupportFragmentManager(),1);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), 1);
         adapter.addFragment(fragmentList);
         adapter.addTitles(title);
         binding.pager.setAdapter(adapter);
@@ -179,4 +193,16 @@ public class OrderDetailsActivity extends AppCompatActivity {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void ListenNotificationChange(final NotStateModel notStateModel) {
+        getOrder();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
 }
